@@ -31,3 +31,26 @@ Initial context design is shown below keep in mind this design might change in t
 
 ![image](https://user-images.githubusercontent.com/42850688/211003497-598d545c-7c6e-43dc-b883-bda4eb438e99.png)
 
+## Customer Context Design And Requirements 
+
+--Customers will be noticed 1 week before the end of membership
+
+--Customers will be noticed if Membership period is over
+
+--If customer did not process the payment in a given time membership will be deleted 
+
+--When membership period ends customer will be deactivated
+
+--Customers can start their memberships through system or manually with employee
+
+--Customers can have an account in system but they may want to start their membership later through application
+
+--Owner wants to know how many months a customer is member in total
+
+--Customer will be able to see their past invoices 
+
+--If a customer creates a membership with a time period of 1 year it will receive additional %10 discount automatically
+
+
+<img align="left" src="https://user-images.githubusercontent.com/42850688/211217398-b8d2e1cc-4218-4635-a445-46356ecbb9fc.png">
+
