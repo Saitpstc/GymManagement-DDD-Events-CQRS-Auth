@@ -29,6 +29,8 @@ Initial context design is shown below keep in mind this design might change in t
 
 ## High Level Entity Relation & Initial Context Integrations
 
+below there is initial application design as a whole this diagram might change in following section 
+
 ![image](https://user-images.githubusercontent.com/42850688/211003497-598d545c-7c6e-43dc-b883-bda4eb438e99.png)
 
 ## Customer Context Design And Requirements 
