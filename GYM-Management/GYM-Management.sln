@@ -6,6 +6,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{E0C474
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Test", "Shared.Test\Shared.Test.csproj", "{3CFF7BBD-D1CB-45EC-937C-E1C92A21B45D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Application", "Shared.Application\Shared.Application.csproj", "{41BF78E4-52DD-45FA-A286-27AF54FBF335}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,9 +22,14 @@ Global
 		{3CFF7BBD-D1CB-45EC-937C-E1C92A21B45D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CFF7BBD-D1CB-45EC-937C-E1C92A21B45D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3CFF7BBD-D1CB-45EC-937C-E1C92A21B45D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41BF78E4-52DD-45FA-A286-27AF54FBF335}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41BF78E4-52DD-45FA-A286-27AF54FBF335}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41BF78E4-52DD-45FA-A286-27AF54FBF335}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41BF78E4-52DD-45FA-A286-27AF54FBF335}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B3D60EF1-A64F-447A-A064-99146268C961} = {E0C474E3-4472-4E13-8838-4EE66CE4F8FF}
 		{3CFF7BBD-D1CB-45EC-937C-E1C92A21B45D} = {E0C474E3-4472-4E13-8838-4EE66CE4F8FF}
+		{41BF78E4-52DD-45FA-A286-27AF54FBF335} = {E0C474E3-4472-4E13-8838-4EE66CE4F8FF}
 	EndGlobalSection
 EndGlobal
