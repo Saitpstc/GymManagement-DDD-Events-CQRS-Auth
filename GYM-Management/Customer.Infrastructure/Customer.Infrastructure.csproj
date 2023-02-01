@@ -7,9 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Customer.Core\Customer.Core.csproj" />
-      <ProjectReference Include="..\Shared.Core\Shared.Core.csproj" />
-      <ProjectReference Include="..\Shared.Infrastructure\Shared.Infrastructure.csproj" />
+        <ProjectReference Include="..\Customer.Core\Customer.Core.csproj"/>
+        <ProjectReference Include="..\Shared.Core\Shared.Core.csproj"/>
+        <ProjectReference Include="..\Shared.Infrastructure\Shared.Infrastructure.csproj"/>
     </ItemGroup>
 
 </Project>

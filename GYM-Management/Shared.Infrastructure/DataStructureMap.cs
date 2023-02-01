@@ -2,7 +2,7 @@
 
 using Core;
 
-public abstract class DataStructureMap<T> where T:AggregateRoot
+public abstract class DataStructureMap<T> where T: AggregateRoot
 {
     protected abstract T MapToAggregate(DataStructureBase DatabaseTable);
 

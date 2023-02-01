@@ -1,7 +1,5 @@
 ﻿namespace Customer.Core.ServiceExtensions;
 
-using System.Reflection;
-using Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -13,8 +11,8 @@ public static class Service
                             .Parent.Parent.Parent.FullName + "/Customer.Core/Countries.json";
         using StreamReader reader = new StreamReader(path);
         var json = reader.ReadToEnd();
-        var jObject = JsonConvert.DeserializeObject<JObject>(json);
-        var countryList = jObject["countries"];
+        JObject? jObject = JsonConvert.DeserializeObject<JObject>(json);
+        JToken? countryList = jObject["countries"];
         var isValid = countryList.Any(x => x["code"]
             .Value<string>() == countryCode);
 

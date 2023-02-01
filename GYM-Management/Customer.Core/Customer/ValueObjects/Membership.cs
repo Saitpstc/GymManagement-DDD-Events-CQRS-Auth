@@ -1,23 +1,21 @@
-﻿namespace Customer.Core.Customer.ValueObjects.CustMembership;
+﻿namespace Customer.Core.Customer.ValueObjects;
 
 using Enums;
-using Exceptions.MembershipExceptions;
+using Exceptions;
 
 public record Membership:ValueObject
 {
-
     private readonly SubscriptionEnum _membershipType;
-    private readonly DateOnly _startDate;
     private readonly DateOnly _endDate;
+    private readonly DateOnly _startDate;
 
 
     private Membership(DateOnly startDate, DateOnly endDate)
     {
         if (startDate > endDate)
         {
-            throw new MembershipException();
+            throw new MembershipException("End Date Cannot Be Lower Than Current Date");
         }
-        if (startDate < DateOnly.FromDateTime(DateTime.Now)) throw new MembershipException();
         _startDate = startDate;
         _endDate = endDate;
         _membershipType = SubscriptionEnum.Custom;
@@ -25,7 +23,7 @@ public record Membership:ValueObject
 
     private Membership(SubscriptionEnum membershipType)
     {
-        var now = DateTime.Now;
+        DateTime now = DateTime.Now;
         _startDate = DateOnly.FromDateTime(now);
         _endDate = DateOnly.FromDateTime(now.AddMonths((int) membershipType));
         _membershipType = membershipType;
@@ -70,5 +68,4 @@ public record Membership:ValueObject
     {
         return new Membership(startDate, endDate);
     }
-
 }

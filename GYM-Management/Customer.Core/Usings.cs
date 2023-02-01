@@ -1,1 +1,1 @@
-﻿global using  Shared.Core;
+﻿global using Shared.Core;

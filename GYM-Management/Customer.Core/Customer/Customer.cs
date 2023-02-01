@@ -1,7 +1,4 @@
-﻿namespace Customer.Core.Model;
-
-using Shared.Core;
-
+﻿namespace Customer.Core.Customer;
 
 public class Customer:AggregateRoot
 {

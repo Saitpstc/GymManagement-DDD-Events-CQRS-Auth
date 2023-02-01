@@ -2,5 +2,4 @@
 
 public abstract record ValueObject
 {
-    
-};
+}

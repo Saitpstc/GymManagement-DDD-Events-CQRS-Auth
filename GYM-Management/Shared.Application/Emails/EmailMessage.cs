@@ -1,21 +1,20 @@
-﻿namespace Shared.Application.Emails
+﻿namespace Shared.Application.Emails;
+
+public struct EmailMessage
 {
-    public struct EmailMessage
+    public string To { get; }
+
+    public string Subject { get; }
+
+    public string Content { get; }
+
+    public EmailMessage(
+        string to,
+        string subject,
+        string content)
     {
-        public string To { get; }
-
-        public string Subject { get; }
-
-        public string Content { get; }
-
-        public EmailMessage(
-            string to,
-            string subject,
-            string content)
-        {
-            To = to;
-            Subject = subject;
-            Content = content;
-        }
+        To = to;
+        Subject = subject;
+        Content = content;
     }
 }

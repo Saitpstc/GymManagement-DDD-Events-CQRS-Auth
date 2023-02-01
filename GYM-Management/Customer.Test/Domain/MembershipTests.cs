@@ -1,9 +1,7 @@
-namespace Customer.Test;
+namespace Customer.Test.Domain;
 
-using Core.Customer.Enums;
-using Core.Customer.Exceptions.MembershipExceptions;
+using Core.Customer.Exceptions;
 using Core.Customer.ValueObjects;
-using Core.Customer.ValueObjects.CustMembership;
 using FluentAssertions;
 
 public class MembershipTests
@@ -72,6 +70,4 @@ public class MembershipTests
         membership.TimePeriod().Should().Be(0);
 
     }
-
-
 }

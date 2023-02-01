@@ -4,9 +4,9 @@ using Core;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-public class AppDbContext : DbContext, IUnitOfWork
+public class AppDbContext:DbContext, IUnitOfWork
 {
-    private IMediator Mediator;
+    private readonly IMediator Mediator;
 
     public AppDbContext(IMediator mediator)
     {
@@ -32,7 +32,7 @@ public class AppDbContext : DbContext, IUnitOfWork
         var domainEvents = entries.First()
                                   .Events;
 
-        foreach (var domainEvent in domainEvents)
+        foreach (DomainEvent domainEvent in domainEvents)
         {
             await Mediator.Publish(domainEvent, cancellationToken);
         }

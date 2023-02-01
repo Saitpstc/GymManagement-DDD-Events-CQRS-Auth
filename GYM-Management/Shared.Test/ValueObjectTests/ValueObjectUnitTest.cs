@@ -13,9 +13,9 @@ public class ValueObjectUnitTest
         ValueObject elevenDollars = new Money(11, "USD");
 
         //Act
-        bool EqualityCheck = tenDollars.Equals(elevenDollars);
+        var EqualityCheck = tenDollars.Equals(elevenDollars);
 
-        bool EqualityOperatorResult = tenDollars == elevenDollars;
+        var EqualityOperatorResult = tenDollars == elevenDollars;
 
         //Assert
         EqualityCheck.Should()
@@ -34,9 +34,9 @@ public class ValueObjectUnitTest
         ValueObject elevenDollars = new Money(11, "USD");
 
         //Act
-        bool EqualityCheck = tenDollars.Equals(elevenDollars);
+        var EqualityCheck = tenDollars.Equals(elevenDollars);
 
-        bool EqualityOperatorResult = tenDollars != elevenDollars;
+        var EqualityOperatorResult = tenDollars != elevenDollars;
 
 
         //Assert
@@ -57,8 +57,8 @@ public class ValueObjectUnitTest
 
 
         //Act
-        int TenDollarsHashCode = tenDollars.GetHashCode();
-        int ElevenDollarsHashCode = elevenDollars.GetHashCode();
+        var TenDollarsHashCode = tenDollars.GetHashCode();
+        var ElevenDollarsHashCode = elevenDollars.GetHashCode();
 
         //Assert
         TenDollarsHashCode.Should()
@@ -70,11 +70,11 @@ public class ValueObjectUnitTest
     {
         //Arrange
         ValueObject tenDollars = new Money(11, "USD");
-        string ExpectedString = "Money { Currency = USD, Amount = 11 }";
+        var ExpectedString = "Money { Currency = USD, Amount = 11 }";
 
         //Act
-        bool EqualityCondition = tenDollars.ToString()
-                                           .Equals(ExpectedString);
+        var EqualityCondition = tenDollars.ToString()
+                                          .Equals(ExpectedString);
 
         //Assert
 
@@ -91,7 +91,7 @@ public class ValueObjectUnitTest
         string Currency;
 
         //Act
-        tenDollars.Deconstruct(Amount: out Amount, out Currency);
+        tenDollars.Deconstruct(out Amount, out Currency);
 
 
         //Assert

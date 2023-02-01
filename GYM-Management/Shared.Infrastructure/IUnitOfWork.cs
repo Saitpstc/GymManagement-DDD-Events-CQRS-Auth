@@ -1,7 +1,5 @@
 ﻿namespace Shared.Infrastructure;
 
-using Core;
-
 public interface IUnitOfWork
 {
     Task<int> CommitAsync(
