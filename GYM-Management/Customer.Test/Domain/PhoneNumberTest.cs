@@ -27,9 +27,9 @@ public class PhoneNumberTest
 
 
         InvalidAction.Should()
-                     .Throw<PhoneNumberException>();
+                     .Throw<DomainValidationException>();
 
-        ValidAction.Should().NotThrow<PhoneNumberException>();
+        ValidAction.Should().NotThrow<DomainValidationException>();
     }
 
     [Fact]
@@ -37,7 +37,7 @@ public class PhoneNumberTest
     {
         Action action = () => new PhoneNumber(90, "53425645632");
         action.Should()
-              .Throw<PhoneNumberException>();
+              .Throw<DomainValidationException>();
     }
 
     [Fact]
@@ -59,10 +59,10 @@ public class PhoneNumberTest
         Action WhiteSpaceNumber =()=> new PhoneNumber(90, " ");
 
 
-        EmptyNumber.Should().Throw<PhoneNumberException>();
-        ZeroCodeAndEmptyNumber.Should().Throw<PhoneNumberException>();
-        NullNumber.Should().Throw<PhoneNumberException>();
-        WhiteSpaceNumber.Should().Throw<PhoneNumberException>();
+        EmptyNumber.Should().Throw<DomainValidationException>();
+        ZeroCodeAndEmptyNumber.Should().Throw<DomainValidationException>();
+        NullNumber.Should().Throw<DomainValidationException>();
+        WhiteSpaceNumber.Should().Throw<DomainValidationException>();
 
     }
 }

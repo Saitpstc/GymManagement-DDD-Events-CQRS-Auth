@@ -24,7 +24,7 @@ public class NameTest
     {
         Action fullName =()=> new Name("sa@!t", "p0st4c!");
 
-        fullName.Should().Throw<NameException>();
+        fullName.Should().Throw<DomainValidationException>();
     }
 
     [Fact]

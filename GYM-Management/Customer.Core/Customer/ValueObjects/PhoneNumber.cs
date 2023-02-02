@@ -14,13 +14,13 @@ public class PhoneNumber
 
         if (!ValidateNumber(number))
         {
-            throw new PhoneNumberException($"{number} Is Not Valid");
+            throw new DomainValidationException($"{number} Is Not Valid");
         }
         Number = number;
 
         if (!ValidateCountryCode(countryCode))
         {
-            throw new PhoneNumberException($"{countryCode} Is Not Valid");
+            throw new DomainValidationException($"{countryCode} Is Not Valid");
         }
         CountryCode = "+" + countryCode;
 

@@ -22,12 +22,12 @@ public record Name:ValueObject
 
         if (!rule.IsMatch(name))
         {
-            throw new NameException("Name Should Only Contain Letters");
+            throw new DomainValidationException("Name Should Only Contain Letters");
         }
 
         if (!rule.IsMatch(surname))
         {
-            throw new NameException("Surname Should Only Contain Letters1");
+            throw new DomainValidationException("Surname Should Only Contain Letters1");
         }
     }
 

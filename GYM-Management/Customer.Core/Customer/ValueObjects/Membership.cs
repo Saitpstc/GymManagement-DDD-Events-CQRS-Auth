@@ -1,21 +1,18 @@
 ﻿namespace Customer.Core.Customer.ValueObjects;
 
+using System.ComponentModel.DataAnnotations;
 using Enums;
 using Exceptions;
 
 public record Membership:ValueObject
 {
     private readonly SubscriptionEnum _membershipType;
-    private readonly DateOnly _endDate;
-    private readonly DateOnly _startDate;
+    private readonly DateTime _endDate;
+    private readonly DateTime _startDate;
 
 
-    private Membership(DateOnly startDate, DateOnly endDate)
+    private Membership(DateTime startDate, DateTime endDate)
     {
-        if (startDate > endDate)
-        {
-            throw new MembershipException("End Date Cannot Be Lower Than Current Date");
-        }
         _startDate = startDate;
         _endDate = endDate;
         _membershipType = SubscriptionEnum.Custom;
@@ -24,24 +21,28 @@ public record Membership:ValueObject
     private Membership(SubscriptionEnum membershipType)
     {
         DateTime now = DateTime.Now;
-        _startDate = DateOnly.FromDateTime(now);
-        _endDate = DateOnly.FromDateTime(now.AddMonths((int) membershipType));
+        _startDate = now;
+        _endDate = now.AddMonths((int) membershipType);
         _membershipType = membershipType;
     }
 
-    public DateOnly StartedAt()
+    public DateTime StartedAt()
     {
-        return _startDate;
+        return _startDate.Date;
     }
 
-    public DateOnly EndsAt()
+    public SubscriptionEnum SubscriptionType() => _membershipType;
+
+    public DateTime EndsAt()
     {
-        return _endDate;
+        return _endDate.Date;
     }
 
-    public int TimePeriod()
+    public int TimePeriodInMonths()
     {
-        return (int) _membershipType;
+        var result = _endDate.Subtract(_startDate);
+        double totalMonths = Math.Round(result.TotalDays / 30.44);
+        return (int) totalMonths;
     }
 
     public static Membership Monthly()
@@ -64,8 +65,12 @@ public record Membership:ValueObject
         return new Membership(SubscriptionEnum.Yearly);
     }
 
-    public static Membership Custom(DateOnly startDate, DateOnly endDate)
+    public static Membership Custom(DateTime startDate, DateTime endDate)
     {
+        if (startDate > endDate)
+        {
+            throw new DomainValidationException("End Date Cannot Be Lower Than Current Date");
+        }
         return new Membership(startDate, endDate);
     }
 }
