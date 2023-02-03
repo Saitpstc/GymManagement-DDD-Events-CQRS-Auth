@@ -7,9 +7,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Customer.Core\Customer.Core.csproj"/>
-        <ProjectReference Include="..\Shared.Core\Shared.Core.csproj"/>
-        <ProjectReference Include="..\Shared.Infrastructure\Shared.Infrastructure.csproj"/>
+        <ProjectReference Include="..\Customer.Application\Customer.Application.csproj" />
+        <ProjectReference Include="..\Customer.Core\Customer.Core.csproj" />
+        <ProjectReference Include="..\Shared.Core\Shared.Core.csproj" />
+        <ProjectReference Include="..\Shared.Infrastructure\Shared.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MediatR" Version="11.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Database\Configuration" />
     </ItemGroup>
 
 </Project>
