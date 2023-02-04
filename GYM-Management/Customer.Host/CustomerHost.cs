@@ -1,11 +1,10 @@
-﻿namespace Host;
+﻿namespace Customer.Host;
 
+using Core;
 using Customer.Application.Contracts;
-using Customer.Core;
 using Customer.Infrastructure.Database;
 using Customer.Infrastructure.Repository;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -1,6 +1,6 @@
 ﻿namespace Customer.Infrastructure.Database.Tables;
 
-using Core.Customer.Enums;
+using Core.Enums;
 using Shared.Core;
 
 internal class MembershipDb

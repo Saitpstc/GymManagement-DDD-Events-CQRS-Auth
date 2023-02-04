@@ -1,4 +1,4 @@
-﻿namespace Customer.Core.Customer.ValueObjects;
+﻿namespace Customer.Core.ValueObjects;
 
 using System.Text.RegularExpressions;
 using Exceptions;

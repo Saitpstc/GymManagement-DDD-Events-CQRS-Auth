@@ -1,6 +1,5 @@
 ﻿namespace Customer.Infrastructure.Database.Tables;
 
-using System.ComponentModel.DataAnnotations.Schema;
 using Shared.Core;
 using Shared.Infrastructure;
 

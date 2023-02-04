@@ -1,4 +1,4 @@
-﻿namespace Customer.Core.Customer.Enums;
+﻿namespace Customer.Core.Enums;
 
 public enum SubscriptionEnum
 {

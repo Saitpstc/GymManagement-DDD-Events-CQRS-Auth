@@ -1,7 +1,7 @@
 ﻿namespace Customer.Test.Domain;
 
-using Core.Customer.Exceptions;
-using Core.Customer.ValueObjects;
+using Core.Exceptions;
+using Core.ValueObjects;
 using Customer.Core.ServiceExtensions;
 using FluentAssertions;
 

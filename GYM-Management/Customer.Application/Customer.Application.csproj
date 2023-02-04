@@ -11,8 +11,4 @@
       <ProjectReference Include="..\Shared.Application\Shared.Application.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Customer\Commands\CreateUser" />
-    </ItemGroup>
-
 </Project>

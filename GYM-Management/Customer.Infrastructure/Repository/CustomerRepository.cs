@@ -1,10 +1,8 @@
-﻿
-namespace Customer.Infrastructure.Repository;
+﻿namespace Customer.Infrastructure.Repository;
 
 using Core;
 using Database;
 using Shared.Core;
-
 
 internal class CustomerRepository:ICustomerRepository
 {
@@ -16,12 +14,13 @@ internal class CustomerRepository:ICustomerRepository
 
     }
     
-    public Task<AggregateRoot> RetriveBy(Guid Id)
+
+    public Task<Customer> RetriveBy(Guid Id)
     {
         throw new NotImplementedException();
     }
 
-    public Task Update(AggregateRoot Aggregate)
+    public Task Update(Customer Aggregate)
     {
         throw new NotImplementedException();
     }
@@ -31,7 +30,7 @@ internal class CustomerRepository:ICustomerRepository
         throw new NotImplementedException();
     }
 
-    public Task Add(AggregateRoot Aggregate)
+    public Task Add(Customer Aggregate)
     {
         throw new NotImplementedException();
     }

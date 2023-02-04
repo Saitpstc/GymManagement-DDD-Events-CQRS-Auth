@@ -1,6 +1,5 @@
-﻿namespace Customer.Core.Customer.ValueObjects;
+﻿namespace Customer.Core.ValueObjects;
 
-using System.ComponentModel.DataAnnotations;
 using Enums;
 using Exceptions;
 

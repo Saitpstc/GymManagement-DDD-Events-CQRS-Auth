@@ -1,8 +1,7 @@
 ﻿
 
-namespace Customer.Core.Customer;
+namespace Customer.Core;
 
-using System.Runtime.CompilerServices;
 using DomainEvents.CustomerModule;
 using ValueObjects;
 

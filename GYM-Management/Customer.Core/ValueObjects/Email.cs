@@ -1,6 +1,5 @@
-﻿namespace Customer.Core.Customer.ValueObjects;
+﻿namespace Customer.Core.ValueObjects;
 
-using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 using Exceptions;
 using ServiceExtensions;

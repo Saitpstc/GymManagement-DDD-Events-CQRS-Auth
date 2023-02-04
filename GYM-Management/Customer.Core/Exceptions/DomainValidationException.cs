@@ -1,4 +1,4 @@
-﻿namespace Customer.Core.Customer.Exceptions;
+﻿namespace Customer.Core.Exceptions;
 
 internal class DomainValidationException:Exception
 {

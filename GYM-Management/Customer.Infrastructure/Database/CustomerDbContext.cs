@@ -1,7 +1,6 @@
 ﻿namespace Customer.Infrastructure.Database;
 
 using Configuration;
-using Core.Customer;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure;

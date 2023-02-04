@@ -1,12 +1,12 @@
 ﻿namespace Shared.Core;
 
-public interface IRepository
+public interface IRepository<T> where T: AggregateRoot
 {
-    Task<AggregateRoot> RetriveBy(Guid Id);
+    Task<T> RetriveBy(Guid Id);
 
-    Task Update(AggregateRoot Aggregate);
+    Task Update(T Aggregate);
 
     Task DeleteBy(Guid Id);
 
-    Task Add(AggregateRoot Aggregate);
+    Task Add(T Aggregate);
 }

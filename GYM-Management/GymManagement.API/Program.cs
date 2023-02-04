@@ -1,6 +1,6 @@
 using Customer.Application.Contracts;
+using Customer.Host;
 using Customer.Infrastructure;
-using Host;
 
 
 
