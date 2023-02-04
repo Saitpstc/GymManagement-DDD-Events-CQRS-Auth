@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using Exceptions;
 using ServiceExtensions;
 
-public record Email:ValueObject
+internal record Email:ValueObject
 {
     private string email;
 

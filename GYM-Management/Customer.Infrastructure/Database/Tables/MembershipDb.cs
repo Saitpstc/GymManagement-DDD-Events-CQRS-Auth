@@ -3,7 +3,7 @@
 using Core.Customer.Enums;
 using Shared.Core;
 
-public class Membership:BaseEntity
+internal class MembershipDb
 {
     public SubscriptionEnum SubscriptionType { get; set; }
     public DateTime StartDate { get; set; }

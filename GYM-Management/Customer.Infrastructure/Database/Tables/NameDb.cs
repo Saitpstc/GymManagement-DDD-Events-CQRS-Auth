@@ -2,7 +2,7 @@
 
 using Shared.Core;
 
-public class Name:BaseEntity
+internal class NameDb
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }

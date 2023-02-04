@@ -8,7 +8,7 @@ public class AppDbContext:DbContext, IUnitOfWork
 {
     private readonly IMediator Mediator;
 
-    public AppDbContext(IMediator mediator)
+    public AppDbContext(IMediator mediator, DbContextOptions dbContextOptionsBuilder)
     {
         Mediator = mediator;
     }
@@ -22,12 +22,36 @@ public class AppDbContext:DbContext, IUnitOfWork
                                    .OfType<DataStructureBase>()
                                    .ToList();
 
-        if (entries.Count() > 1)
+        if (entries.Count > 1)
         {
             throw new Exception("There should be only one aggregate modification in one transaction");
         }
 
+
+        var updatedEntries = ChangeTracker.Entries()
+                                          .Where(e => e.State is EntityState.Modified)
+                                          .OfType<BaseEntity>()
+                                          .ToList();
+
+        foreach (var updated in updatedEntries)
+        {
+            updated.LastUpdateAt = DateTime.Now;
+        }
+
+
         var result = await SaveChangesAsync(cancellationToken);
+
+        if (entries.SelectMany(x => x.Events).Any())
+        {
+            await PublishEvents(cancellationToken, entries);
+        }
+
+
+        return result;
+    }
+
+    async private Task PublishEvents(CancellationToken cancellationToken, List<DataStructureBase> entries)
+    {
 
         var domainEvents = entries.First()
                                   .Events;
@@ -36,8 +60,5 @@ public class AppDbContext:DbContext, IUnitOfWork
         {
             await Mediator.Publish(domainEvent, cancellationToken);
         }
-
-
-        return result;
     }
 }

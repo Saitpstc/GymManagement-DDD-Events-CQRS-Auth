@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using Enums;
 using Exceptions;
 
-public record Membership:ValueObject
+internal record Membership:ValueObject
 {
     private readonly SubscriptionEnum _membershipType;
     private readonly DateTime _endDate;

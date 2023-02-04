@@ -1,9 +1,12 @@
-﻿namespace Customer.Core.Customer;
+﻿
 
+namespace Customer.Core.Customer;
+
+using System.Runtime.CompilerServices;
 using DomainEvents.CustomerModule;
 using ValueObjects;
 
-public class Customer:AggregateRoot
+internal class Customer:AggregateRoot
 {
     private Name Name;
     private Membership Membership;
@@ -35,4 +38,5 @@ public class Customer:AggregateRoot
         };
         Apply(customerCreatedEvent);
     }
+
 }

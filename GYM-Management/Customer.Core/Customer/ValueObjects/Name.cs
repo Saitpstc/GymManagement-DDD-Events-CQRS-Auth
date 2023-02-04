@@ -3,7 +3,7 @@
 using System.Text.RegularExpressions;
 using Exceptions;
 
-public record Name:ValueObject
+internal record Name:ValueObject
 {
     private readonly string _name;
     private readonly string _surname;

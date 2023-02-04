@@ -4,7 +4,7 @@ using Customer.Exceptions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-public static class Service
+internal static class Service
 {
     public static bool ValidateCountryCode(string countryCode)
     {
@@ -28,10 +28,8 @@ public static class Service
             {
                 throw new DomainValidationException("Input Is Not Valid");
             }
-            else
-            {
-                throw new DomainValidationException(errorMessage);
-            }
+
+            throw new DomainValidationException(errorMessage);
         }
     }
 }

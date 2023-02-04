@@ -1,6 +1,6 @@
 ﻿namespace Customer.Core.Customer.Exceptions;
 
-public class DomainValidationException:Exception
+internal class DomainValidationException:Exception
 {
     public DomainValidationException(string message):base(message)
     {

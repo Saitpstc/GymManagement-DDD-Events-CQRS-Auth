@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using Exceptions;
 using ServiceExtensions;
 
-public class PhoneNumber
+internal class PhoneNumber
 {
     private readonly string Number;
     private readonly string CountryCode;
