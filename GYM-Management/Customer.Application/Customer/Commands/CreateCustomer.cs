@@ -1,12 +1,11 @@
-﻿
-
-using Customer.Core;
+﻿using Customer.Core;
 using Customer.Core.ValueObjects;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Shared.Application.Config.Commands;
 using Shared.Application.Contracts;
 using Serilog;
+using Serilog.Events;
 using ILogger = Serilog.ILogger;
 
 public class CreateCustomer
@@ -39,7 +38,7 @@ public class CreateCustomer
         private readonly ICustomerRepository _repository;
         private readonly ILogger _logger;
 
-        public CommandHandler(ICustomerRepository repository, ILogger logger )
+        public CommandHandler(ICustomerRepository repository, ILogger logger)
         {
             _repository = repository;
             _logger = logger;
@@ -47,11 +46,19 @@ public class CreateCustomer
 
         public async Task<Unit> Handle(CreateCustomer.Command request, CancellationToken cancellationToken)
         {
-            var customer = new Customer.Core.Customer(new Name(request._name, request._surname), new PhoneNumber(request._countrycode, request._number),
+            var customer = new Customer.Core.Customer(new Name(request._name, request._surname),
+                new PhoneNumber(request._countrycode, request._number),
                 new Email(request._mail));
 
-            _logger.Warning("testing database log");
-            await _repository.Add(customer);
+            var Uri = "/Customer/Customer";
+            var UserName = "Sait";
+            var Request = @"{guid:'asdfljasdf'}";
+            float responseTime = (float) 0.034;
+            var EventType = "Post";
+            _logger.Warning(
+                "Create Customer with {Request} payload  has been made to {Uri} by {UserName} in {EventType} and it responded with {ResponseTime}",
+                Request, Uri, UserName, EventType, responseTime);
+            // await _repository.Add(customer);
 
             return Unit.Value;
         }
