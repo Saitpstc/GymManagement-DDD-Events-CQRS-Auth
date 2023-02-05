@@ -1,7 +1,7 @@
 ﻿namespace GymManagement.API.Controllers.Customer;
 
 using global::Customer.Application.Contracts;
-using global::Customer.Application.Customer.Commands;
+
 using Microsoft.AspNetCore.Mvc;
 
 [Route("/customer")]
@@ -9,19 +9,19 @@ using Microsoft.AspNetCore.Mvc;
 public class CustomerController
 {
     private readonly ICustomerModule _module;
+    private readonly ILogger<CustomerController> _logger;
 
-    public CustomerController(ICustomerModule module)
+    public CustomerController(ICustomerModule module, ILogger<CustomerController> logger)
     {
         _module = module;
+        _logger = logger;
 
     }
 
     [HttpPost]
     public async Task<ActionResult> test()
     {
-
-        var resul =await _module.ExecuteCommandAsync(new CreateCustomer.Command(",", ",", ",", ",", ","));
-
+        await _module.ExecuteCommandAsync(new CreateCustomer.Command("name", "surname", "90", "1234567891", "test@gmail.com"));
         return new AcceptedResult();
     }
 }

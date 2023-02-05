@@ -1,9 +1,13 @@
-﻿using Customer.Core;
+﻿
+
+using Customer.Core;
+using Customer.Core.ValueObjects;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Shared.Application.Config.Commands;
 using Shared.Application.Contracts;
-
-namespace Customer.Application.Customer.Commands;
+using Serilog;
+using ILogger = Serilog.ILogger;
 
 public class CreateCustomer
 {
@@ -28,19 +32,28 @@ public class CreateCustomer
         public Guid Id { get; }
     }
 
+
+
     internal class CommandHandler:ICommandHandler<CreateCustomer.Command>
     {
         private readonly ICustomerRepository _repository;
+        private readonly ILogger _logger;
 
-        public CommandHandler(ICustomerRepository repository)
+        public CommandHandler(ICustomerRepository repository, ILogger logger )
         {
             _repository = repository;
-
+            _logger = logger;
         }
 
-        public Task<Unit> Handle(CreateCustomer.Command request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CreateCustomer.Command request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var customer = new Customer.Core.Customer(new Name(request._name, request._surname), new PhoneNumber(request._countrycode, request._number),
+                new Email(request._mail));
+
+            _logger.Warning("testing database log");
+            await _repository.Add(customer);
+
+            return Unit.Value;
         }
     }
 }

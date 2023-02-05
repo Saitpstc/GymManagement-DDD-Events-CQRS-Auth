@@ -1,10 +1,13 @@
 ﻿namespace Customer.Infrastructure.Repository;
 
 using Core;
+using Core.ValueObjects;
 using Database;
+using Database.Tables;
 using Shared.Core;
+using Shared.Infrastructure;
 
-internal class CustomerRepository:ICustomerRepository
+internal class CustomerRepository:DataStructureMap<CustomerDB, Customer>, ICustomerRepository
 {
     private readonly CustomerDbContext _dbContext;
 
@@ -13,7 +16,7 @@ internal class CustomerRepository:ICustomerRepository
         _dbContext = dbContext;
 
     }
-    
+
 
     public Task<Customer> RetriveBy(Guid Id)
     {
@@ -30,8 +33,50 @@ internal class CustomerRepository:ICustomerRepository
         throw new NotImplementedException();
     }
 
-    public Task Add(Customer Aggregate)
+    public async Task<Customer> Add(Customer Aggregate)
     {
-        throw new NotImplementedException();
+        var dbTable = MapToDatabaseTable(Aggregate);
+        
+        await _dbContext.Customers.AddAsync(dbTable);
+
+        await _dbContext.CommitAsync();
+
+        return MapToAggregate(dbTable);
+    }
+
+
+
+
+    public Customer MapToAggregate(CustomerDB DatabaseTable)
+    {
+        return new Customer(new Name(DatabaseTable.NameDb.FirstName, DatabaseTable.NameDb.LastName),
+            new PhoneNumber(DatabaseTable.NumberDb.CountryCode, DatabaseTable.NumberDb.Number), new Email(DatabaseTable.EmailDb.email));
+    }
+
+    public CustomerDB MapToDatabaseTable(Customer Aggregate)
+    {
+        return new CustomerDB()
+        {
+            EmailDb = new EmailDb()
+            {
+                email = Aggregate.GetMail().ToString()
+            },
+            MembershipDb = new MembershipDb()
+            {
+                EndDate = Aggregate.GetMembership().EndsAt(),
+                StartDate = Aggregate.GetMembership().StartedAt(),
+                SubscriptionType = Aggregate.GetMembership().SubscriptionType()
+            },
+            NameDb = new NameDb()
+            {
+                FirstName = Aggregate.GetName().NameOnly(),
+                LastName = Aggregate.GetName().SurNameOnly()
+            },
+            NumberDb = new PhoneNumberDb()
+            {
+                Number = Aggregate.GetNumber().Number(),
+                CountryCode = Aggregate.GetNumber().CountryCode()
+            }
+        };
     }
 }

@@ -1,6 +1,4 @@
-﻿
-
-namespace Customer.Core;
+﻿namespace Customer.Core;
 
 using DomainEvents.CustomerModule;
 using ValueObjects;
@@ -38,4 +36,13 @@ internal class Customer:AggregateRoot
         Apply(customerCreatedEvent);
     }
 
+    public Email GetMail() => Email;
+
+    public Name GetName() => Name;
+
+    public Membership GetMembership() => Membership;
+
+    public PhoneNumber GetNumber() => PhoneNumber;
+
+    public int GetTotalMembershipInMonths() => _totalMonthsOfMembership;
 }

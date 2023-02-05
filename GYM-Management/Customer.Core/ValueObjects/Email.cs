@@ -25,4 +25,6 @@ internal record Email:ValueObject
         }
 
     }
+
+    public override string ToString() => email;
 }

@@ -6,23 +6,28 @@ using ServiceExtensions;
 
 internal class PhoneNumber
 {
-    private readonly string Number;
-    private readonly string CountryCode;
+    private readonly string _number;
+    private readonly string Code;
 
-    public PhoneNumber(int countryCode, string number)
+    public PhoneNumber(string countryCode, string number)
     {
 
         if (!ValidateNumber(number))
         {
-            throw new DomainValidationException($"{number} Is Not Valid");
+            throw new DomainValidationException($"Phone _number:{number} Is Not Valid");
         }
-        Number = number;
+        _number = number;
 
         if (!ValidateCountryCode(countryCode))
         {
-            throw new DomainValidationException($"{countryCode} Is Not Valid");
+            throw new DomainValidationException($"Country Code:{countryCode} Is Not Valid");
         }
-        CountryCode = "+" + countryCode;
+
+        if (countryCode.First() != '+')
+        {
+            countryCode = "+" + countryCode;
+        }
+        Code = countryCode;
 
     }
 
@@ -38,10 +43,14 @@ internal class PhoneNumber
         return PhoneNumberPattern.IsMatch(number);
     }
 
-    private bool ValidateCountryCode(int code)
+    private bool ValidateCountryCode(string code)
     {
-        return code != 0 && Service.ValidateCountryCode("+" + code);
+        return !string.IsNullOrWhiteSpace(code) && Service.ValidateCountryCode("+" + code);
     }
 
-    public override string ToString() => CountryCode + Number;
+    public override string ToString() => Code + _number;
+
+    public string CountryCode() => Code;
+
+    public string Number() => _number;
 }

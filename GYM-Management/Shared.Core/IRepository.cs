@@ -8,5 +8,5 @@ public interface IRepository<T> where T: AggregateRoot
 
     Task DeleteBy(Guid Id);
 
-    Task Add(T Aggregate);
+    Task<T> Add(T Aggregate);
 }

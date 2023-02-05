@@ -2,9 +2,9 @@
 
 using Core;
 
-public abstract class DataStructureMap<T> where T: AggregateRoot
+public interface DataStructureMap<T, Y> where T: DataStructureBase where  Y:AggregateRoot
 {
-    protected abstract T MapToAggregate(DataStructureBase DatabaseTable);
+    Y MapToAggregate(T DatabaseTable);
 
-    protected abstract DataStructureBase MapToDatabaseTable(T Aggregate);
+    T MapToDatabaseTable(Y Aggregate);
 }

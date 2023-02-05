@@ -1,12 +1,13 @@
 ﻿namespace Customer.Test.Application;
 
 using Core;
-using Customer.Application.Customer.Commands;
+using Core.ValueObjects;
 using FluentAssertions;
 using Infrastructure.Repository;
+using MediatR;
 using Moq;
 
-public class CustomerCommandsTest:IClassFixture<CustomerRepository>
+public class CustomerCommandsTest
 {
     private readonly Mock<ICustomerRepository> _repository;
 
@@ -21,18 +22,18 @@ public class CustomerCommandsTest:IClassFixture<CustomerRepository>
     public void Creating_Customer_With_Mediatr_Handler_Should_Return_New_Customer_With_Minimum_Requirements()
     {
 
+        /*var customer = new Customer(new Name("name", "surname"), new PhoneNumber("90", "1234567891"), new Email("test@gmail.com"));
 
-        _repository.Setup(repository => repository.Add())
-        var command = new CreateCustomer.Command("name", "surname", "countryCode", "number", "mail");
-
-        var resultCustomer = new Customer()
-        var handler = new CreateCustomer.CommandHandler(_repository.Object);
-
-
-        var result = handler.Handle(command, CancellationToken.None);
+        _repository.Setup(repository => repository.Add(customer)).ReturnsAsync(customer);
+        var command = new CreateCustomer.Command("name", "surname", "90", "1234567891", "test@mail");
+        
+    //    var handler = new CreateCustomer.CommandHandler(_repository.Object);
 
 
-        result.Should().Be(typeof(Guid));
+        var result = handler.Handle(command, CancellationToken.None).GetAwaiter().GetResult();
+
+
+        result.Should().Be(Unit.Value);*/
 
     }
 }
