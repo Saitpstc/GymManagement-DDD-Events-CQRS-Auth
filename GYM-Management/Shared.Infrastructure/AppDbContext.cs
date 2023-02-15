@@ -8,19 +8,24 @@ public class AppDbContext:DbContext, IUnitOfWork
 {
     private readonly IMediator Mediator;
 
-    public AppDbContext(IMediator mediator, DbContextOptions dbContextOptionsBuilder)
+    public AppDbContext(IMediator mediator, DbContextOptions dbContextOptionsBuilder):base(dbContextOptionsBuilder)
     {
         Mediator = mediator;
     }
+
+
+
+
 
     public async Task<int> CommitAsync(
         CancellationToken cancellationToken = default,
         Guid? internalCommandId = null)
     {
-        var entries = ChangeTracker.Entries()
+        var entries = ChangeTracker.Entries<DataStructureBase>()
                                    .Where(e => e.State is EntityState.Added or EntityState.Modified)
-                                   .OfType<DataStructureBase>()
                                    .ToList();
+
+        var ent = ChangeTracker.Entries();
 
         if (entries.Count > 1)
         {
@@ -28,22 +33,21 @@ public class AppDbContext:DbContext, IUnitOfWork
         }
 
 
-        var updatedEntries = ChangeTracker.Entries()
+        var updatedEntries = ChangeTracker.Entries<BaseEntity>()
                                           .Where(e => e.State is EntityState.Modified)
-                                          .OfType<BaseEntity>()
                                           .ToList();
 
         foreach (var updated in updatedEntries)
         {
-            updated.LastUpdateAt = DateTime.Now;
+            updated.Entity.LastUpdateAt = DateTime.Now;
         }
 
 
         var result = await SaveChangesAsync(cancellationToken);
 
-        if (entries.SelectMany(x => x.Events).Any())
+        if (entries.SelectMany(x => x.Entity.Events).Any())
         {
-            await PublishEvents(cancellationToken, entries);
+            await PublishEvents(cancellationToken, entries.Select(x=>x.Entity).ToList());
         }
 
 

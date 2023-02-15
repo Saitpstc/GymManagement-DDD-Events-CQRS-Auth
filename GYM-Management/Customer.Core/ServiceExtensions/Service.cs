@@ -9,7 +9,7 @@ internal static class Service
     public static bool ValidateCountryCode(string countryCode)
     {
         var path = Directory.GetParent(Directory.GetCurrentDirectory())
-                            .FullName + "/Customer.Core/Countries.json";
+                            .Parent.Parent.Parent.FullName + "/Customer.Core/Countries.json";
         using StreamReader reader = new StreamReader(path);
         var json = reader.ReadToEnd();
         JObject? jObject = JsonConvert.DeserializeObject<JObject>(json);

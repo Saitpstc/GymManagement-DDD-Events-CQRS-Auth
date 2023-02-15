@@ -36,12 +36,12 @@ public class CreateCustomer
     internal class CommandHandler:ICommandHandler<CreateCustomer.Command>
     {
         private readonly ICustomerRepository _repository;
-        private readonly ILogger _logger;
 
-        public CommandHandler(ICustomerRepository repository, ILogger logger)
+
+        public CommandHandler(ICustomerRepository repository)
         {
             _repository = repository;
-            _logger = logger;
+
         }
 
         public async Task<Unit> Handle(CreateCustomer.Command request, CancellationToken cancellationToken)
@@ -49,16 +49,8 @@ public class CreateCustomer
             var customer = new Customer.Core.Customer(new Name(request._name, request._surname),
                 new PhoneNumber(request._countrycode, request._number),
                 new Email(request._mail));
-
-            var Uri = "/Customer/Customer";
-            var UserName = "Sait";
-            var Request = @"{guid:'asdfljasdf'}";
-            float responseTime = (float) 0.034;
-            var EventType = "Post";
-            _logger.Warning(
-                "Create Customer with {Request} payload  has been made to {Uri} by {UserName} in {EventType} and it responded with {ResponseTime}",
-                Request, Uri, UserName, EventType, responseTime);
-            // await _repository.Add(customer);
+            
+            await _repository.Add(customer);
 
             return Unit.Value;
         }

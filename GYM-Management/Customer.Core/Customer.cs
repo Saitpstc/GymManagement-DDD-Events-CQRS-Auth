@@ -22,7 +22,6 @@ internal class Customer:AggregateRoot
     public void StartMembership(Membership membership)
     {
         Membership = membership;
-
         _totalMonthsOfMembership = membership.TimePeriodInMonths();
 
         var customerCreatedEvent = new MembershipCreatedEvent()

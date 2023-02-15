@@ -55,17 +55,11 @@ internal class CustomerRepository:DataStructureMap<CustomerDB, Customer>, ICusto
 
     public CustomerDB MapToDatabaseTable(Customer Aggregate)
     {
-        return new CustomerDB()
+        var customerDb=new CustomerDB()
         {
             EmailDb = new EmailDb()
             {
                 email = Aggregate.GetMail().ToString()
-            },
-            MembershipDb = new MembershipDb()
-            {
-                EndDate = Aggregate.GetMembership().EndsAt(),
-                StartDate = Aggregate.GetMembership().StartedAt(),
-                SubscriptionType = Aggregate.GetMembership().SubscriptionType()
             },
             NameDb = new NameDb()
             {
@@ -78,5 +72,16 @@ internal class CustomerRepository:DataStructureMap<CustomerDB, Customer>, ICusto
                 CountryCode = Aggregate.GetNumber().CountryCode()
             }
         };
+
+        if (Aggregate.GetMembership() is not null)
+        {
+            customerDb.MembershipDb = new MembershipDb()
+            {
+                EndDate = Aggregate.GetMembership().EndsAt(),
+                StartDate = Aggregate.GetMembership().StartedAt(),
+                SubscriptionType = Aggregate.GetMembership().SubscriptionType()
+            };
+        }
+        return customerDb;
     }
 }

@@ -11,6 +11,7 @@ internal record Email:ValueObject
     public Email(string email)
     {
         ValidateEmail(email);
+        this.email = email;
     }
 
     static private readonly Regex EmailPattern = new Regex(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$");

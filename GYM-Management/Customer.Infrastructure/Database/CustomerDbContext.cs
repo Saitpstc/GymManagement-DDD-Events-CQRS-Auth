@@ -1,5 +1,6 @@
 ﻿namespace Customer.Infrastructure.Database;
 
+using System.Reflection;
 using Configuration;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,12 +17,7 @@ internal class CustomerDbContext:AppDbContext
 
     }
 
-    override protected void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer("Server=213.142.151.220;Database=GYM.Customer;User ID=server1;Password=Sait.Bozzisha.2248;");
-        base.OnConfiguring(optionsBuilder);
-        
-    }
+    
 
     override protected void OnModelCreating(ModelBuilder modelBuilder)
     {
