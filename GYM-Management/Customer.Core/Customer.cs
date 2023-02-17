@@ -3,27 +3,27 @@
 using DomainEvents.CustomerModule;
 using ValueObjects;
 
-internal class Customer:AggregateRoot
+public class Customer:AggregateRoot
 {
     private Name Name;
-    private Membership Membership;
+    private Membership? Membership;
     private PhoneNumber PhoneNumber;
     private Email Email;
-    private int _totalMonthsOfMembership;
+   
 
 
-    public Customer(Name name, PhoneNumber phoneNumber, Email email)
+    public Customer(Name name, PhoneNumber phoneNumber, Email email,Membership? membership=null)
     {
         Name = name;
         PhoneNumber = phoneNumber;
         Email = email;
+        Membership = membership;
     }
 
     public void StartMembership(Membership membership)
     {
         Membership = membership;
-        _totalMonthsOfMembership = membership.TimePeriodInMonths();
-
+        
         var customerCreatedEvent = new MembershipCreatedEvent()
         {
             EventId = new Guid(),
@@ -39,9 +39,9 @@ internal class Customer:AggregateRoot
 
     public Name GetName() => Name;
 
-    public Membership GetMembership() => Membership;
+    public Membership? GetMembership() => Membership;
 
     public PhoneNumber GetNumber() => PhoneNumber;
 
-    public int GetTotalMembershipInMonths() => _totalMonthsOfMembership;
+  
 }

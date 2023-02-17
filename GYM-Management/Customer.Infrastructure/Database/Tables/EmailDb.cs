@@ -2,7 +2,7 @@
 
 using Shared.Core;
 
-internal class EmailDb
+public class EmailDb
 {
     public string email { get; set; }
 }

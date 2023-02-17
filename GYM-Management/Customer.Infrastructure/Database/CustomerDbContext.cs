@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure;
 using Tables;
 
-internal class CustomerDbContext:AppDbContext
+public class CustomerDbContext:AppDbContext
 {
 
     public DbSet<CustomerDB> Customers { get; set; }
@@ -17,6 +17,10 @@ internal class CustomerDbContext:AppDbContext
 
     }
 
+    /*public CustomerDbContext(DbContextOptions<CustomerDbContext> options):base(options)
+    {
+        
+    }*/
     
 
     override protected void OnModelCreating(ModelBuilder modelBuilder)

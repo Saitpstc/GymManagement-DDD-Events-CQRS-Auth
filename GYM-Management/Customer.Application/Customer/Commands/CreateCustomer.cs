@@ -1,12 +1,9 @@
 ﻿using Customer.Core;
 using Customer.Core.ValueObjects;
 using MediatR;
-using Microsoft.Extensions.Logging;
 using Shared.Application.Config.Commands;
 using Shared.Application.Contracts;
-using Serilog;
-using Serilog.Events;
-using ILogger = Serilog.ILogger;
+
 
 public class CreateCustomer
 {
@@ -33,7 +30,7 @@ public class CreateCustomer
 
 
 
-    internal class CommandHandler:ICommandHandler<CreateCustomer.Command>
+    public class CommandHandler:ICommandHandler<CreateCustomer.Command>
     {
         private readonly ICustomerRepository _repository;
 
@@ -50,7 +47,7 @@ public class CreateCustomer
                 new PhoneNumber(request._countrycode, request._number),
                 new Email(request._mail));
             
-            await _repository.Add(customer);
+            await _repository.AddAsync(customer);
 
             return Unit.Value;
         }

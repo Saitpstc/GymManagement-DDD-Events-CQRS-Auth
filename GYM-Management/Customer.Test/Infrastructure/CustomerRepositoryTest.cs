@@ -3,6 +3,7 @@
 using Core;
 using Core.ValueObjects;
 using Customer.Infrastructure.Database;
+using Customer.Infrastructure.Database.Tables;
 using Customer.Infrastructure.Repository;
 using FluentAssertions;
 using MediatR;
@@ -12,39 +13,85 @@ using Moq;
 public class CustomerRepositoryTest
 {
 
+    private readonly CustomerDbContext Context;
 
     public CustomerRepositoryTest()
     {
+        var options = new DbContextOptionsBuilder<CustomerDbContext>()
+                      .UseInMemoryDatabase(databaseName: "InMemoryDb")
+                      .Options;
+        var mediator = new Mock<IMediator>().Object;
+        Context = new CustomerDbContext(options, mediator);
 
-       
     }
 
+
+
+
+    [Fact]
+    public void CreateCustomer_Should_Add_One_Record_To_Database()
+    {
+        //Arrange
+        var repository = new CustomerRepository(Context);
+
+
+
+        //Act
+        var customer = Task.Run(()
+            => repository.AddAsync(new Customer(new Name("sait", "postaci"), new PhoneNumber("90", "5435288568"), new Email("sait@gmail.com")))
+        ).Result;
+
+
+        var customerDbs = Context.Customers.First(c => c.Id == customer.Id);
+
+        //Assert
+        customerDbs.Should().NotBeNull();
+        customerDbs.Id.Should().Be(customer.Id);
+
+    }
 
     [Fact]
     public void Get_Customer_Should_Return_One_Customer_Aggregate()
     {
-        
+
+        //Arrange
+        var repository = new CustomerRepository(Context);
+        var result = Task.Run(()
+            => repository.AddAsync(new Customer(new Name("sait", "postaci"), new PhoneNumber("90", "5435288568"), new Email("sait@gmail.com")))
+        ).Result;
+
+        var Id = result.Id;
+
+        //Act
+        var customer = Task.Run(() => repository.RetriveByAsync(Id)).Result;
+
+
+        //Assert
+        customer.Id.Should().Be(Id);
+
     }
+
     [Fact]
-    public void  CreateCustomer_Should_Add_One_Record_To_Database()
+    public void Delete_Customer_Should_Perform_Soft_Delete()
     {
-        
-        var options = new DbContextOptionsBuilder<CustomerDbContext>()
-                      .UseInMemoryDatabase(databaseName: "InMemoryDb")
-                      .Options;
+        Context.Customers.Add(CustomerDB.FromDomainModel(new Customer(new Name("sait", "postaci"), new PhoneNumber("90", "5435288568"),
+            new Email("sait@gmail.com"))));
+        Context.SaveChanges();
+        //Arrange
+        var repository = new CustomerRepository(Context);
+        var customerToDelete = Context.Customers.First();
 
-        var mediator = new Mock<IMediator>().Object;
+        Context.Entry(customerToDelete).State = EntityState.Detached;
+        //Act
 
-        int count = 0;
-        
-         using (var context = new CustomerDbContext(options,mediator))
-        {
-            var repository = new CustomerRepository(context);
-            var result=repository.Add(new Customer(new Name("sait", "postaci"), new PhoneNumber("90", "5435288568"), new Email("sait@gmail.com")));
+        var result = Task.Run(() => repository.DeleteByAsync(customerToDelete.FromEntity())).Result;
+        var customer = Context.Customers.Find(customerToDelete.Id);
 
-            count = context.Customers.Count();
-        }
+        //Assert
+        result.Should().Be(true);
+        customer.Should().NotBeNull();
 
-        count.Should().Be(1);
+
     }
+    
 }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Tables;
 
-internal class CustomerConfiguration:IEntityTypeConfiguration<CustomerDB>
+public class CustomerConfiguration:IEntityTypeConfiguration<CustomerDB>
 {
 
     void IEntityTypeConfiguration<CustomerDB>.Configure(EntityTypeBuilder<CustomerDB> builder)

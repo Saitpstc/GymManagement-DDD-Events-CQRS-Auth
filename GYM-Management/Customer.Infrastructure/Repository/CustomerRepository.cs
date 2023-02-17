@@ -7,7 +7,7 @@ using Database.Tables;
 using Shared.Core;
 using Shared.Infrastructure;
 
-internal class CustomerRepository:DataStructureMap<CustomerDB, Customer>, ICustomerRepository
+public class CustomerRepository:ICustomerRepository
 {
     private readonly CustomerDbContext _dbContext;
 
@@ -18,70 +18,57 @@ internal class CustomerRepository:DataStructureMap<CustomerDB, Customer>, ICusto
     }
 
 
-    public Task<Customer> RetriveBy(Guid Id)
+    public async Task<Customer?> RetriveByAsync(Guid Id)
     {
-        throw new NotImplementedException();
+        CustomerDB? databaseRecord = await _dbContext.Customers.FindAsync(Id);
+
+        if (databaseRecord is null)
+        {
+            return null;
+        }
+
+        Customer customer = databaseRecord.FromEntity();
+
+
+        return customer;
     }
 
-    public Task Update(Customer Aggregate)
+    public async Task<bool> UpdateAsync(Customer Aggregate)
     {
-        throw new NotImplementedException();
+        _dbContext.Update(CustomerDB.FromDomainModel(Aggregate));
+        var result = await _dbContext.CommitAsync();
+        return result != 0;
     }
 
-    public Task DeleteBy(Guid Id)
+    public async Task<bool> DeleteByAsync(Customer Aggregate)
     {
-        throw new NotImplementedException();
+        var dbTable = CustomerDB.FromDomainModel(Aggregate);
+        dbTable.IsDeleted = true;
+        _dbContext.Update(dbTable);
+        var result = await _dbContext.CommitAsync();
+        return result != 0;
+       
     }
 
-    public async Task<Customer> Add(Customer Aggregate)
+
+    public async Task<Customer> AddAsync(Customer Aggregate)
     {
-        var dbTable = MapToDatabaseTable(Aggregate);
-        
+        var dbTable = CustomerDB.FromDomainModel(Aggregate);
+
         await _dbContext.Customers.AddAsync(dbTable);
 
         await _dbContext.CommitAsync();
 
-        return MapToAggregate(dbTable);
+        return dbTable.FromEntity();
     }
 
-
-
-
-    public Customer MapToAggregate(CustomerDB DatabaseTable)
+    public Task<IEnumerable<Customer>> GetAllAsync(Customer Aggregate)
     {
-        return new Customer(new Name(DatabaseTable.NameDb.FirstName, DatabaseTable.NameDb.LastName),
-            new PhoneNumber(DatabaseTable.NumberDb.CountryCode, DatabaseTable.NumberDb.Number), new Email(DatabaseTable.EmailDb.email));
+        throw new NotImplementedException();
     }
 
-    public CustomerDB MapToDatabaseTable(Customer Aggregate)
-    {
-        var customerDb=new CustomerDB()
-        {
-            EmailDb = new EmailDb()
-            {
-                email = Aggregate.GetMail().ToString()
-            },
-            NameDb = new NameDb()
-            {
-                FirstName = Aggregate.GetName().NameOnly(),
-                LastName = Aggregate.GetName().SurNameOnly()
-            },
-            NumberDb = new PhoneNumberDb()
-            {
-                Number = Aggregate.GetNumber().Number(),
-                CountryCode = Aggregate.GetNumber().CountryCode()
-            }
-        };
 
-        if (Aggregate.GetMembership() is not null)
-        {
-            customerDb.MembershipDb = new MembershipDb()
-            {
-                EndDate = Aggregate.GetMembership().EndsAt(),
-                StartDate = Aggregate.GetMembership().StartedAt(),
-                SubscriptionType = Aggregate.GetMembership().SubscriptionType()
-            };
-        }
-        return customerDb;
-    }
+
+
+
 }

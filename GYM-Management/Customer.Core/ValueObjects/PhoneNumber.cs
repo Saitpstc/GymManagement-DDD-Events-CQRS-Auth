@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using Exceptions;
 using ServiceExtensions;
 
-internal class PhoneNumber
+public class PhoneNumber
 {
     private readonly string _number;
     private readonly string Code;
@@ -22,11 +22,7 @@ internal class PhoneNumber
         {
             throw new DomainValidationException($"Country Code:{countryCode} Is Not Valid");
         }
-
-        if (countryCode.First() != '+')
-        {
-            countryCode = "+" + countryCode;
-        }
+        
         Code = countryCode;
 
     }
@@ -48,7 +44,7 @@ internal class PhoneNumber
         return !string.IsNullOrWhiteSpace(code) && Service.ValidateCountryCode("+" + code);
     }
 
-    public override string ToString() => Code + _number;
+    public override string ToString() =>"+" + Code + _number;
 
     public string CountryCode() => Code;
 

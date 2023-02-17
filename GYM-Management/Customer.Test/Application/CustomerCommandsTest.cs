@@ -25,7 +25,7 @@ public class CustomerCommandsTest
         var customer = new Customer(new Name("name", "surname"), new PhoneNumber("90", "1234567891"), new Email("test@gmail.com"));
 
         
-        _repository.Setup(repository => repository.Add(customer)).ReturnsAsync(customer);
+        _repository.Setup(repository => repository.AddAsync(customer)).ReturnsAsync(customer);
         var command = new CreateCustomer.Command("name", "surname", "90", "1234567891", "test@mail");
         
       var handler = new CreateCustomer.CommandHandler(_repository.Object);

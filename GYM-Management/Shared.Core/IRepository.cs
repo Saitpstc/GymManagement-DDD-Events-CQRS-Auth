@@ -2,11 +2,12 @@
 
 public interface IRepository<T> where T: AggregateRoot
 {
-    Task<T> RetriveBy(Guid Id);
+    Task<T?> RetriveByAsync(Guid Id);
 
-    Task Update(T Aggregate);
+    Task<bool> UpdateAsync(T Aggregate);
 
-    Task DeleteBy(Guid Id);
+    Task<bool> DeleteByAsync(T Aggregate);
 
-    Task<T> Add(T Aggregate);
+    Task<T> AddAsync(T Aggregate);
+    Task<IEnumerable<T>> GetAllAsync(T Aggregate);
 }

@@ -45,9 +45,11 @@ public class AppDbContext:DbContext, IUnitOfWork
 
         var result = await SaveChangesAsync(cancellationToken);
 
-        if (entries.SelectMany(x => x.Entity.Events).Any())
+        var events = entries.SelectMany(x=>x.Entity.Events).ToList();
+
+        if (events.Any())
         {
-            await PublishEvents(cancellationToken, entries.Select(x=>x.Entity).ToList());
+            await PublishEvents(cancellationToken, entries.Select(x => x.Entity).ToList());
         }
 
 

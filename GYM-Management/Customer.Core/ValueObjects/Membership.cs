@@ -3,7 +3,7 @@
 using Enums;
 using Exceptions;
 
-internal class Membership:BaseEntity
+public class Membership:BaseEntity
 {
 
     public Guid CustomerId { get; }
@@ -12,6 +12,7 @@ internal class Membership:BaseEntity
     private DateTime _startDate;
     private MembershipStatus _status;
     private int _availableFreezePeriod;
+    private int _totalMonthsOfMembership;
 
 
     private Membership(DateTime startDate, DateTime endDate, Guid customerId)
@@ -22,6 +23,8 @@ internal class Membership:BaseEntity
         _subscriptionType = SubscriptionEnum.Custom;
         _status = MembershipStatus.Active;
         _availableFreezePeriod = ((endDate - startDate).Days) / 4;
+        _totalMonthsOfMembership += TimePeriodInMonths();
+        
     }
 
     private Membership(SubscriptionEnum subscriptionType,Guid customerId)
@@ -33,6 +36,7 @@ internal class Membership:BaseEntity
         _subscriptionType = subscriptionType;
         _status = MembershipStatus.Active;
         _availableFreezePeriod = ((_endDate - _startDate).Days) / 4;
+        _totalMonthsOfMembership += TimePeriodInMonths();
     }
 
     public DateTime StartedAt()
@@ -55,26 +59,11 @@ internal class Membership:BaseEntity
     }
 
 
-    public static Membership Monthly(Guid customerId)
+    public static Membership CreateMembershipPeriodOf(SubscriptionEnum type,Guid customerId)
     {
-        return new Membership(SubscriptionEnum.Monthly,customerId);
+        return new Membership(type,customerId);
     }
-
-    public static Membership Quarterly(Guid customerId)
-    {
-        return new Membership(SubscriptionEnum.Quarterly,customerId);
-    }
-
-    public static Membership HalfYear(Guid customerId)
-    {
-        return new Membership(SubscriptionEnum.HalfYear,customerId);
-    }
-
-    public static Membership Yearly(Guid customerId)
-    {
-        return new Membership(SubscriptionEnum.Yearly,customerId);
-    }
-
+    
     public static Membership Custom(DateTime startDate, DateTime endDate,Guid customerId)
     {
         if (startDate > endDate)
@@ -107,4 +96,6 @@ internal class Membership:BaseEntity
     public MembershipStatus Status() => _status;
 
     public int AvailableDaysToFreezeMembership() => _availableFreezePeriod;
+    
+    public int GetTotalMembershipInMonths() => _totalMonthsOfMembership;
 }

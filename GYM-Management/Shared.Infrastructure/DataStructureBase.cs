@@ -6,5 +6,6 @@ using Core;
 public class DataStructureBase:BaseEntity
 {
     [NotMapped]
-    public List<DomainEvent> Events { get; set; }
+    public List<DomainEvent> Events = new List<DomainEvent>();
+    public bool IsDeleted { get; set; }
 }

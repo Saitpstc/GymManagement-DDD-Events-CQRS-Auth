@@ -1,16 +1,15 @@
 ﻿namespace Customer.Core.ServiceExtensions;
 
+using System.Reflection;
 using Exceptions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-internal static class Service
+public static class Service
 {
     public static bool ValidateCountryCode(string countryCode)
     {
-        var path = Directory.GetParent(Directory.GetCurrentDirectory())
-                            .Parent.Parent.Parent.FullName + "/Customer.Core/Countries.json";
-        using StreamReader reader = new StreamReader(path);
+        using StreamReader reader = new StreamReader(@"..\..\..\..\Customer.Core\\Countries.json");
         var json = reader.ReadToEnd();
         JObject? jObject = JsonConvert.DeserializeObject<JObject>(json);
         JToken? countryList = jObject["countries"];

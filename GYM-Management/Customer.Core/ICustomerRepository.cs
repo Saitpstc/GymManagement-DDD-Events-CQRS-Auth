@@ -1,7 +1,7 @@
 ﻿namespace Customer.Core;
 
 
-internal interface ICustomerRepository:IRepository<Customer>
+public interface ICustomerRepository:IRepository<Customer>
 {
 
 }
