@@ -9,10 +9,12 @@ public class Customer:AggregateRoot
     private Membership? Membership;
     private PhoneNumber PhoneNumber;
     private Email Email;
-   
+    public Guid UserId { get; set; }
 
 
-    public Customer(Name name, PhoneNumber phoneNumber, Email email,Membership? membership=null)
+
+
+    public Customer(Name name, PhoneNumber phoneNumber, Email email, Membership? membership = null)
     {
         Name = name;
         PhoneNumber = phoneNumber;
@@ -23,7 +25,7 @@ public class Customer:AggregateRoot
     public void StartMembership(Membership membership)
     {
         Membership = membership;
-        
+
         var customerCreatedEvent = new MembershipCreatedEvent()
         {
             EventId = new Guid(),
@@ -43,5 +45,5 @@ public class Customer:AggregateRoot
 
     public PhoneNumber GetNumber() => PhoneNumber;
 
-  
+
 }

@@ -1,7 +1,6 @@
 ﻿namespace Customer.Core.ValueObjects;
 
 using System.Text.RegularExpressions;
-using Exceptions;
 
 public record Name:ValueObject
 {

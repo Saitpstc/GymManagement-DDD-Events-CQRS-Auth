@@ -1,27 +1,38 @@
 ﻿namespace GymManagement.API.Controllers.Customer;
 
 using global::Customer.Application.Contracts;
-
 using Microsoft.AspNetCore.Mvc;
+using Models;
 
 [Route("/customer")]
 [ApiController]
-public class CustomerController
+public class CustomerController:BaseController
 {
     private readonly ICustomerModule _module;
-    private readonly ILogger<CustomerController> _logger;
 
-    public CustomerController(ICustomerModule module, ILogger<CustomerController> logger)
+
+    public CustomerController(ICustomerModule module)
     {
         _module = module;
-        _logger = logger;
+
 
     }
 
-    [HttpPost]
-    public async Task<ActionResult> test()
+    [HttpGet("EntryPoint")]
+    public async Task<ApiNavigation> EntryPoint()
     {
-        await _module.ExecuteCommandAsync(new CreateCustomer.Command("name", "surname", "90", "1234567891", "test@gmail.com"));
-        return new AcceptedResult();
+        return new ApiNavigation()
+        {
+            Action = "POST",
+            Operation = "Create Customer",
+            EndPoint = "/customer",
+            AcceptedData = new CreateCustomer.Command()
+        };
+    }
+
+    [HttpPost]
+    public async Task<ApiResponse<CreateCustomerResponse>> Create(CreateCustomer.Command command)
+    {
+
     }
 }

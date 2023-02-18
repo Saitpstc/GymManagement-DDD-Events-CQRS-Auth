@@ -1,4 +1,4 @@
-﻿namespace Customer.Core.Exceptions;
+﻿namespace Shared.Core;
 
 public class DomainValidationException:Exception
 {

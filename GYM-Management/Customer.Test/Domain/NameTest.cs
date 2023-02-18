@@ -1,8 +1,8 @@
 ﻿namespace Customer.Test.Domain;
 
-using Core.Exceptions;
 using Core.ValueObjects;
 using FluentAssertions;
+using Shared.Core;
 
 public class NameTest
 {

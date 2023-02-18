@@ -1,12 +1,11 @@
 ﻿namespace Customer.Core.ValueObjects;
 
 using Enums;
-using Exceptions;
 
 public class Membership:BaseEntity
 {
 
-    public Guid CustomerId { get; }
+    public Guid CustomerId { get; set; }
     private SubscriptionEnum _subscriptionType;
     private DateTime _endDate;
     private DateTime _startDate;
@@ -15,41 +14,47 @@ public class Membership:BaseEntity
     private int _totalMonthsOfMembership;
 
 
-    private Membership(DateTime startDate, DateTime endDate, Guid customerId)
+    #region ConstructorAndFactories
+
+    private Membership(SubscriptionEnum type, Guid customerId, DateTime? startDate = null, DateTime? endDate = null)
     {
-        _startDate = startDate;
-        _endDate = endDate;
-        CustomerId = customerId;
-        _subscriptionType = SubscriptionEnum.Custom;
-        _status = MembershipStatus.Active;
-        _availableFreezePeriod = ((endDate - startDate).Days) / 4;
-        _totalMonthsOfMembership += TimePeriodInMonths();
-        
+        ValidateMembership(type, customerId, startDate, endDate);
     }
 
-    private Membership(SubscriptionEnum subscriptionType,Guid customerId)
+    public static Membership CreateMembershipPeriodOf(SubscriptionEnum type, Guid customerId)
     {
-        CustomerId = customerId;
-        DateTime now = DateTime.Now;
-        _startDate = now;
-        _endDate = now.AddMonths((int) subscriptionType);
-        _subscriptionType = subscriptionType;
-        _status = MembershipStatus.Active;
-        _availableFreezePeriod = ((_endDate - _startDate).Days) / 4;
-        _totalMonthsOfMembership += TimePeriodInMonths();
+        return new Membership(type, customerId);
     }
 
-    public DateTime StartedAt()
+    public void RenewMembershipPeriod(SubscriptionEnum type, Guid customerId, DateTime? startDate = null, DateTime? endDate = null)
     {
-        return _startDate.Date;
+        ValidateMembership(type, customerId, startDate, endDate);
     }
+
+    public static Membership Custom(DateTime startDate, DateTime endDate, Guid customerId)
+    {
+        if (startDate > endDate)
+        {
+            throw new DomainValidationException("End Date Cannot Be Lower Than Current Date");
+        }
+        return new Membership(SubscriptionEnum.Custom, customerId, startDate, endDate);
+    }
+
+    #endregion
+
+    #region PublicDataProviders
+
+    public MembershipStatus Status() => _status;
+
+    public int AvailableDaysToFreezeMembership() => _availableFreezePeriod;
+
+    public int GetTotalMembershipInMonths() => _totalMonthsOfMembership;
+
+    public DateTime StartedAt() => _startDate.Date;
 
     public SubscriptionEnum SubscriptionType() => _subscriptionType;
 
-    public DateTime EndsAt()
-    {
-        return _endDate.Date;
-    }
+    public DateTime EndsAt() => _endDate.Date;
 
     public int TimePeriodInMonths()
     {
@@ -58,20 +63,9 @@ public class Membership:BaseEntity
         return (int) totalMonths;
     }
 
+    #endregion
 
-    public static Membership CreateMembershipPeriodOf(SubscriptionEnum type,Guid customerId)
-    {
-        return new Membership(type,customerId);
-    }
-    
-    public static Membership Custom(DateTime startDate, DateTime endDate,Guid customerId)
-    {
-        if (startDate > endDate)
-        {
-            throw new DomainValidationException("End Date Cannot Be Lower Than Current Date");
-        }
-        return new Membership(startDate, endDate,customerId);
-    }
+    #region Commands
 
     public void FreezeFor(int freezePeriodAsked)
     {
@@ -93,9 +87,69 @@ public class Membership:BaseEntity
         _availableFreezePeriod -= freezePeriodAsked;
     }
 
-    public MembershipStatus Status() => _status;
+    public void TerminateMembership() => _status = MembershipStatus.DeActive;
 
-    public int AvailableDaysToFreezeMembership() => _availableFreezePeriod;
-    
-    public int GetTotalMembershipInMonths() => _totalMonthsOfMembership;
+    #endregion
+
+    private void ValidateMembership(SubscriptionEnum type, Guid customerId, DateTime? startDate = null, DateTime? endDate = null)
+    {
+
+        if (type == SubscriptionEnum.Custom)
+        {
+            CustomTypeChecks(startDate, endDate);
+        }
+        else
+        {
+            StaticTypeChecks(type);
+        }
+
+        _status = MembershipStatus.Active;
+        _availableFreezePeriod = ((_endDate - _startDate).Days) / 4;
+
+        CustomerId = customerId;
+    }
+
+    private void StaticTypeChecks(SubscriptionEnum type)
+    {
+
+        if (_status == MembershipStatus.DeActive)
+        {
+            _startDate = DateTime.Now;
+            _endDate = _startDate.AddMonths((int) type);
+            _subscriptionType = type;
+            _totalMonthsOfMembership += TimePeriodInMonths();
+        }
+        else
+        {
+            _endDate = _endDate.AddMonths((int) type);
+            _subscriptionType = SubscriptionEnum.Custom;
+            _totalMonthsOfMembership += (int) type;
+        }
+    }
+
+    private void CustomTypeChecks(DateTime? startDate, DateTime? endDate)
+    {
+        if (startDate is null || endDate is null)
+        {
+            throw new DomainValidationException("Custom Memberships Should Provide StartDate and EndDate");
+        }
+
+        if (_status == MembershipStatus.DeActive)
+        {
+            _startDate = (DateTime) startDate;
+            _endDate = (DateTime) endDate;
+            _totalMonthsOfMembership += TimePeriodInMonths();
+        }
+        else
+        {
+            var totalMonths = ((DateTime) endDate).Subtract(((DateTime) startDate)).TotalDays / 30.44;
+            var integerValueOfMonths = (int) Math.Round(totalMonths);
+            _endDate = _endDate.AddMonths(integerValueOfMonths);
+            _totalMonthsOfMembership += integerValueOfMonths;
+        }
+
+        _subscriptionType = SubscriptionEnum.Custom;
+    }
+
+
 }

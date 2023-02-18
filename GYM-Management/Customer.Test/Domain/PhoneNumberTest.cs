@@ -1,9 +1,9 @@
 ﻿namespace Customer.Test.Domain;
 
-using Core.Exceptions;
 using Core.ValueObjects;
 using Customer.Core.ServiceExtensions;
 using FluentAssertions;
+using Shared.Core;
 
 public class PhoneNumberTest
 {

@@ -25,6 +25,11 @@ public class CreateCustomer
             _mail = mail;
         }
 
+        public Command()
+        {
+            
+        }
+
         public Guid Id { get; }
     }
 

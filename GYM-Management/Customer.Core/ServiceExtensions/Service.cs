@@ -1,7 +1,6 @@
 ﻿namespace Customer.Core.ServiceExtensions;
 
 using System.Reflection;
-using Exceptions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
