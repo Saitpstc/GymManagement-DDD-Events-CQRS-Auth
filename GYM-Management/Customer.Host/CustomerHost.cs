@@ -1,5 +1,6 @@
 ﻿namespace Customer.Host;
 
+using Application;
 using Core;
 using Customer.Application.Contracts;
 using Customer.Infrastructure.Database;
@@ -23,6 +24,7 @@ public static class CustomerHost
 
         
         services.AddScoped<ICustomerRepository, CustomerRepository>();
+
 
     }
 }

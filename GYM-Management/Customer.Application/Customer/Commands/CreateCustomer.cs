@@ -9,7 +9,7 @@ namespace Customer.Application.Customer.Commands;
 public class CreateCustomer
 {
 
-    public class Command:ICommand
+    public class Command:ICommand<bool>
     {
         public string _name { get; }
         public string _surname { get; }
@@ -28,7 +28,7 @@ public class CreateCustomer
 
         public Command()
         {
-            
+
         }
 
         public Guid Id { get; }
@@ -36,26 +36,17 @@ public class CreateCustomer
 
 
 
-    public class CommandHandler:ICommandHandler<CreateCustomer.Command>
+    public class CreateCustomerHandler:CommandHandlerBase<CreateCustomer.Command, bool>
     {
-        private readonly ICustomerRepository _repository;
 
-
-        public CommandHandler(ICustomerRepository repository)
+        public override Task<bool> Handle(Command request, CancellationToken cancellationToken)
         {
-            _repository = repository;
-
+            ErrorMessageCollector.AddError("testingNewHandler");
+            return Task.FromResult(true);
         }
 
-        public async Task<Unit> Handle(CreateCustomer.Command request, CancellationToken cancellationToken)
+        public CreateCustomerHandler(IErrorMessageCollector collector):base(collector)
         {
-            var customer = new global::Customer.Core.Customer(new Name(request._name, request._surname),
-                new PhoneNumber(request._countrycode, request._number),
-                new Email(request._mail));
-            
-            await _repository.AddAsync(customer);
-
-            return Unit.Value;
         }
     }
 }
