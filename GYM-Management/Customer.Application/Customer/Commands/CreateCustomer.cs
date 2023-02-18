@@ -4,6 +4,7 @@ using MediatR;
 using Shared.Application.Config.Commands;
 using Shared.Application.Contracts;
 
+namespace Customer.Application.Customer.Commands;
 
 public class CreateCustomer
 {
@@ -48,7 +49,7 @@ public class CreateCustomer
 
         public async Task<Unit> Handle(CreateCustomer.Command request, CancellationToken cancellationToken)
         {
-            var customer = new Customer.Core.Customer(new Name(request._name, request._surname),
+            var customer = new global::Customer.Core.Customer(new Name(request._name, request._surname),
                 new PhoneNumber(request._countrycode, request._number),
                 new Email(request._mail));
             

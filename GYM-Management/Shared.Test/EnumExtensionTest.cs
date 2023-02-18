@@ -1,6 +1,5 @@
 ﻿namespace Shared.Test;
 
-using System.ComponentModel;
 using Shared.Infrastructure;
 
 public class EnumExtensionTest
@@ -14,10 +13,4 @@ public class EnumExtensionTest
         description.Should().Be("TestEnumDesc");
 
     }
-}
-
-public enum testEnum
-{
-    [Description("TestEnumDesc")]
-    TestEnum
 }

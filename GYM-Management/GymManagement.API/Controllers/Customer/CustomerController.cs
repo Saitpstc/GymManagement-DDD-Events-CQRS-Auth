@@ -1,6 +1,7 @@
 ﻿namespace GymManagement.API.Controllers.Customer;
 
 using global::Customer.Application.Contracts;
+using global::Customer.Application.Customer.Commands;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 

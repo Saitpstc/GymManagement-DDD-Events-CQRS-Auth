@@ -2,6 +2,7 @@
 
 using Core;
 using Core.ValueObjects;
+using Customer.Application.Customer.Commands;
 using FluentAssertions;
 
 using MediatR;
