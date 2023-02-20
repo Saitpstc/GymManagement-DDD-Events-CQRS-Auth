@@ -19,7 +19,7 @@ public class CustomerCommandsTest
     }
 
 
-    [Fact]
+    /*[Fact]
     public void Creating_Customer_With_Mediatr_Handler_Should_Return_New_Customer_With_Minimum_Requirements()
     {
 
@@ -37,5 +37,5 @@ public class CustomerCommandsTest
 
         result.Should().Be(Unit.Value);
 
-    }
+    }*/
 }

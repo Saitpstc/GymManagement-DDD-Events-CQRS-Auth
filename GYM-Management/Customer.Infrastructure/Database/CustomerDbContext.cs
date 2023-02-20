@@ -11,17 +11,14 @@ public class CustomerDbContext:AppDbContext
 {
 
     public DbSet<CustomerDB> Customers { get; set; }
+    public DbSet<MembershipDb> Membership { get; set; }
 
     public CustomerDbContext(DbContextOptions<CustomerDbContext> options, IMediator mediator):base(mediator, options)
     {
 
     }
 
-    /*public CustomerDbContext(DbContextOptions<CustomerDbContext> options):base(options)
-    {
-        
-    }*/
-    
+
 
     override protected void OnModelCreating(ModelBuilder modelBuilder)
     {

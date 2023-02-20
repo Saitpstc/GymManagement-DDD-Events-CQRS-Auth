@@ -18,7 +18,7 @@ public static class CustomerHost
         services.AddMediatR(typeof(ICustomerModule).Assembly);
         services.AddDbContext<CustomerDbContext>( options =>
         {
-            options.UseSqlServer("Server=213.142.151.220;Database=GYM.Customer;User ID=server1;Password=Sait.Bozzisha.2248;");
+            options.UseSqlServer("Server=213.142.151.220;Database=GYM.Customer;User ID=server1;Password=Sait.Bozzisha.2248;Trust Server Certificate=true");
         });
   
 

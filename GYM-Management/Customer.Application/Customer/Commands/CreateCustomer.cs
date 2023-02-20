@@ -6,25 +6,27 @@ using Shared.Application.Contracts;
 
 namespace Customer.Application.Customer.Commands;
 
+using Customer = global::Customer.Core.Customer;
+
 public class CreateCustomer
 {
 
-    public class Command:ICommand<bool>
+    public class Command:ICommand<Customer>
     {
-        public string _name { get; }
-        public string _surname { get; }
-        public string _countrycode { get; }
-        public string _number { get; }
-        public string _mail { get; }
+        public string _name { get; set; }
+        public string _surname { get; set; }
+        public string _countrycode { get; set; }
+        public string _number { get; set; }
+        public string _mail { get; set; }
 
-        public Command(string name, string surname, string countrycode, string number, string mail)
+        /*public Command(string name, string surname, string countrycode, string number, string mail)
         {
             _name = name;
             _surname = surname;
             _countrycode = countrycode;
             _number = number;
             _mail = mail;
-        }
+        }*/
 
         public Command()
         {
@@ -36,17 +38,27 @@ public class CreateCustomer
 
 
 
-    public class CreateCustomerHandler:CommandHandlerBase<CreateCustomer.Command, bool>
-    {
 
-        public override Task<bool> Handle(Command request, CancellationToken cancellationToken)
+    public class CreateCustomerHandler:CommandHandlerBase<CreateCustomer.Command, Customer>
+    {
+        private readonly ICustomerRepository _repository;
+
+        public override Task<Customer> Handle(Command request, CancellationToken cancellationToken)
         {
-            ErrorMessageCollector.AddError("testingNewHandler");
-            return Task.FromResult(true);
+            var customer = new Customer(new Name(request._name, request._surname), new PhoneNumber(request._countrycode, request._number),
+                new Email(request._mail));
+            var AddedCustomer = _repository.AddAsync(customer);
+            return AddedCustomer;
         }
 
-        public CreateCustomerHandler(IErrorMessageCollector collector):base(collector)
+        public CreateCustomerHandler(ICustomerRepository repository, IErrorMessageCollector collector):base(collector)
         {
+            _repository = repository;
         }
     }
+}
+
+public class test
+{
+
 }

@@ -1,10 +1,16 @@
 namespace GymManagement.API.Models;
 
-public class ApiResponse<T>
+
+
+public class ApiResponse
 {
     public bool IsSuccessfull { get; set; }
-    public T Data { get; set; }
     public List<string> ErrorMessages { get; set; }
+}
+public class ApiResponse<T>:ApiResponse
+{
+    public T Data { get; set; }
+
 
     public static ApiResponse<T> Fail(List<string> errorMessages)
     {

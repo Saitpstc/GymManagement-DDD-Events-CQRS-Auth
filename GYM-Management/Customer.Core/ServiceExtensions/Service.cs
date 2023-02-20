@@ -8,7 +8,19 @@ public static class Service
 {
     public static bool ValidateCountryCode(string countryCode)
     {
-        using StreamReader reader = new StreamReader(@"..\..\..\..\Customer.Core\\Countries.json");
+
+        var currentDirectory = Directory.GetCurrentDirectory();
+        var searchPattern = @"GYM-Management\";
+
+        var IndexOf = currentDirectory.IndexOf(searchPattern, StringComparison.Ordinal);
+        if (IndexOf >= 0)
+        {
+            IndexOf = currentDirectory.IndexOf(searchPattern, IndexOf + 1, StringComparison.Ordinal);
+        }
+        string absolutePath = currentDirectory.Substring(0, IndexOf - 1 + searchPattern.Length);
+
+        string relativePath = Path.Combine(absolutePath, "Customer.Core\\Countries.Json");
+        using StreamReader reader = new StreamReader(relativePath);
         var json = reader.ReadToEnd();
         JObject? jObject = JsonConvert.DeserializeObject<JObject>(json);
         JToken? countryList = jObject["countries"];
