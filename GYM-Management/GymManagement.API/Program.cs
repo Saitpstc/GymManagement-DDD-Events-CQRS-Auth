@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Authorization_Authentication;
 using Customer.Application.Contracts;
 using Customer.Host;
 using Customer.Infrastructure;
@@ -19,6 +20,7 @@ builder.Host.UseSerilog((context, configuration) => configuration.WriteTo.Consol
 // Add services to the container.
 builder.Services.CustomerDependency(builder.Configuration);
 builder.Services.AddSharedDependency();
+builder.Services.AddAuthDependency();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
