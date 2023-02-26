@@ -4,6 +4,8 @@ using Customer.Application.Contracts;
 using Customer.Host;
 using Customer.Infrastructure;
 using GymManagement.API.Controllers.Customer;
+using GymManagement.API.Models;
+using Microsoft.Extensions.Options;
 using Serilog;
 using Shared.Application;
 
@@ -18,9 +20,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog((context, configuration) => configuration.WriteTo.Console().ReadFrom.Configuration(builder.Configuration));*/
 
 // Add services to the container.
-builder.Services.CustomerDependency(builder.Configuration);
+
+var myOptions = new AppOptions();
+builder.Configuration.Bind("AppOptions", myOptions);
+builder.Services.AddSingleton(myOptions);
+
+builder.Services.CustomerDependency(builder.Configuration, myOptions);
 builder.Services.AddSharedDependency();
-builder.Services.AddAuthDependency();
+builder.Services.AddAuthDependency(myOptions);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

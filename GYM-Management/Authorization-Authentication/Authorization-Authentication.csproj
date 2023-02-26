@@ -26,4 +26,8 @@
       <Folder Include="Application" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Shared.Core\Shared.Core.csproj" />
+    </ItemGroup>
+
 </Project>
