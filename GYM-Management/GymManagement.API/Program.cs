@@ -8,6 +8,7 @@ using GymManagement.API.Models;
 using Microsoft.Extensions.Options;
 using Serilog;
 using Shared.Application;
+using Shared.Core;
 
 
 var builder = WebApplication.CreateBuilder(args);

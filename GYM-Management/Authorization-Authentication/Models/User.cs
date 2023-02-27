@@ -4,5 +4,5 @@ using Microsoft.AspNetCore.Identity;
 
 public class User:IdentityUser<Guid>
 {
-    public ICollection<UserRoleMap> UserRoles { get; set; }
+    public  ICollection<UserRoleMap> UserRoles { get; set; }
 }

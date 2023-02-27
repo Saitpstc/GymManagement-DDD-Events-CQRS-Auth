@@ -5,7 +5,6 @@ using Core;
 using Customer.Application.Contracts;
 using Customer.Infrastructure.Database;
 using Customer.Infrastructure.Repository;
-using GymManagement.API.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

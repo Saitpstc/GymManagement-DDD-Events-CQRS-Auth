@@ -1,10 +1,9 @@
-﻿namespace GymManagement.API.Models;
-
-using Shared.Core;
+﻿namespace Shared.Core;
 
 public class AppOptions
 {
     public List<ConnectionStrings> ConnectionStrings { get; set; }
+    public string AuthTokenKey { get; set; }
 
 
     public string GetConnectionString(Modules module)
