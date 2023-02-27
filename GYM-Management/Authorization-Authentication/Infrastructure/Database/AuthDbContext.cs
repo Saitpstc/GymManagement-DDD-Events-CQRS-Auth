@@ -11,6 +11,8 @@ public class AuthDbContext:IdentityDbContext<User, Role, Guid, IdentityUserClaim
 
     public DbSet<Permission> Permissions { get; set; }
     public DbSet<RolePermissionMap> RolePermissionMaps { get; set; }
+    public DbSet<User> Users { get; set; }
+    public DbSet<Role> Roles { get; set; }
 
     public AuthDbContext(DbContextOptions<AuthDbContext> options):base(options)
     {

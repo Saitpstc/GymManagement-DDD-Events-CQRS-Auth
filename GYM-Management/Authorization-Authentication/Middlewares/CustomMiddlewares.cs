@@ -1,6 +1,5 @@
-﻿namespace IAPS.Core.Middlewares;
+﻿namespace Authorization_Authentication.Middlewares;
 
-using Authorization_Authentication.Middlewares;
 using Microsoft.AspNetCore.Builder;
 
 public static class CustomMiddlewares

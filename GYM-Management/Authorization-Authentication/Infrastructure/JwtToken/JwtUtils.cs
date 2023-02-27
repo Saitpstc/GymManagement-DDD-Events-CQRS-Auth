@@ -36,6 +36,7 @@ public static class JwtUtils
 
     public static bool IsTokenExpired(string jwtToken)
     {
+        jwtToken = jwtToken["Bearer ".Length..];
         var token = new JwtSecurityToken(jwtEncodedString: jwtToken);
 
         if (DateTime.Compare(DateTime.UtcNow, token.ValidTo) > 0) return true;

@@ -1,9 +1,11 @@
 ﻿namespace GymManagement.API.Controllers;
 
 using global::Customer.Application.Contracts;
+using Microsoft.AspNetCore.Mvc;
 using Models;
 using Shared.Application.Contracts;
 
+[ApiController]
 public class BaseController
 {
     private readonly ErrorMessageCollector _collector;

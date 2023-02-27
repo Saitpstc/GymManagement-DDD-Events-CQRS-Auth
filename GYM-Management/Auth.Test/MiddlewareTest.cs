@@ -4,7 +4,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Authorization_Authentication.Infrastructure.JwtToken;
 using Authorization_Authentication.Middlewares;
-using IAPS.Core.Middlewares;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 
@@ -17,7 +16,7 @@ public class MiddlewareTest
         var middleware = new JwtMiddleware(null);
 
         var context = new DefaultHttpContext();
-        var JwtUserDto = new JwtUserDto(1, "test@gmail.com", "UserName");
+        var JwtUserDto = new JwtUserDto(Guid.NewGuid(), "test@gmail.com", "UserName");
 
         await middleware.InvokeAsync(context);
 
@@ -49,6 +48,15 @@ public class MiddlewareTest
         
         
         await middleware.InvokeAsync(context);
+        
+        
+        var responseBodyStream = context.Response.Body;
+        responseBodyStream.Seek(0, SeekOrigin.Begin);
+
+        using var streamReader = new StreamReader(responseBodyStream, Encoding.UTF8);
+        string responseBody = await streamReader.ReadToEndAsync();
+
+        var client = new HttpClient();
         
         
         Assert.True(context.HttpContext.Response.StatusCode==200);

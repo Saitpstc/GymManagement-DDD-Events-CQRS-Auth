@@ -8,7 +8,7 @@ using Models;
 using Shared.Application.Contracts;
 
 [Route("/customer")]
-[ApiController]
+
 public class CustomerController:BaseController
 {
     private readonly ICustomerModule _module;

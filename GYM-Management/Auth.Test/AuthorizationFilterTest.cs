@@ -44,7 +44,7 @@ public class AuthorizationFilterTest
         var role = new List<string>() { "Admin", "User" };
         var permission = new List<string>()
             { "CreateUser", "DeleteUser" };
-        var JwtUserDto = new JwtUserDto(1, "test@gmail.com", "UserName")
+        var JwtUserDto = new JwtUserDto(Guid.NewGuid(), "test@gmail.com", "UserName")
         {
             Roles = role,
             Permissions = permission
