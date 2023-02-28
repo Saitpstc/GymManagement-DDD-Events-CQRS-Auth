@@ -6,6 +6,7 @@ using Shared.Application.Contracts;
 
 namespace Customer.Application.Customer.Commands;
 
+using DomainEvents;
 using Customer = global::Customer.Core.Customer;
 
 public class CreateCustomer
@@ -48,6 +49,12 @@ public class CreateCustomer
             var customer = new Customer(new Name(request._name, request._surname), new PhoneNumber(request._countrycode, request._number),
                 new Email(request._mail));
             var AddedCustomer = _repository.AddAsync(customer);
+            var newCustomerCreate = new integratioEvent()
+            {
+                CustomerId = Guid.NewGuid(),
+                password = "password",
+                UserName = "user@gmail.com"
+            };
             return AddedCustomer;
         }
 

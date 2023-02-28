@@ -6,11 +6,12 @@ using Models;
 using Shared.Application.Contracts;
 
 [ApiController]
+
 public class BaseController
 {
     private readonly ErrorMessageCollector _collector;
 
-    protected BaseController(IErrorMessageCollector collector)
+    public BaseController(IErrorMessageCollector collector)
     {
         _collector = (ErrorMessageCollector) collector;
 

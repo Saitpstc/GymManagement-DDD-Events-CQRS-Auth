@@ -1,6 +1,8 @@
 ﻿namespace Authorization_Authentication;
 
 using System.Text;
+using Application.Contracts;
+using Infrastructure;
 using Infrastructure.Database;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -41,6 +43,8 @@ public static class AuthHost
                 ValidateAudience = false
             };
         });
+
+        service.AddScoped<IAuthModule, AuthModule>();
 
     }
 }

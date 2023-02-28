@@ -47,8 +47,7 @@ public class CustomerDB:DataStructureBase
             new PhoneNumber(NumberDb.CountryCode, NumberDb.Number), new Email(EmailDb.email));
         customer.Id = Id;
         return customer;
-
-
+        
     }
 
     public static CustomerDB FromDomainModel(Customer Aggregate)

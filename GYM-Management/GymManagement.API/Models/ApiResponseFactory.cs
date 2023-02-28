@@ -1,6 +1,6 @@
 ﻿namespace GymManagement.API.Models;
 
-public class ApiResponseFactory
+public static class ApiResponseFactory
 {
 
 

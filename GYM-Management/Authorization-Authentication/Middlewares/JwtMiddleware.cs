@@ -34,9 +34,10 @@ public class JwtMiddleware
                 context.Response.StatusCode = (int)HttpStatusCode.OK;
                 await context.Response.WriteAsync("Token is expired");
                 
-
                 return;
             }
+            
+            
         }
         else
         {
