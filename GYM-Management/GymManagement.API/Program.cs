@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Text.Json.Serialization;
 using Authorization_Authentication;
 using Authorization_Authentication.Middlewares;
 using Customer.Application.Contracts;
@@ -32,7 +33,10 @@ builder.Services.CustomerDependency(builder.Configuration, myOptions);
 builder.Services.AddSharedDependency();
 builder.Services.AddAuthDependency(myOptions);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+    options.JsonSerializerOptions.DefaultIgnoreCondition
+        = JsonIgnoreCondition.WhenWritingNull);
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<ICustomerModule, CustomerModule>();

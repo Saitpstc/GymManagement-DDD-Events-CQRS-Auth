@@ -4,6 +4,7 @@ using System.Text;
 using Application.Contracts;
 using Infrastructure;
 using Infrastructure.Database;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +26,8 @@ public static class AuthHost
         service.AddIdentity<User, Role>()
                .AddEntityFrameworkStores<AuthDbContext>()
                .AddDefaultTokenProviders();
-        
+
+        service.AddMediatR(typeof(IAuthModule).Assembly);
         service.AddAuthentication(x =>
         {
             x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

@@ -1,10 +1,8 @@
 ﻿namespace Authorization_Authentication.Dto;
 
-using Application.Superadmin.Commands;
-using Models;
-
-public class RoleResponseDto
+public class PermissionResponseDto
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
+    public string Description { get; set; }
 }

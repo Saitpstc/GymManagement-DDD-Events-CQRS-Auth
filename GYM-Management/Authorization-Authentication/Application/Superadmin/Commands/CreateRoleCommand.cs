@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Identity;
 using Models;
 using Shared.Application.Contracts;
 
-public class CreateRoleCommand:ICommand<IDto>
+public class CreateRoleCommand:ICommand<RoleResponseDto>
 {
     public string Name { get; set; }
 }
 
-public class CreateRoleCommandHandler:CommandHandlerBase<CreateRoleCommand, IDto>
+public class CreateRoleCommandHandler:CommandHandlerBase<CreateRoleCommand, RoleResponseDto>
 {
     private readonly RoleManager<Role> _roleManager;
 
@@ -19,27 +19,30 @@ public class CreateRoleCommandHandler:CommandHandlerBase<CreateRoleCommand, IDto
         _roleManager = roleManager;
     }
 
-    public override async Task<IDto> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
+    public override async Task<RoleResponseDto> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
     {
         var newRole = new Role()
         {
-            Name = request.Name
+            Name = request.Name,
+            IsActive = true
         };
+
         var result = await _roleManager.CreateAsync(newRole);
 
-        if (result.Succeeded)
+        if (!result.Succeeded)
         {
-            return new RoleResponseDto()
+            foreach (var error in result.Errors)
             {
-                Id = newRole.Id,
-                Name = newRole.Name
-            };
+                ErrorMessageCollector.AddError(error.Description);
+            }
+            return null;
         }
 
-        foreach (var error in result.Errors)
+        return new RoleResponseDto()
         {
-            ErrorMessageCollector.AddError(error.Description);
-        }
-        return HandlerResponse.EmptyResultDto();
+
+            Id = newRole.Id,
+            Name = newRole.Name
+        };
     }
 }
