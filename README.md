@@ -1,18 +1,27 @@
-##Architecture & Patterns
+## Architecture & Patterns
 
--Modular Monolith Architecture with single bootstrapper(web api project)
--Clean architecture
--Domain Driven Design => Domain model pattern, Aggregate pattern,Active record pattern,Repository pattern, Value objects,Domain Services,Domain events pattern,Integration Event pattern
--Test Driven Development=> Unit test, Integration test
+--Modular Monolith Architecture with single bootstrapper(web api project)<br>
+
+--Clean architecture<br>
+
+-Domain Driven Design => Domain model pattern, Aggregate pattern,Active record pattern,Repository pattern, Value objects,Domain Services,Domain events pattern,Integration Event pattern<br>
+
+-Test Driven Development=> Unit test, Integration test<br>
+
 -CQRS pattern
 
-##Technologies & Libraries
+## Technologies & Libraries
 
--MediatR =>Used to create Asynchronus messaging communication between modules
--Fluent validation
--xUnit(Unit testing framework)
--Fluent Assertion
--Serilog
+-MediatR =>Used to create Asynchronus messaging communication between modules<br>
+
+-Fluent validation<br>
+
+-xUnit(Unit testing framework)<br>
+
+-Fluent Assertion<br>
+
+-Serilog<br>
+
 -EF core ORM
 
 
