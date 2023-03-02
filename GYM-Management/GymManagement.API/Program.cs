@@ -16,12 +16,14 @@ using Shared.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
-/*builder.Configuration.SetBasePath(Directory.GetCurrentDirectory())
+/*
+builder.Configuration.SetBasePath(Directory.GetCurrentDirectory())
        .AddJsonFile("appsettings.json")
        .Build();
+       */
 
 
-builder.Host.UseSerilog((context, configuration) => configuration.WriteTo.Console().ReadFrom.Configuration(builder.Configuration));*/
+builder.Host.UseSerilog((context, configuration) => configuration.WriteTo.Console().ReadFrom.Configuration(builder.Configuration));
 
 // Add services to the container.
 

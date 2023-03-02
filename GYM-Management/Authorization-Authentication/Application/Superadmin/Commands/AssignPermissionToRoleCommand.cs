@@ -1,17 +1,28 @@
 ﻿namespace Authorization_Authentication.Application.Superadmin.Commands;
 
 using Dto;
+using FluentValidation;
 using Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using Shared.Application.Contracts;
+using Shared.Application.CustomValidators;
 
 public class AssignPermissionToRoleCommand:ICommand<Unit>
 {
 
     public Guid RoleId { get; set; }
     public Guid PermissionId { get; set; }
+}
+
+public class AssignPermissionToRoleValidator:AbstractValidator<AssignPermissionToRoleCommand>
+{
+    public AssignPermissionToRoleValidator()
+    {
+        RuleFor(command => command.PermissionId).SetValidator(new GuidValidator(nameof(AssignPermissionToRoleCommand.PermissionId)));
+        RuleFor(command => command.RoleId).SetValidator(new GuidValidator(nameof(AssignPermissionToRoleCommand.RoleId)));
+    }
 }
 
 public class AssignPermissionToRoleHandler:CommandHandlerBase<AssignPermissionToRoleCommand, Unit>
@@ -25,7 +36,8 @@ public class AssignPermissionToRoleHandler:CommandHandlerBase<AssignPermissionTo
 
     public override async Task<Unit> Handle(AssignPermissionToRoleCommand request, CancellationToken cancellationToken)
     {
-        var rolePermissionMap =await _db.RolePermissionMaps.FirstOrDefaultAsync(x => x.PermissionId == request.PermissionId && x.RoleId == request.RoleId);
+        var rolePermissionMap =
+            await _db.RolePermissionMaps.FirstOrDefaultAsync(x => x.PermissionId == request.PermissionId && x.RoleId == request.RoleId);
 
         if (rolePermissionMap is not null)
         {
@@ -34,7 +46,7 @@ public class AssignPermissionToRoleHandler:CommandHandlerBase<AssignPermissionTo
         }
         var role = await _db.Roles.FirstOrDefaultAsync(x => x.Id == request.RoleId);
 
-    
+
 
         if (role is null)
         {

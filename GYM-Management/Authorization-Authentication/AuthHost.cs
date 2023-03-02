@@ -2,6 +2,7 @@
 
 using System.Text;
 using Application.Contracts;
+using FluentValidation;
 using Infrastructure;
 using Infrastructure.Database;
 using MediatR;
@@ -27,6 +28,9 @@ public static class AuthHost
                .AddEntityFrameworkStores<AuthDbContext>()
                .AddDefaultTokenProviders();
 
+
+
+        service.AddValidatorsFromAssemblyContaining<IAuthModule>();
         service.AddMediatR(typeof(IAuthModule).Assembly);
         service.AddAuthentication(x =>
         {

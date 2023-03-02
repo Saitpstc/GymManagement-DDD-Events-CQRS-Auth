@@ -1,6 +1,7 @@
 ﻿namespace Authorization_Authentication.Application.Superadmin.Commands;
 
 using Dto;
+using FluentValidation;
 using Infrastructure.Database;
 using Microsoft.AspNetCore.Identity;
 using Models;
@@ -12,6 +13,17 @@ public class CreatePermissionCommand:ICommand<PermissionResponseDto>
     public string Name { get; set; }
     public string Description { get; set; }
 }
+
+
+
+public class CreatePermissionValidator:AbstractValidator<CreatePermissionCommand>
+{
+    public CreatePermissionValidator()
+    {
+        RuleFor(x => x.Name).NotEmpty().NotNull();
+    }
+}
+
 
 public class CreatePermissionCommandHandler:CommandHandlerBase<CreatePermissionCommand, PermissionResponseDto>
 {
