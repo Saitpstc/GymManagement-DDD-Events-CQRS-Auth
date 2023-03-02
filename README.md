@@ -1,5 +1,22 @@
-# GymManagement-DDD-Events-CQRS-Auth
-This is an actual application backend that is currently used by a local Gym for a simple application like this it would be worse decision to add complexities like Domain Model Patter, Events,CQRS, Messaging etc. My aim was to have an application that is working properly and also practice my Domain Driven Design skills.
+##Architecture & Patterns
+
+-Modular Monolith Architecture with single bootstrapper(web api project)
+-Clean architecture
+-Domain Driven Design => Domain model pattern, Aggregate pattern,Active record pattern,Repository pattern, Value objects,Domain Services,Domain events pattern,Integration Event pattern
+-Test Driven Development=> Unit test, Integration test
+-CQRS pattern
+
+##Technologies & Libraries
+
+-MediatR =>Used to create Asynchronus messaging communication between modules
+-Fluent validation
+-xUnit(Unit testing framework)
+-Fluent Assertion
+-Serilog
+-EF core ORM
+
+
+
 
 ## Scenario & Requirements
 
