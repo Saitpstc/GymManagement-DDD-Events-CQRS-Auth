@@ -36,18 +36,18 @@ public class CustomerRepository:ICustomerRepository
     public async Task<bool> UpdateAsync(Customer Aggregate)
     {
         _dbContext.Update(CustomerDB.FromDomainModel(Aggregate));
-        var result = await _dbContext.CommitAsync();
-        return result != 0;
+
+        return true;
     }
 
-    public async Task<bool> DeleteByAsync(Customer Aggregate)
+    public async Task DeleteByAsync(Customer Aggregate)
     {
         var dbTable = CustomerDB.FromDomainModel(Aggregate);
         dbTable.IsDeleted = true;
         _dbContext.Update(dbTable);
-        var result = await _dbContext.CommitAsync();
-        return result != 0;
-       
+
+
+
     }
 
 
@@ -57,7 +57,7 @@ public class CustomerRepository:ICustomerRepository
 
         await _dbContext.Customers.AddAsync(dbTable);
 
-        await _dbContext.CommitAsync();
+
 
         return dbTable.FromEntity();
     }
@@ -65,6 +65,11 @@ public class CustomerRepository:ICustomerRepository
     public Task<IEnumerable<Customer>> GetAllAsync(Customer Aggregate)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<int> CommitAsync()
+    {
+        return await _dbContext.SaveChangesAsync();
     }
 
 

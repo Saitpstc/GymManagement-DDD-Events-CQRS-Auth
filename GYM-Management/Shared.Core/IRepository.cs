@@ -6,8 +6,11 @@ public interface IRepository<T> where T: AggregateRoot
 
     Task<bool> UpdateAsync(T Aggregate);
 
-    Task<bool> DeleteByAsync(T Aggregate);
+    Task DeleteByAsync(T Aggregate);
 
     Task<T> AddAsync(T Aggregate);
+
     Task<IEnumerable<T>> GetAllAsync(T Aggregate);
+
+    Task<int> CommitAsync();
 }

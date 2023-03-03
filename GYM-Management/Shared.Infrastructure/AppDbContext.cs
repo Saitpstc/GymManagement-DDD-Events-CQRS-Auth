@@ -4,7 +4,7 @@ using Core;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-public class AppDbContext:DbContext, IUnitOfWork
+public class AppDbContext:DbContext
 {
     private readonly IMediator Mediator;
 
@@ -17,9 +17,7 @@ public class AppDbContext:DbContext, IUnitOfWork
 
 
 
-    public async Task<int> CommitAsync(
-        CancellationToken cancellationToken = default,
-        Guid? internalCommandId = null)
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
         var entries = ChangeTracker.Entries<DataStructureBase>()
                                    .Where(e => e.State is EntityState.Added or EntityState.Modified)
@@ -42,10 +40,8 @@ public class AppDbContext:DbContext, IUnitOfWork
             updated.Entity.LastUpdateAt = DateTime.Now;
         }
 
-
-        var result = await SaveChangesAsync(cancellationToken);
-
-        var events = entries.SelectMany(x=>x.Entity.Events).ToList();
+        var result = await base.SaveChangesAsync(cancellationToken);
+        var events = entries.SelectMany(x => x.Entity.Events).ToList();
 
         if (events.Any())
         {
@@ -54,7 +50,9 @@ public class AppDbContext:DbContext, IUnitOfWork
 
 
         return result;
+
     }
+
 
     async private Task PublishEvents(CancellationToken cancellationToken, List<DataStructureBase> entries)
     {
