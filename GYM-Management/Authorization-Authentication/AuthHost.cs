@@ -32,6 +32,7 @@ public static class AuthHost
 
         service.AddValidatorsFromAssemblyContaining<IAuthModule>();
         service.AddMediatR(typeof(IAuthModule).Assembly);
+        
         service.AddAuthentication(x =>
         {
             x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

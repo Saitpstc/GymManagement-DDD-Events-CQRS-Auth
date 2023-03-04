@@ -5,8 +5,9 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
-public static class JwtUtils
+public  class JwtUtils
 {
+    
     /// <param name="user">Application's user object</param>
     /// <param name="lifeTimeInMinute"> How many minutes will this token will be valid  </param>
     public static JwtToken CreateToken(JwtUserDto user, int lifeTimeInMinute)
@@ -15,7 +16,9 @@ public static class JwtUtils
 
         var tokenHandler = new JwtSecurityTokenHandler();
 
+
         var tokenDescriptor = CreateTokenDescriptor(lifeTimeInMinute, claims);
+
 
         var aToken = tokenHandler.CreateToken(tokenDescriptor);
 
@@ -44,20 +47,20 @@ public static class JwtUtils
         return false;
     }
 
-    private static List<Claim> SetIdentityClaims(JwtUserDto user)
+    private static Dictionary<string, object> SetIdentityClaims(JwtUserDto user)
     {
-        var claims = new List<Claim>()
+        var claims = new Dictionary<string, object>()
         {
-            new Claim("Id", user.Id.ToString()),
-            new Claim("UserName", user.UserName),
-            new Claim("Email", user.Email)
+            { "Id", user.Id.ToString() },
+            { "UserName", user.UserName },
+            { "Email", user.Email }
         };
 
         if (user.Roles != null && user.Roles.Any())
         {
             foreach (var role in user.Roles)
             {
-                claims.Add(new Claim("Role", role));
+                claims.Add("Role", role);
             }
         }
 
@@ -65,7 +68,7 @@ public static class JwtUtils
         {
             foreach (var permission in user.Permissions)
             {
-                claims.Add(new Claim("Permission", permission));
+                claims.Add("Permission", permission);
             }
         }
 
@@ -73,25 +76,23 @@ public static class JwtUtils
         return claims;
     }
 
-    private static SecurityTokenDescriptor CreateTokenDescriptor(int lifeTimeInMinute, List<Claim> claims = null)
+    static private SecurityTokenDescriptor CreateTokenDescriptor(int lifeTimeInMinute, Dictionary<string, object> claims = null)
     {
-#pragma warning disable CS1030
-#warning when you use this please remove  key from here
-#pragma warning restore CS1030
-        var key = Encoding.ASCII.GetBytes("Super Secret Token");
+
+        var key = Encoding.ASCII.GetBytes("GymManagementAppTokenKey");
         var accessTokenDescriptor = new SecurityTokenDescriptor
         {
             // Set the expiration date for token here
             Expires = DateTime.UtcNow.AddMinutes(lifeTimeInMinute),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+            
         };
 
         if (claims.Any())
         {
-            accessTokenDescriptor.Subject = new ClaimsIdentity(claims);
+            accessTokenDescriptor.Claims = claims;
         }
 
         return accessTokenDescriptor;
     }
 }
-

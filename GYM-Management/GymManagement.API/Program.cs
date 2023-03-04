@@ -30,7 +30,6 @@ builder.Host.UseSerilog((context, configuration) =>
 
     configuration.ReadFrom.Configuration(builder.Configuration);
     
-    configuration.WriteTo.Console();
 
 
 });
@@ -84,6 +83,10 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+
+
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 
@@ -98,8 +101,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseMiddleware<JwtMiddleware>();
-app.UseMiddleware<LoggingMiddleware>();
 app.UseAuthorization();
 
+app.UseMiddleware<LoggingMiddleware>();
 app.MapControllers();
 app.Run();

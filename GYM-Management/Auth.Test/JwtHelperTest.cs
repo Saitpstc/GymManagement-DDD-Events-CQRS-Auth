@@ -5,11 +5,7 @@ using Authorization_Authentication.Infrastructure.JwtToken;
 public class JwtHelperTest
 {
 
-
-    public JwtHelperTest()
-    {
-  
-    }
+    
 
 
     [Fact]

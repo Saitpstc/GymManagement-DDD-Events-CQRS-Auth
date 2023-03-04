@@ -46,6 +46,7 @@ public class LoggingMiddleware
             ExecutionTime = stopwatch.Elapsed
         };
 
+        
         var responseDetailsJson = JsonConvert.SerializeObject(responseDetails);
 
         Log.ForContext("Request",requestDetailsJson).ForContext("Response",responseDetailsJson).Information("a request has been started");

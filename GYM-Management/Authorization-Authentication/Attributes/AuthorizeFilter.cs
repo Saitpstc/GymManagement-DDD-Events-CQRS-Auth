@@ -20,7 +20,6 @@ public class AuthorizeFilter : Attribute, IAuthorizationFilter
     {
         //Uncomment this code if you dont want to require authorization for local requests
         //if (IsLocalRequest(context.HttpContext)) return;
-  
         
         var hasClaim = context.HttpContext.User.HasClaim(x => x.Type == "Permission" && _claimvalue.Contains(x.Value));
         if (!hasClaim)
