@@ -84,7 +84,7 @@ public class CustomerRepositoryTest
         Context.Entry(customerToDelete).State = EntityState.Detached;
         //Act
 
-        var result = Task.Run(() => repository.DeleteByAsync(customerToDelete.FromEntity())).Result;
+        var result = Task.Run(() => repository.DeleteByAsync(customerToDelete.FromEntity()));
         var customer = Context.Customers.Find(customerToDelete.Id);
 
         //Assert

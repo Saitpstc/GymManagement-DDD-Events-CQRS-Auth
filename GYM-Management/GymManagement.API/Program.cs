@@ -6,10 +6,12 @@ using Customer.Application.Contracts;
 using Customer.Host;
 using Customer.Infrastructure;
 using GymManagement.API.Controllers.Customer;
+using GymManagement.API.Middlewares;
 using GymManagement.API.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using Serilog.Filters;
 using Shared.Application;
 using Shared.Core;
 
@@ -23,7 +25,15 @@ builder.Configuration.SetBasePath(Directory.GetCurrentDirectory())
        */
 
 
-builder.Host.UseSerilog((context, configuration) => configuration.WriteTo.Console().ReadFrom.Configuration(builder.Configuration));
+builder.Host.UseSerilog((context, configuration) =>
+{
+
+    configuration.ReadFrom.Configuration(builder.Configuration);
+    
+    configuration.WriteTo.Console();
+
+
+});
 
 // Add services to the container.
 
@@ -88,6 +98,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseMiddleware<JwtMiddleware>();
+app.UseMiddleware<LoggingMiddleware>();
 app.UseAuthorization();
 
 app.MapControllers();
