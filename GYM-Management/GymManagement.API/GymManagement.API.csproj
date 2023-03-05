@@ -30,7 +30,6 @@
     <ItemGroup>
       <ProjectReference Include="..\Authorization-Authentication\Authorization-Authentication.csproj" />
       <ProjectReference Include="..\Customer.Application\Customer.Application.csproj" />
-      <ProjectReference Include="..\Customer.Host\Customer.Host.csproj" />
       <ProjectReference Include="..\Customer.Infrastructure\Customer.Infrastructure.csproj" />
     </ItemGroup>
 

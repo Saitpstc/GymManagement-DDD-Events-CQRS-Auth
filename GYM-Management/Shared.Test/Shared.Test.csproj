@@ -23,7 +23,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Customer.Host\Customer.Host.csproj" />
         <ProjectReference Include="..\GymManagement.API\GymManagement.API.csproj" />
         <ProjectReference Include="..\Shared.Core\Shared.Core.csproj" />
         <ProjectReference Include="..\Shared.Infrastructure\Shared.Infrastructure.csproj" />

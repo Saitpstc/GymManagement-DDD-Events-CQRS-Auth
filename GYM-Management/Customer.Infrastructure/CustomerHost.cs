@@ -1,8 +1,7 @@
-﻿namespace Customer.Host;
+﻿namespace Customer.Infrastructure;
 
-using Application;
-using Core;
 using Customer.Application.Contracts;
+using Customer.Core;
 using Customer.Infrastructure.Database;
 using Customer.Infrastructure.Repository;
 using MediatR;
@@ -25,6 +24,10 @@ public static class CustomerHost
 
 
         services.AddScoped<ICustomerRepository, CustomerRepository>();
+        services.AddScoped<ICustomerDbContext, CustomerDbContext>();
+        services.AddScoped<CustomerUnitOfWork>();
+
+
 
 
     }

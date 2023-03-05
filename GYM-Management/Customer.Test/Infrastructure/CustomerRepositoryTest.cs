@@ -21,7 +21,7 @@ public class CustomerRepositoryTest
                       .UseInMemoryDatabase(databaseName: "InMemoryDb")
                       .Options;
         var mediator = new Mock<IMediator>().Object;
-        Context = new CustomerDbContext(options, mediator);
+        Context = new CustomerDbContext(options);
 
     }
 

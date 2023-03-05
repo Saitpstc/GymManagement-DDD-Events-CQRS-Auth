@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Models;
 
 public class AuthDbContext:IdentityDbContext<User, Role, Guid, IdentityUserClaim<Guid>, UserRoleMap, IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>,
-    IdentityUserToken<Guid>>
+    IdentityUserToken<Guid>>, IAuthDbContext
 {
 
     public DbSet<Permission> Permissions { get; set; }

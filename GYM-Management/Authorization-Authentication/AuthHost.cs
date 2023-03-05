@@ -30,9 +30,10 @@ public static class AuthHost
                .AddDefaultTokenProviders();
 
 
-           // service.AddFluentValidationAutoValidation();
+        // service.AddFluentValidationAutoValidation();
 
-      
+        service.AddScoped<IAuthDbContext, AuthDbContext>();
+        service.AddScoped<AuthUnitOfWork>();
         service.AddValidatorsFromAssembly(typeof(IAuthModule).Assembly);
         service.AddMediatR(typeof(IAuthModule).Assembly);
 
@@ -58,4 +59,3 @@ public static class AuthHost
 
     }
 }
-
