@@ -3,6 +3,7 @@
 using System.Text;
 using Application.Contracts;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using Infrastructure;
 using Infrastructure.Database;
 using MediatR;
@@ -29,10 +30,12 @@ public static class AuthHost
                .AddDefaultTokenProviders();
 
 
+           // service.AddFluentValidationAutoValidation();
 
-        service.AddValidatorsFromAssemblyContaining<IAuthModule>();
+      
+        service.AddValidatorsFromAssembly(typeof(IAuthModule).Assembly);
         service.AddMediatR(typeof(IAuthModule).Assembly);
-        
+
         service.AddAuthentication(x =>
         {
             x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -55,3 +58,4 @@ public static class AuthHost
 
     }
 }
+

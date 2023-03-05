@@ -5,15 +5,18 @@ using Authorization_Authentication.Middlewares;
 using Customer.Application.Contracts;
 using Customer.Host;
 using Customer.Infrastructure;
+using FluentValidation.AspNetCore;
 using GymManagement.API.Controllers.Customer;
 using GymManagement.API.Middlewares;
 using GymManagement.API.Models;
+using MediatR;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Filters;
 using Shared.Application;
 using Shared.Core;
+using Shared.Infrastructure;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,7 +32,7 @@ builder.Host.UseSerilog((context, configuration) =>
 {
 
     configuration.ReadFrom.Configuration(builder.Configuration);
-    
+
 
 
 });
@@ -47,6 +50,8 @@ builder.Services.AddAuthDependency(myOptions);
 builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.DefaultIgnoreCondition
         = JsonIgnoreCondition.WhenWritingNull);
+
+builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestPipeline<,>));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -85,7 +90,6 @@ builder.Services.AddSwaggerGen(options =>
 
 
 
-builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -97,12 +101,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseMiddleware<JwtMiddleware>();
 app.UseAuthorization();
-
+app.UseMiddleware<CustomExceptionHandler>();
 app.UseMiddleware<LoggingMiddleware>();
 app.MapControllers();
 app.Run();
