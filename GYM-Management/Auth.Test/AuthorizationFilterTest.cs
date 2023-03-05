@@ -1,7 +1,6 @@
 ﻿namespace Auth.Test;
 
 using System.Net;
-using Authorization_Authentication.Attributes;
 using Authorization_Authentication.Infrastructure.JwtToken;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
@@ -9,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
+using Shared.Presentation.Attributes;
 using Xunit.Abstractions;
 using RouteData = Microsoft.AspNetCore.Routing.RouteData;
 

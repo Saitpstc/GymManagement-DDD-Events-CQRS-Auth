@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.14" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.13">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -16,8 +15,6 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.1" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="Serilog" Version="3.0.0-dev-01910" />
         <PackageReference Include="Serilog.AspNetCore" Version="6.1.1-dev-00295" />
         <PackageReference Include="Serilog.Expressions" Version="3.4.2-dev-00119" />
@@ -31,6 +28,7 @@
       <ProjectReference Include="..\Authorization-Authentication\Authorization-Authentication.csproj" />
       <ProjectReference Include="..\Customer.Application\Customer.Application.csproj" />
       <ProjectReference Include="..\Customer.Infrastructure\Customer.Infrastructure.csproj" />
+      <ProjectReference Include="..\Shared.Presentation\Shared.Presentation.csproj" />
     </ItemGroup>
 
     <ItemGroup>

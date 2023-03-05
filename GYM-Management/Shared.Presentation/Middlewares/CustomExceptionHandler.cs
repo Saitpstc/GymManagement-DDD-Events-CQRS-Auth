@@ -1,8 +1,8 @@
-﻿namespace GymManagement.API.Middlewares;
+﻿namespace Shared.Presentation.Middlewares;
 
 using FluentValidation;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Models;
+using GymManagement.API.Models;
+using Microsoft.AspNetCore.Http;
 
 public class CustomExceptionHandler
 {

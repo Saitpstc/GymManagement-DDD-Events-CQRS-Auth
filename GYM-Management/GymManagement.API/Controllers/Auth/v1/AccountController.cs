@@ -1,14 +1,14 @@
-﻿namespace GymManagement.API.Controllers.Auth;
+﻿namespace GymManagement.API.Controllers.Auth.v1;
 
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Authorization_Authentication.Attributes;
 using Authorization_Authentication.Infrastructure.JwtToken;
 using Authorization_Authentication.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Shared.Application.Contracts;
+using Shared.Presentation.Attributes;
 
 [Route("Auth")]
 public class AccountController:BaseController
@@ -49,7 +49,7 @@ public class AccountController:BaseController
 
     [HttpPost("test")]
     [AuthorizeFilter("Account")]
-    public async Task<ApiResponse<string>> authorizeTest(string a = "sait")
+    public async Task<ApiResponse<string>> authorizeTest(string b="sait2",string a = "sait")
     {
         var test = new string("asdfasdf");
 
