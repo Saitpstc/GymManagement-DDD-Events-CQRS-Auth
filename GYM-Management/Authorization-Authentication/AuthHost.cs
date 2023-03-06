@@ -36,7 +36,6 @@ public static class AuthHost
         service.AddScoped<AuthUnitOfWork>();
         service.AddValidatorsFromAssembly(typeof(IAuthModule).Assembly);
         service.AddMediatR(typeof(IAuthModule).Assembly);
-
         service.AddAuthentication(x =>
         {
             x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -54,6 +53,8 @@ public static class AuthHost
                 ValidateAudience = false
             };
         });
+     
+
 
         service.AddScoped<IAuthModule, AuthModule>();
 

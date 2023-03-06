@@ -1,10 +1,13 @@
 using System.Diagnostics;
+using System.Text;
 using System.Text.Json.Serialization;
 using Authorization_Authentication;
 using Authorization_Authentication.Middlewares;
 using Customer.Application.Contracts;
 using Customer.Infrastructure;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Shared.Application;
@@ -40,6 +43,24 @@ builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestPipeline<
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<ICustomerModule, CustomerModule>();
 
+/*builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
+{
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(myOptions.AuthTokenKey)),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});*/
+builder.Services.AddAuthorization();
 
 
 
@@ -55,11 +76,12 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
-app.UseMiddleware<LoggingMiddleware>();
+
 app.UseAuthentication();
 
-app.UseMiddleware<JwtMiddleware>();
 app.UseAuthorization();
+app.UseMiddleware<LoggingMiddleware>();
+app.UseMiddleware<JwtMiddleware>();
 app.UseMiddleware<CustomExceptionHandler>();
 //app.UseMiddleware<LoggingMiddleware>();
 app.MapControllers();

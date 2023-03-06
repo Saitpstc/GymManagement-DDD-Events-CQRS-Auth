@@ -1,6 +1,7 @@
 ﻿namespace Shared.Presentation.Middlewares;
 
 using System.Diagnostics;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using Infrastructure;
@@ -8,6 +9,8 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Serilog;
 using Serilog.Context;
+using Serilog.Core.Enrichers;
+using Serilog.Events;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 public class LoggingMiddleware
@@ -47,10 +50,16 @@ public class LoggingMiddleware
         _elapsedTime.StartTimer();
         await _next(context);
 
+        var statusCode = context.Response.StatusCode;
         _elapsedTime.StopAndSaveElapsedTime();
         LogContext.PushProperty("ExecutionTime", _elapsedTime.GetElapsedTime());
+        LogContext.PushProperty("StatusCode", statusCode);
 
-
+        if (statusCode == (int) HttpStatusCode.Unauthorized)
+        {
+            Log.Warning("Unauthorized Request Has Been Made");
+        }
+        
 
     }
 

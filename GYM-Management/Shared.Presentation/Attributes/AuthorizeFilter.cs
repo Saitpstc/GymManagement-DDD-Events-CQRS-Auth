@@ -22,8 +22,7 @@ public class AuthorizeFilter:Attribute, IAuthorizationFilter
 
     public void OnAuthorization(AuthorizationFilterContext context)
     {
-        var serviceProvider = context.HttpContext.RequestServices;
-        var elapsedTime = (IRequestElapsedTime) serviceProvider.GetService(typeof(IRequestElapsedTime));
+
         //Uncomment this code if you dont want to require authorization for local requests
         //if (IsLocalRequest(context.HttpContext)) return;
 
@@ -41,18 +40,14 @@ public class AuthorizeFilter:Attribute, IAuthorizationFilter
             context.HttpContext.Response.Clear();
             context.HttpContext.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
             context.HttpContext.Response.WriteAsJsonAsync(apiResponse);
-            
-            
-            elapsedTime.StopAndSaveElapsedTime();
-            LogContext.PushProperty("ExecutionTime", elapsedTime.GetElapsedTime());
-            LogContext.PushProperty("StatusCode", (int) HttpStatusCode.Unauthorized);
+
             LogContext.PushProperty("Response", JsonSerializer.Serialize(apiResponse));
-            Log.Warning("Unauthorized Request Has Been Made");
+
         }
 
 
     }
-
+    
     private bool IsLocalRequest(HttpContext context)
     {
         if (context.Request.Host.Value.StartsWith("localhost:")) return true;

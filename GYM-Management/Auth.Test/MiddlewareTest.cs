@@ -13,7 +13,7 @@ public class MiddlewareTest
     [Fact]
     public async Task Unauthorized_Response_Result_If_Token_Not_Exist()
     {
-        var middleware = new JwtMiddleware(null);
+        var middleware = new JwtMiddleware(null,null);
 
         var context = new DefaultHttpContext();
         var JwtUserDto = new JwtUserDto(Guid.NewGuid(), "test@gmail.com", "UserName");
@@ -27,7 +27,7 @@ public class MiddlewareTest
     [Fact]
     public async Task Token_Expired_Response_Result_If_Token_Expired()
     {
-        var middleware = new JwtMiddleware(null);
+        var middleware = new JwtMiddleware(null,null);
 
         var context = new DefaultHttpContext();
         
