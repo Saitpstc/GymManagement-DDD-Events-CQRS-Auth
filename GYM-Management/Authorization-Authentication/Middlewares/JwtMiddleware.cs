@@ -34,14 +34,14 @@ public class JwtMiddleware
         {
             var tokenIsExpired = JwtUtils.IsTokenExpired(authHeader);
 
-            if (!tokenIsExpired)
+            if (tokenIsExpired)
             {
                 var response = new ApiResponse()
                 {
                     ErrorMessages = new List<string>() { "Token Expired" },
                     IsSuccessfull = false
                 };
-                LogResult(context, response);
+                LogContext.PushProperty("Response", JsonSerializer.Serialize(response));
                 await CreateUnauthorizedUserResponse(context, response);
                 return;
             }
@@ -70,17 +70,7 @@ public class JwtMiddleware
         context.Response.StatusCode = (int) HttpStatusCode.OK;
         await context.Response.WriteAsJsonAsync(response);
     }
-
-    private void LogResult(HttpContext context, ApiResponse response)
-    {
-
-        _elapsedTime.StopAndSaveElapsedTime();
-        LogContext.PushProperty("ExecutionTime", _elapsedTime.GetElapsedTime());
-        LogContext.PushProperty("StatusCode", (int) HttpStatusCode.OK);
-        LogContext.PushProperty("Response", JsonSerializer.Serialize(response));
-        Log.Warning($"Token Expired");
-       
-    }
+    
 
 
 

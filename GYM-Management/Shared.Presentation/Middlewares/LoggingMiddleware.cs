@@ -26,8 +26,7 @@ public class LoggingMiddleware
 
     public async Task InvokeAsync(HttpContext context)
     {
-
-
+        
         var requestDetailsJson = JsonConvert.SerializeObject(context.Request.Headers);
 
         var requestBody = await GetRawBodyAsync(context.Request);
@@ -60,7 +59,7 @@ public class LoggingMiddleware
             Log.Warning("Unauthorized Request Has Been Made");
         }
         
-
+        Log.Information("Request is processed");
     }
 
     public static async Task<string> GetRawBodyAsync(
