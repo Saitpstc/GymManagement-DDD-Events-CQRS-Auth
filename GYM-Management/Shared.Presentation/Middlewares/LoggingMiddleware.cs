@@ -16,17 +16,16 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 public class LoggingMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly IRequestElapsedTime _elapsedTime;
 
-    public LoggingMiddleware(RequestDelegate next, IRequestElapsedTime elapsedTime)
+
+    public LoggingMiddleware(RequestDelegate next)
     {
         _next = next;
-        _elapsedTime = elapsedTime;
     }
 
     public async Task InvokeAsync(HttpContext context)
     {
-        
+
         var requestDetailsJson = JsonConvert.SerializeObject(context.Request.Headers);
 
         var requestBody = await GetRawBodyAsync(context.Request);
@@ -46,19 +45,18 @@ public class LoggingMiddleware
         LogContext.PushProperty("RequestBody", requestBody);
 
 
-        _elapsedTime.StartTimer();
+        var stopwatch = Stopwatch.StartNew();
         await _next(context);
 
         var statusCode = context.Response.StatusCode;
-        _elapsedTime.StopAndSaveElapsedTime();
-        LogContext.PushProperty("ExecutionTime", _elapsedTime.GetElapsedTime());
+        LogContext.PushProperty("ExecutionTime", stopwatch.Elapsed.TotalSeconds);
         LogContext.PushProperty("StatusCode", statusCode);
 
         if (statusCode == (int) HttpStatusCode.Unauthorized)
         {
             Log.Warning("Unauthorized Request Has Been Made");
         }
-        
+
         Log.Information("Request is processed");
     }
 
