@@ -46,6 +46,7 @@ public class LoggingMiddleware
 
 
         var stopwatch = Stopwatch.StartNew();
+        
         await _next(context);
 
         var statusCode = context.Response.StatusCode;
@@ -56,8 +57,13 @@ public class LoggingMiddleware
         {
             Log.Warning("Unauthorized Request Has Been Made");
         }
+   
+        else
+        {
+            Log.Information("Request is processed");    
+        }
+     
 
-        Log.Information("Request is processed");
     }
 
     public static async Task<string> GetRawBodyAsync(

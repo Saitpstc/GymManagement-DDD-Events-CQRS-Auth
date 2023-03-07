@@ -7,6 +7,7 @@ using GymManagement.API.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Application.Contracts;
+using Shared.Presentation.Models;
 
 public class SuperAdminController:BaseController
 {

@@ -2,10 +2,12 @@
 
 using System.Net;
 using System.Text.Json;
+using Exceptions;
 using GymManagement.API.Models;
 using Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Models;
 using Serilog;
 using Serilog.Context;
 
@@ -32,17 +34,7 @@ public class AuthorizeFilter:Attribute, IAuthorizationFilter
 
         if (string.IsNullOrEmpty(authHeader) || !hasClaim)
         {
-            var apiResponse = new ApiResponse()
-            {
-                IsSuccessfull = false,
-                ErrorMessages = new List<string>() { "Unauthorized request" }
-            };
-            context.HttpContext.Response.Clear();
-            context.HttpContext.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
-            context.HttpContext.Response.WriteAsJsonAsync(apiResponse);
-
-            LogContext.PushProperty("Response", JsonSerializer.Serialize(apiResponse));
-
+            throw new UnauthorizedRequestException();
         }
 
 

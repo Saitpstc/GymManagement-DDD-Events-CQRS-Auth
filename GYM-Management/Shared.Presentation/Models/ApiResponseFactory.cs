@@ -1,5 +1,7 @@
 ﻿namespace GymManagement.API.Models;
 
+using Shared.Presentation.Models;
+
 public static class ApiResponseFactory
 {
 

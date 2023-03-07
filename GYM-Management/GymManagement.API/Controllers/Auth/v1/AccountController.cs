@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Models;
 using Shared.Application.Contracts;
 using Shared.Presentation.Attributes;
+using Shared.Presentation.Models;
 
 [Route("Auth")]
 public class AccountController:BaseController
@@ -24,6 +25,7 @@ public class AccountController:BaseController
     public async Task<ApiResponse<User>> CreateAccount(UserReqDto dto)
     {
 
+        throw new NotImplementedException();
         var user = new User()
         {
             Email = dto.Email,
@@ -51,7 +53,7 @@ public class AccountController:BaseController
     [AuthorizeFilter("Account")]
     public async Task<ApiResponse<string>> authorizeTest(string b="sait2",string a = "sait")
     {
-        var test = new string("asdfasdf");
+       
 
         return CreateResponse("asdfasdf");
     }

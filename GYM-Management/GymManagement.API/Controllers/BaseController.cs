@@ -4,6 +4,7 @@ using global::Customer.Application.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Shared.Application.Contracts;
+using Shared.Presentation.Models;
 
 [ApiController]
 

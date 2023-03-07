@@ -10,6 +10,7 @@ using Serilog;
 using Serilog.Context;
 using Shared.Infrastructure;
 using Shared.Presentation.Attributes;
+using Shared.Presentation.Models;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 public class JwtMiddleware
@@ -25,8 +26,13 @@ public class JwtMiddleware
 
     public async Task InvokeAsync(HttpContext context)
     {
-
-        if (await EndpointDontHaveAuthorizeAttribute(context)) return;
+        var authorizeAttribute = context.GetEndpoint()?.Metadata?.GetMetadata<AuthorizeFilter>();
+        if (authorizeAttribute is null)
+        {
+            await _next.Invoke(context);
+            return ;
+        }
+  
 
         var authHeader = context.Request.Headers.Authorization;
 
@@ -50,18 +56,7 @@ public class JwtMiddleware
         await _next.Invoke(context);
     }
 
-    async private Task<bool> EndpointDontHaveAuthorizeAttribute(HttpContext context)
-    {
 
-        var authorizeAttribute = context.GetEndpoint()?.Metadata?.GetMetadata<AuthorizeFilter>();
-
-        if (authorizeAttribute is null)
-        {
-            await _next.Invoke(context);
-            return true;
-        }
-        return false;
-    }
 
     static async private Task CreateUnauthorizedUserResponse(HttpContext context, ApiResponse response)
     {
@@ -71,7 +66,4 @@ public class JwtMiddleware
         await context.Response.WriteAsJsonAsync(response);
     }
     
-
-
-
 }
