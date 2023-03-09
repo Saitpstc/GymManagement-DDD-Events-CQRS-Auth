@@ -34,7 +34,7 @@ public class AuthorizeFilter:Attribute, IAuthorizationFilter
 
         if (string.IsNullOrEmpty(authHeader) || !hasClaim)
         {
-            throw new UnauthorizedRequestException("Unauthorized Request Has Been Made");
+            throw new UnauthorizedRequestException("Unauthorized Request Has Been Made ");
         }
 
 
