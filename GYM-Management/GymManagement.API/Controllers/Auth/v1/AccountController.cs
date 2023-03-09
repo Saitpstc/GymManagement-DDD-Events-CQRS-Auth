@@ -24,8 +24,7 @@ public class AccountController:BaseController
     [HttpPost]
     public async Task<ApiResponse<User>> CreateAccount(UserReqDto dto)
     {
-
-        throw new NotImplementedException();
+        
         var user = new User()
         {
             Email = dto.Email,
@@ -53,9 +52,8 @@ public class AccountController:BaseController
     [AuthorizeFilter("Account")]
     public async Task<ApiResponse<string>> authorizeTest(string b="sait2",string a = "sait")
     {
-       
 
-        return CreateResponse("asdfasdf");
+        throw new NotImplementedException();
     }
 }
 

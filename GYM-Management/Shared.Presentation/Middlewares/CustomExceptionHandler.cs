@@ -29,13 +29,9 @@ public class CustomExceptionHandler
         }
         catch (Exception e)
         {
-            context.Response.Clear();
-            var apiResponse = new ApiResponse()
-            {
-                IsSuccessfull = false
-            };
+           
 
-            if (e is UnauthorizedRequestException)
+            /*if (e is UnauthorizedRequestException)
             {
                 apiResponse.ErrorMessages = new List<string> { "Unauthorized request" };
 
@@ -58,7 +54,7 @@ public class CustomExceptionHandler
             var response = JsonSerializer.Serialize(apiResponse);
             LogContext.PushProperty("Response", response);
             LogContext.PushProperty("Eception", "sdfasdfad");
-            Log.Warning("ExceptionHasBeenThrown");
+            Log.Warning("ExceptionHasBeenThrown");*/
         }
         
     }

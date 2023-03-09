@@ -78,11 +78,12 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
-
-app.UseAuthorization();
 app.UseMiddleware<LoggingMiddleware>();
-//app.UseMiddleware<JwtMiddleware>();
-app.UseMiddleware<CustomExceptionHandler>();
+app.UseMiddleware<JwtMiddleware>();
+app.UseAuthorization();
+
+
+//app.UseMiddleware<CustomExceptionHandler>();
 //app.UseMiddleware<LoggingMiddleware>();
 app.MapControllers();
 app.Run();

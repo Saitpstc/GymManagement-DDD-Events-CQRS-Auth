@@ -18,7 +18,7 @@ public class JwtMiddleware
     private readonly RequestDelegate _next;
     private readonly IRequestElapsedTime _elapsedTime;
 
-    public JwtMiddleware(RequestDelegate next,IRequestElapsedTime elapsedTime)
+    public JwtMiddleware(RequestDelegate next, IRequestElapsedTime elapsedTime)
     {
         _next = next;
         _elapsedTime = elapsedTime;
@@ -27,32 +27,29 @@ public class JwtMiddleware
     public async Task InvokeAsync(HttpContext context)
     {
         var authorizeAttribute = context.GetEndpoint()?.Metadata?.GetMetadata<AuthorizeFilter>();
-        if (authorizeAttribute is null)
+
+
+        if (authorizeAttribute is not null)
         {
-            await _next.Invoke(context);
-            return ;
-        }
-  
+            var authHeader = context.Request.Headers.Authorization;
 
-        var authHeader = context.Request.Headers.Authorization;
-
-        if (!string.IsNullOrEmpty(authHeader))
-        {
-            var tokenIsExpired = JwtUtils.IsTokenExpired(authHeader);
-
-            if (tokenIsExpired)
+            if (!string.IsNullOrEmpty(authHeader))
             {
-                var response = new ApiResponse()
+                var tokenIsExpired = JwtUtils.IsTokenExpired(authHeader);
+
+                if (tokenIsExpired)
                 {
-                    ErrorMessages = new List<string>() { "Token Expired" },
-                    IsSuccessfull = false
-                };
-                LogContext.PushProperty("Response", JsonSerializer.Serialize(response));
-                await CreateUnauthorizedUserResponse(context, response);
-                return;
+                    var response = new ApiResponse()
+                    {
+                        ErrorMessages = new List<string>() { "Token Expired" },
+                        IsSuccessfull = false
+                    };
+                    LogContext.PushProperty("Response", JsonSerializer.Serialize(response));
+                    await CreateUnauthorizedUserResponse(context, response);
+                    return;
+                }
             }
         }
-
         await _next.Invoke(context);
     }
 
@@ -65,5 +62,5 @@ public class JwtMiddleware
         context.Response.StatusCode = (int) HttpStatusCode.OK;
         await context.Response.WriteAsJsonAsync(response);
     }
-    
+
 }

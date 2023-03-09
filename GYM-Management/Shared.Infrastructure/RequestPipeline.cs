@@ -1,5 +1,6 @@
 ﻿namespace Shared.Infrastructure;
 
+using Core;
 using FluentValidation;
 using MediatR;
 using Newtonsoft.Json;
@@ -31,7 +32,8 @@ public class RequestPipeline<TRequest, TResponse>:IPipelineBehavior<TRequest, TR
 
         if (validationFailures.Any())
         {
-            throw new ValidationException(validationFailures);
+            var es = validationFailures.Select(x => x.ErrorMessage).ToList();
+            throw new RequestValidationException(errorMessages: validationFailures.Select(x => x.ErrorMessage).ToList());
         }
 
         return await next();
