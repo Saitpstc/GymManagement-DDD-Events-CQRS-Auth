@@ -80,10 +80,10 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseMiddleware<LoggingMiddleware>();
 app.UseMiddleware<JwtMiddleware>();
+app.UseMiddleware<CustomExceptionHandler>();
 app.UseAuthorization();
 
 
-//app.UseMiddleware<CustomExceptionHandler>();
 //app.UseMiddleware<LoggingMiddleware>();
 app.MapControllers();
 app.Run();

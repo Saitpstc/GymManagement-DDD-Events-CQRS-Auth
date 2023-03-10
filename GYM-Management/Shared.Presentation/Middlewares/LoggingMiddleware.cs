@@ -20,15 +20,18 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 public class LoggingMiddleware
 {
     private readonly RequestDelegate _next;
+    private readonly ISerilogContext _serilogContext;
 
 
-    public LoggingMiddleware(RequestDelegate next)
+    public LoggingMiddleware(RequestDelegate next, ISerilogContext serilogContext)
     {
         _next = next;
+        _serilogContext = serilogContext;
     }
 
     public async Task InvokeAsync(HttpContext context)
     {
+
 
         await PopulateLogContextForRequest(context);
 
@@ -43,48 +46,32 @@ public class LoggingMiddleware
         }
         catch (Exception e)
         {
-
-            var exceptionHandler = new ExceptionHandler(e);
-
-            exceptionHandler.CreateApiResponse().And().ModifyContext().Finally().PopulateLogContext();
-            context.Response.Clear();
-
-
-
-            await context.Response.WriteAsJsonAsync(apiResponse);
-
-            var response = JsonSerializer.Serialize(apiResponse);
-            LogContext.PushProperty("Response", response);
+            logException = e;
 
         }
 
         var statusCode = context.Response.StatusCode;
-        LogContext.PushProperty("ExecutionTime", stopwatch.Elapsed.TotalSeconds);
-        LogContext.PushProperty("StatusCode", statusCode);
+        _serilogContext.PushToLogContext(LogColumns.ExecutionTime, stopwatch.Elapsed.TotalSeconds);
+        _serilogContext.PushToLogContext(LogColumns.StatusCode, statusCode);
 
-        if (statusCode == (int) HttpStatusCode.Unauthorized)
+        LogContext.Push(_serilogContext.GetEnricher());
+
+        if (logException is not null)
         {
-            Log.Warning("Unauthorized Request Has Been Made");
-        }
-
-        else if (statusCode == (int) HttpStatusCode.InternalServerError)
-        {
-            Log.Error(logException, "An Exception is thrown");
-
+            Log.Error(logException, "An Exception Has Been Thrown");
         }
         else
         {
-            Log.Information("Request is processed");
+            Log.Information("Request has been processed");
         }
-
-
-        var s = new test();
+        _serilogContext.DisposeContext();
+        
 
     }
 
-    static async private Task PopulateLogContextForRequest(HttpContext context)
-    {
 
+    async private Task PopulateLogContextForRequest(HttpContext context)
+    {
         var requestDetailsJson = JsonConvert.SerializeObject(context.Request.Headers);
 
         var requestBody = await GetRawBodyAsync(context.Request);
@@ -93,15 +80,17 @@ public class LoggingMiddleware
 
         var userName = context.User.Claims.FirstOrDefault(x => x.Type == "UserName")?.Value;
 
-        LogContext.PushProperty("Endpoint", endpoint);
-        LogContext.PushProperty("Username", userName);
-        LogContext.PushProperty("RequestHeaders", requestDetailsJson);
+        _serilogContext.PushToLogContext(LogColumns.Endpoint, endpoint);
+        _serilogContext.PushToLogContext(LogColumns.Username, userName);
+        _serilogContext.PushToLogContext(LogColumns.RequestHeaders, requestDetailsJson);
+
 
         if (string.IsNullOrWhiteSpace(requestBody))
         {
             requestBody = JsonSerializer.Serialize(context.Request.Query);
         }
-        LogContext.PushProperty("RequestBody", requestBody);
+        _serilogContext.PushToLogContext(LogColumns.RequestBody, requestBody);
+
     }
 
     public static async Task<string> GetRawBodyAsync(
@@ -123,87 +112,9 @@ public class LoggingMiddleware
 
         return body;
     }
-    public IExceptionHandler CreateApiResponse()
-    {
-        apiResponse = new ApiResponse()
-        {
-            IsSuccessfull = false,
-            ErrorMessages = Exception.ErrorMessages
-        };
-
-        return this;
-    }
-}
-
-public interface IExceptionHandler
-{
-
-    IExceptionHandler ProcessException();
-
-    IExceptionHandler And();
-
-    IExceptionHandler ModifyContext(HttpContext context);
-
-    IExceptionHandler Finally();
-
-    IExceptionHandler PopulateLogContext();
-
-    IExceptionHandler CreateApiResponse();
-}
-
-public class ExceptionHandler:IExceptionHandler
-{
-
-    private ApiResponse apiResponse { get; set; }
-    private BaseException Exception { get; set; }
-
-    public ExceptionHandler(Exception exception)
-    {
-        Exception = (BaseException) exception;
-
-    }
-
-    public IExceptionHandler ProcessException()
-    {
 
 
-    }
 
-    public IExceptionHandler And()
-    {
-        throw new NotImplementedException();
-    }
 
-    public IExceptionHandler ModifyContext(HttpContext context)
-    {
-        if (Exception is UnauthorizedRequestException)
-        {
-            context.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
-        }
-        else
-        {
-            context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
-        }
-    }
 
-    public IExceptionHandler Finally()
-    {
-        throw new NotImplementedException();
-    }
-
-    public IExceptionHandler PopulateLogContext()
-    {
-        throw new NotImplementedException();
-    }
-
-    public IExceptionHandler CreateApiResponse()
-    {
-        apiResponse = new ApiResponse()
-        {
-            IsSuccessfull = false,
-            ErrorMessages = Exception.ErrorMessages
-        };
-
-        return this;
-    }
 }

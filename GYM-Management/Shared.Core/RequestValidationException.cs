@@ -13,8 +13,5 @@ public class RequestValidationException:BaseException
 
     }
 
-    public RequestValidationException ThrowWithErrorList(List<string> errors)
-    {
-
-    }
+ 
 }

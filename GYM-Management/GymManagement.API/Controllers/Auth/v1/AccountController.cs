@@ -24,7 +24,8 @@ public class AccountController:BaseController
     [HttpPost]
     public async Task<ApiResponse<User>> CreateAccount(UserReqDto dto)
     {
-        
+
+        throw new NotImplementedException();
         var user = new User()
         {
             Email = dto.Email,
