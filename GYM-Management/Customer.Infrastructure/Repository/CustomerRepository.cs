@@ -1,11 +1,8 @@
 ﻿namespace Customer.Infrastructure.Repository;
 
 using Core;
-using Core.ValueObjects;
 using Database;
 using Database.Tables;
-using Shared.Core;
-using Shared.Infrastructure;
 
 public class CustomerRepository:ICustomerRepository
 {
@@ -42,7 +39,7 @@ public class CustomerRepository:ICustomerRepository
 
     public async Task DeleteByAsync(Customer Aggregate)
     {
-        var dbTable = CustomerDB.FromDomainModel(Aggregate);
+        CustomerDB dbTable = CustomerDB.FromDomainModel(Aggregate);
         dbTable.IsDeleted = true;
         _dbContext.Update(dbTable);
 
@@ -53,7 +50,7 @@ public class CustomerRepository:ICustomerRepository
 
     public async Task<Customer> AddAsync(Customer Aggregate)
     {
-        var dbTable = CustomerDB.FromDomainModel(Aggregate);
+        CustomerDB dbTable = CustomerDB.FromDomainModel(Aggregate);
 
         await _dbContext.Customers.AddAsync(dbTable);
 
@@ -71,9 +68,4 @@ public class CustomerRepository:ICustomerRepository
     {
         return await _dbContext.SaveChangesAsync();
     }
-
-
-
-
-
 }

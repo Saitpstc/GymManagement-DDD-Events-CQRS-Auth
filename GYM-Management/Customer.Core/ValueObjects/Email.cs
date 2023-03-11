@@ -5,15 +5,15 @@ using ServiceExtensions;
 
 public record Email:ValueObject
 {
-    private string email;
+
+    static private readonly Regex EmailPattern = new Regex(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$");
+    private readonly string email;
 
     public Email(string email)
     {
         ValidateEmail(email);
         this.email = email;
     }
-
-    static private readonly Regex EmailPattern = new Regex(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$");
 
     private void ValidateEmail(string email)
     {
@@ -26,5 +26,8 @@ public record Email:ValueObject
 
     }
 
-    public override string ToString() => email;
+    public override string ToString()
+    {
+        return email;
+    }
 }

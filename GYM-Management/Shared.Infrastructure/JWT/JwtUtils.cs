@@ -6,22 +6,22 @@ using System.Text;
 using Authorization_Authentication.Infrastructure.JwtToken;
 using Microsoft.IdentityModel.Tokens;
 
-public  class JwtUtils
+public class JwtUtils
 {
-    
+
     /// <param name="user">Application's user object</param>
     /// <param name="lifeTimeInMinute"> How many minutes will this token will be valid  </param>
     public static JwtToken CreateToken(JwtUserDto user, int lifeTimeInMinute)
     {
         var claims = SetIdentityClaims(user);
 
-        var tokenHandler = new JwtSecurityTokenHandler();
+        JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 
 
-        var tokenDescriptor = CreateTokenDescriptor(lifeTimeInMinute, claims);
+        SecurityTokenDescriptor tokenDescriptor = CreateTokenDescriptor(lifeTimeInMinute, claims);
 
 
-        var aToken = tokenHandler.CreateToken(tokenDescriptor);
+        SecurityToken? aToken = tokenHandler.CreateToken(tokenDescriptor);
 
         var aJwtToken = tokenHandler.WriteToken(aToken);
 
@@ -30,9 +30,9 @@ public  class JwtUtils
 
     public static List<Claim> GetUserClaims(string tokenToken)
     {
-        var tokenHandler = new JwtSecurityTokenHandler();
+        JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 
-        var deserializedToken = tokenHandler.ReadJwtToken(tokenToken);
+        JwtSecurityToken? deserializedToken = tokenHandler.ReadJwtToken(tokenToken);
         var claims = deserializedToken.Claims.ToList();
 
         return claims;
@@ -41,16 +41,16 @@ public  class JwtUtils
     public static bool IsTokenExpired(string jwtToken)
     {
         jwtToken = jwtToken["Bearer ".Length..];
-        var token = new JwtSecurityToken(jwtEncodedString: jwtToken);
+        JwtSecurityToken token = new JwtSecurityToken(jwtEncodedString: jwtToken);
 
         if (DateTime.Compare(DateTime.UtcNow, token.ValidTo) > 0) return true;
 
         return false;
     }
 
-    private static Dictionary<string, object> SetIdentityClaims(JwtUserDto user)
+    static private Dictionary<string, object> SetIdentityClaims(JwtUserDto user)
     {
-        var claims = new Dictionary<string, object>()
+        var claims = new Dictionary<string, object>
         {
             { "Id", user.Id.ToString() },
             { "UserName", user.UserName },
@@ -81,12 +81,12 @@ public  class JwtUtils
     {
 
         var key = Encoding.ASCII.GetBytes("GymManagementAppTokenKey");
-        var accessTokenDescriptor = new SecurityTokenDescriptor
+        SecurityTokenDescriptor accessTokenDescriptor = new SecurityTokenDescriptor
         {
             // Set the expiration date for token here
             Expires = DateTime.UtcNow.AddMinutes(lifeTimeInMinute),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-            
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+
         };
 
         if (claims.Any())

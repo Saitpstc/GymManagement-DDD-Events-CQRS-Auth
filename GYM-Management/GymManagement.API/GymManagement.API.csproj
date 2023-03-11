@@ -8,31 +8,31 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.13">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.13">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Serilog" Version="3.0.0-dev-01910" />
-        <PackageReference Include="Serilog.AspNetCore" Version="6.1.1-dev-00295" />
-        <PackageReference Include="Serilog.Expressions" Version="3.4.2-dev-00119" />
-        <PackageReference Include="Serilog.Settings.Configuration" Version="3.5.0-dev-00370" />
-        <PackageReference Include="Serilog.Sinks.Console" Version="4.1.1-dev-00907" />
-        <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="6.2.1-dev-00048" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+        <PackageReference Include="Serilog" Version="3.0.0-dev-01910"/>
+        <PackageReference Include="Serilog.AspNetCore" Version="6.1.1-dev-00295"/>
+        <PackageReference Include="Serilog.Expressions" Version="3.4.2-dev-00119"/>
+        <PackageReference Include="Serilog.Settings.Configuration" Version="3.5.0-dev-00370"/>
+        <PackageReference Include="Serilog.Sinks.Console" Version="4.1.1-dev-00907"/>
+        <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="6.2.1-dev-00048"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Authorization-Authentication\Authorization-Authentication.csproj" />
-      <ProjectReference Include="..\Customer.Application\Customer.Application.csproj" />
-      <ProjectReference Include="..\Customer.Infrastructure\Customer.Infrastructure.csproj" />
-      <ProjectReference Include="..\Shared.Presentation\Shared.Presentation.csproj" />
+        <ProjectReference Include="..\Authorization-Authentication\Authorization-Authentication.csproj"/>
+        <ProjectReference Include="..\Customer.Application\Customer.Application.csproj"/>
+        <ProjectReference Include="..\Customer.Infrastructure\Customer.Infrastructure.csproj"/>
+        <ProjectReference Include="..\Shared.Presentation\Shared.Presentation.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Modules" />
+        <Folder Include="Modules"/>
     </ItemGroup>
 
 </Project>

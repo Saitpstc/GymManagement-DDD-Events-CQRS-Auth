@@ -16,7 +16,10 @@ public class CreateRoleCommandHandler:CommandHandlerBase<CreateRoleCommand, Role
     private readonly RoleManager<Role> _roleManager;
     private readonly AuthUnitOfWork _unitOfWork;
 
-    public CreateRoleCommandHandler(IErrorMessageCollector errorMessageCollector, RoleManager<Role> roleManager,AuthUnitOfWork unitOfWork):base(errorMessageCollector)
+    public CreateRoleCommandHandler(
+        IErrorMessageCollector errorMessageCollector,
+        RoleManager<Role> roleManager,
+        AuthUnitOfWork unitOfWork):base(errorMessageCollector)
     {
         _roleManager = roleManager;
         _unitOfWork = unitOfWork;
@@ -24,25 +27,25 @@ public class CreateRoleCommandHandler:CommandHandlerBase<CreateRoleCommand, Role
 
     public override async Task<RoleResponseDto> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
     {
-        var newRole = new Role()
+        Role newRole = new Role
         {
             Name = request.Name,
             IsActive = true
         };
 
         await _unitOfWork.SaveAsync(cancellationToken);
-        var result = await _roleManager.CreateAsync(newRole);
+        IdentityResult? result = await _roleManager.CreateAsync(newRole);
 
         if (!result.Succeeded)
         {
-            foreach (var error in result.Errors)
+            foreach (IdentityError? error in result.Errors)
             {
                 ErrorMessageCollector.AddError(error.Description);
             }
             return null;
         }
 
-        return new RoleResponseDto()
+        return new RoleResponseDto
         {
 
             Id = newRole.Id,

@@ -2,6 +2,6 @@
 
 public enum Modules
 {
-    Customer=1,
-    Auth=2
+    Customer = 1,
+    Auth = 2
 }

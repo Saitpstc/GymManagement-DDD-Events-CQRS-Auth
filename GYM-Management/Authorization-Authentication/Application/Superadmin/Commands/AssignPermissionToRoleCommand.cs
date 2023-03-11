@@ -1,6 +1,5 @@
 ﻿namespace Authorization_Authentication.Application.Superadmin.Commands;
 
-using Dto;
 using FluentValidation;
 using Infrastructure.Database;
 using MediatR;
@@ -36,7 +35,7 @@ public class AssignPermissionToRoleHandler:CommandHandlerBase<AssignPermissionTo
 
     public override async Task<Unit> Handle(AssignPermissionToRoleCommand request, CancellationToken cancellationToken)
     {
-        var rolePermissionMap =
+        RolePermissionMap? rolePermissionMap =
             await _db.RolePermissionMaps.FirstOrDefaultAsync(x => x.PermissionId == request.PermissionId && x.RoleId == request.RoleId);
 
         if (rolePermissionMap is not null)
@@ -44,7 +43,7 @@ public class AssignPermissionToRoleHandler:CommandHandlerBase<AssignPermissionTo
             ErrorMessageCollector.AddError("Permission already assigned to the role");
             return Unit.Value;
         }
-        var role = await _db.Roles.FirstOrDefaultAsync(x => x.Id == request.RoleId);
+        Role? role = await _db.Roles.FirstOrDefaultAsync(x => x.Id == request.RoleId);
 
 
 
@@ -54,7 +53,7 @@ public class AssignPermissionToRoleHandler:CommandHandlerBase<AssignPermissionTo
             return Unit.Value;
         }
 
-        var permission = await _db.Permissions.FirstOrDefaultAsync(x => x.Id == request.PermissionId);
+        Permission? permission = await _db.Permissions.FirstOrDefaultAsync(x => x.Id == request.PermissionId);
 
         if (permission is null)
         {
@@ -62,7 +61,7 @@ public class AssignPermissionToRoleHandler:CommandHandlerBase<AssignPermissionTo
             return Unit.Value;
         }
 
-        await _db.RolePermissionMaps.AddAsync(new RolePermissionMap()
+        await _db.RolePermissionMaps.AddAsync(new RolePermissionMap
         {
             Role = role,
             Permission = permission

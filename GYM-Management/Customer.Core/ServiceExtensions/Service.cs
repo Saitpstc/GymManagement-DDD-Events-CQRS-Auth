@@ -1,6 +1,5 @@
 ﻿namespace Customer.Core.ServiceExtensions;
 
-using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -13,13 +12,14 @@ public static class Service
         var searchPattern = @"GYM-Management\";
 
         var IndexOf = currentDirectory.IndexOf(searchPattern, StringComparison.Ordinal);
+
         if (IndexOf >= 0)
         {
             IndexOf = currentDirectory.IndexOf(searchPattern, IndexOf + 1, StringComparison.Ordinal);
         }
-        string absolutePath = currentDirectory.Substring(0, IndexOf - 1 + searchPattern.Length);
+        var absolutePath = currentDirectory.Substring(0, IndexOf - 1 + searchPattern.Length);
 
-        string relativePath = Path.Combine(absolutePath, "Customer.Core\\Countries.Json");
+        var relativePath = Path.Combine(absolutePath, "Customer.Core\\Countries.Json");
         using StreamReader reader = new StreamReader(relativePath);
         var json = reader.ReadToEnd();
         JObject? jObject = JsonConvert.DeserializeObject<JObject>(json);

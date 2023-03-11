@@ -1,6 +1,6 @@
 ﻿namespace Shared.Presentation.Models;
 
-using Shared.Core;
+using Core;
 
 public static class ApiResponseFactory
 {
@@ -17,10 +17,10 @@ public static class ApiResponseFactory
 
     public static ApiResponse<T> Fail<T>(List<string> errorMessages)
     {
-        return new ApiResponse<T>()
+        return new ApiResponse<T>
         {
             ErrorMessages = errorMessages,
-            IsSuccessfull = false,
+            IsSuccessfull = false
 
         };
     }
@@ -30,7 +30,7 @@ public static class ApiResponseFactory
         var isDevelopment = string.Equals(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"), "development",
             StringComparison.InvariantCultureIgnoreCase);
 
-        var apiResponse = new ApiResponse()
+        ApiResponse apiResponse = new ApiResponse
         {
             IsSuccessfull = false,
             ErrorMessages = new List<string>()
@@ -45,7 +45,7 @@ public static class ApiResponseFactory
         {
             if (exception is BaseException)
             {
-                var e = (BaseException) exception;
+                BaseException e = (BaseException) exception;
                 apiResponse.ErrorMessages = e.ErrorMessages;
             }
             else

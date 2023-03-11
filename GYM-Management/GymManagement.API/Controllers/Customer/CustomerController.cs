@@ -9,7 +9,6 @@ using Shared.Application.Contracts;
 using Shared.Presentation.Models;
 
 [Route("/customer")]
-
 public class CustomerController:BaseController
 {
     private readonly ICustomerModule _module;
@@ -25,7 +24,7 @@ public class CustomerController:BaseController
     [HttpGet("EntryPoint")]
     public async Task<ApiNavigation> EntryPoint()
     {
-        return new ApiNavigation()
+        return new ApiNavigation
         {
             Action = "POST",
             Operation = "Create Customer",
@@ -37,10 +36,7 @@ public class CustomerController:BaseController
     [HttpPost]
     public async Task<ApiResponse<Customer>> Create(CreateCustomer.Command command)
     {
-        var result = await _module.ExecuteCommandAsync(command);
+        Customer result = await _module.ExecuteCommandAsync(command);
         return CreateResponse(result);
     }
-    
-    
 }
-

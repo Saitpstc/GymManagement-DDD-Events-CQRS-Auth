@@ -9,7 +9,6 @@ using Authorization_Authentication.Infrastructure.JwtToken;
 using Authorization_Authentication.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Models;
 using Shared.Application.Contracts;
 using Shared.Infrastructure;
 using Shared.Presentation.Attributes;
@@ -30,13 +29,13 @@ public class AccountController:BaseController
     [HttpPost]
     public async Task<ApiResponse<PermissionResponseDto>> CreateRole(CreatePermissionCommand dto)
     {
-       var result=await _module.ExecuteCommandAsync(new CreatePermissionCommand()
+        PermissionResponseDto result = await _module.ExecuteCommandAsync(new CreatePermissionCommand
         {
-            Name = null,
+            Name = null
 
         });
 
-       return CreateResponse(result);
+        return CreateResponse(result);
 
     }
 
@@ -44,8 +43,8 @@ public class AccountController:BaseController
     public async Task<ApiResponse<JwtUserDto>> login(UserReqDto dto)
     {
 
-        var dt = new JwtUserDto(new Guid("89B4B112-3E93-4A05-EAB2-08DB18C46A04"), "user@example.com", "user@example.com");
-        var result = JwtUtils.CreateToken(dt, 60);
+        JwtUserDto dt = new JwtUserDto(new Guid("89B4B112-3E93-4A05-EAB2-08DB18C46A04"), "user@example.com", "user@example.com");
+        JwtToken result = JwtUtils.CreateToken(dt, 60);
 
         dt.Token = result;
 
@@ -69,6 +68,4 @@ public class UserReqDto
     [StringLength(16, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
     [DefaultValue("P@ssw0rd1")]
     public string Password { get; set; }
-
-
 }

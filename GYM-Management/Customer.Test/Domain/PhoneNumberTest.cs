@@ -1,7 +1,7 @@
 ﻿namespace Customer.Test.Domain;
 
+using Core.ServiceExtensions;
 using Core.ValueObjects;
-using Customer.Core.ServiceExtensions;
 using FluentAssertions;
 using Shared.Core;
 
@@ -45,7 +45,7 @@ public class PhoneNumberTest
     {
         PhoneNumber number = new PhoneNumber("90", "5533282568");
 
-        var fullNumber=number.ToString();
+        var fullNumber = number.ToString();
 
         fullNumber.Should().Be("+905533282568");
     }
@@ -53,10 +53,10 @@ public class PhoneNumberTest
     [Fact]
     public void CountryCode_Cannot_Be_Zero_And_Number_Cannot_Be_Empty_Or_Null_Or_WhiteSpace()
     {
-        Action EmptyNumber =()=> new PhoneNumber("90", "");
-        Action ZeroCodeAndEmptyNumber =()=> new PhoneNumber("0", "");
-        Action NullNumber =()=> new PhoneNumber("90", null);
-        Action WhiteSpaceNumber =()=> new PhoneNumber("90", " ");
+        Action EmptyNumber = () => new PhoneNumber("90", "");
+        Action ZeroCodeAndEmptyNumber = () => new PhoneNumber("0", "");
+        Action NullNumber = () => new PhoneNumber("90", null);
+        Action WhiteSpaceNumber = () => new PhoneNumber("90", " ");
 
 
         EmptyNumber.Should().Throw<DomainValidationException>();

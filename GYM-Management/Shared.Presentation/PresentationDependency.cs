@@ -2,17 +2,16 @@
 
 using Core;
 using FluentValidation.AspNetCore;
-using Infrastructure;
-using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
 public static class PresentationDependency
 {
-    public static void AddPresentationDependency(this IServiceCollection service, IConfiguration configuration,AppOptions myOptions)
+    public static void AddPresentationDependency(this IServiceCollection service, IConfiguration configuration, AppOptions myOptions)
     {
-        
+
+
         configuration.Bind("AppOptions", myOptions);
         service.AddSingleton(myOptions);
         service.AddFluentValidationAutoValidation();
@@ -47,5 +46,4 @@ public static class PresentationDependency
         });
 
     }
-
 }

@@ -1,10 +1,8 @@
-﻿namespace Shared.Application.Config.Commands
-{
-    using System.Threading.Tasks;
-    using Shared.Application.Contracts;
+﻿namespace Shared.Application.Config.Commands;
 
-    public interface ICommandsScheduler
-    {
-        Task EnqueueAsync<T>(ICommand<T> command);
-    }
+using Contracts;
+
+public interface ICommandsScheduler
+{
+    Task EnqueueAsync<T>(ICommand<T> command);
 }

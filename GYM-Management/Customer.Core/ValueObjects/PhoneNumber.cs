@@ -21,14 +21,14 @@ public class PhoneNumber
         {
             throw new DomainValidationException($"Country Code:{countryCode} Is Not Valid");
         }
-        
+
         Code = countryCode;
 
     }
 
     private bool ValidateNumber(string number)
     {
-        if (string.IsNullOrWhiteSpace(number) || (number.Length > 10))
+        if (string.IsNullOrWhiteSpace(number) || number.Length > 10)
         {
             return false;
         }
@@ -43,9 +43,18 @@ public class PhoneNumber
         return !string.IsNullOrWhiteSpace(code) && Service.ValidateCountryCode("+" + code);
     }
 
-    public override string ToString() =>"+" + Code + _number;
+    public override string ToString()
+    {
+        return "+" + Code + _number;
+    }
 
-    public string CountryCode() => Code;
+    public string CountryCode()
+    {
+        return Code;
+    }
 
-    public string Number() => _number;
+    public string Number()
+    {
+        return _number;
+    }
 }

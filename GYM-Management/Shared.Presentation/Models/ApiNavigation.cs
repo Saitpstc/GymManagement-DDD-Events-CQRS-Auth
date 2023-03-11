@@ -6,5 +6,4 @@ public class ApiNavigation
     public string Action { get; set; }
     public string Operation { get; set; }
     public object AcceptedData { get; set; }
-
 }

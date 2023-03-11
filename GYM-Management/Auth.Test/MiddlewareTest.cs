@@ -14,10 +14,10 @@ public class MiddlewareTest
     [Fact]
     public async Task Unauthorized_Response_Result_If_Token_Not_Exist()
     {
-        var middleware = new JwtMiddleware(null, new SerilogContext());
+        JwtMiddleware middleware = new JwtMiddleware(null, new SerilogContext());
 
-        var context = new DefaultHttpContext();
-        var JwtUserDto = new JwtUserDto(Guid.NewGuid(), "test@gmail.com", "UserName");
+        DefaultHttpContext context = new DefaultHttpContext();
+        JwtUserDto JwtUserDto = new JwtUserDto(Guid.NewGuid(), "test@gmail.com", "UserName");
 
         await middleware.InvokeAsync(context);
 
@@ -29,19 +29,19 @@ public class MiddlewareTest
     [Fact]
     public async Task Token_Expired_Response_Result_If_Token_Expired()
     {
-        var middleware = new JwtMiddleware(null, new SerilogContext());
+        JwtMiddleware middleware = new JwtMiddleware(null, new SerilogContext());
 
-        var context = new DefaultHttpContext();
+        DefaultHttpContext context = new DefaultHttpContext();
 
-        var tokenHandler = new JwtSecurityTokenHandler();
+        JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes("Super Secret Token");
-        var accessTokenDescriptor = new SecurityTokenDescriptor
+        SecurityTokenDescriptor accessTokenDescriptor = new SecurityTokenDescriptor
         {
             // Set the expiration date for token here
             Expires = DateTime.UtcNow.AddMilliseconds(100),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
-        var aToken = tokenHandler.CreateToken(accessTokenDescriptor);
+        SecurityToken? aToken = tokenHandler.CreateToken(accessTokenDescriptor);
         var aJwtToken = tokenHandler.WriteToken(aToken);
 
         context.Request.Headers.Authorization = aJwtToken;
@@ -52,19 +52,15 @@ public class MiddlewareTest
         await middleware.InvokeAsync(context);
 
 
-        var responseBodyStream = context.Response.Body;
+        Stream responseBodyStream = context.Response.Body;
         responseBodyStream.Seek(0, SeekOrigin.Begin);
 
-        using var streamReader = new StreamReader(responseBodyStream, Encoding.UTF8);
-        string responseBody = await streamReader.ReadToEndAsync();
+        using StreamReader streamReader = new StreamReader(responseBodyStream, Encoding.UTF8);
+        var responseBody = await streamReader.ReadToEndAsync();
 
-        var client = new HttpClient();
+        HttpClient client = new HttpClient();
 
 
         Assert.True(context.HttpContext.Response.StatusCode == 200);
     }
-
-
-
-
 }

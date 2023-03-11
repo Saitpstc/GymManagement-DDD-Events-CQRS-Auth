@@ -1,23 +1,14 @@
-using System.Diagnostics;
-using System.Text;
 using System.Text.Json.Serialization;
 using Authorization_Authentication;
-using Authorization_Authentication.Middlewares;
 using Customer.Application.Contracts;
 using Customer.Infrastructure;
-using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using Serilog;
 using Shared.Application;
 using Shared.Core;
-using Shared.Infrastructure;
 using Shared.Presentation;
 using Shared.Presentation.Middlewares;
 
-
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 
 
@@ -27,7 +18,7 @@ builder.Host.UseSerilog((context, configuration) =>
 });
 
 
-var myOptions = new AppOptions();
+AppOptions myOptions = new AppOptions();
 builder.Services.AddPresentationDependency(builder.Configuration, myOptions);
 builder.Services.CustomerDependency(builder.Configuration, myOptions);
 builder.Services.AddSharedDependency();
@@ -48,7 +39,7 @@ builder.Services.AddAuthorization();
 
 
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 
 // Configure the HTTP request pipeline.

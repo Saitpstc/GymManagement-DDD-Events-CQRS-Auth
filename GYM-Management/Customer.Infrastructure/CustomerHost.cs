@@ -1,13 +1,13 @@
 ﻿namespace Customer.Infrastructure;
 
-using Customer.Application.Contracts;
-using Customer.Core;
-using Customer.Infrastructure.Database;
-using Customer.Infrastructure.Repository;
+using Application.Contracts;
+using Core;
+using Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Repository;
 using Shared.Core;
 
 public static class CustomerHost

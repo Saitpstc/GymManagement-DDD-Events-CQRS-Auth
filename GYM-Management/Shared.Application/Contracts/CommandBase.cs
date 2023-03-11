@@ -1,34 +1,32 @@
-﻿namespace Shared.Application.Contracts
+﻿namespace Shared.Application.Contracts;
+
+public abstract class CommandBase:ICommand
 {
-    using System;
 
-    public abstract class CommandBase : ICommand
+    protected CommandBase()
     {
-        public Guid Id { get; }
-
-        protected CommandBase()
-        {
-            this.Id = Guid.NewGuid();
-        }
-
-        protected CommandBase(Guid id)
-        {
-            this.Id = id;
-        }
+        Id = Guid.NewGuid();
     }
 
-    public abstract class CommandBase<TResult> : ICommand<TResult>
+    protected CommandBase(Guid id)
     {
-        protected CommandBase()
-        {
-            this.Id = Guid.NewGuid();
-        }
-
-        protected CommandBase(Guid id)
-        {
-            this.Id = id;
-        }
-
-        public Guid Id { get; }
+        Id = id;
     }
+
+    public Guid Id { get; }
+}
+
+public abstract class CommandBase<TResult>:ICommand<TResult>
+{
+    protected CommandBase()
+    {
+        Id = Guid.NewGuid();
+    }
+
+    protected CommandBase(Guid id)
+    {
+        Id = id;
+    }
+
+    public Guid Id { get; }
 }

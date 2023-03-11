@@ -35,9 +35,23 @@ public record Name:ValueObject
         return _name + " " + _surname;
     }
 
-    public string NameOnly() => _name;
-    public string SurNameOnly() => _surname;
+    public string NameOnly()
+    {
+        return _name;
+    }
 
-    public string NormalizedName() => _name.ToUpper();
-    public string NormalizedSurName() => _surname.ToUpper();
+    public string SurNameOnly()
+    {
+        return _surname;
+    }
+
+    public string NormalizedName()
+    {
+        return _name.ToUpper();
+    }
+
+    public string NormalizedSurName()
+    {
+        return _surname.ToUpper();
+    }
 }

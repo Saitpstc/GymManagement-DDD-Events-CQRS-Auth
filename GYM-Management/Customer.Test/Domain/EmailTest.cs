@@ -11,7 +11,7 @@ public class EmailTest
     {
         Action action = () => new Email("saitpostaci#gmail.com");
 
-        
+
         action.Should().Throw<DomainValidationException>().WithMessage("Email Is Invalid");
     }
 
@@ -22,6 +22,7 @@ public class EmailTest
 
         action.Should().Throw<DomainValidationException>();
     }
+
     [Fact]
     public void Email_Should_Pass_Validation()
     {
@@ -29,12 +30,12 @@ public class EmailTest
 
         action.Should().NotThrow();
     }
+
     [Fact]
     public void ToString_Should_Return_Email()
     {
-        Email mail= new Email("saitpostaci@gmail.com");
+        Email mail = new Email("saitpostaci@gmail.com");
 
         mail.ToString().Should().Be("saitpostaci@gmail.com");
     }
-
 }

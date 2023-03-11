@@ -3,7 +3,6 @@
 using System.Text;
 using Application.Contracts;
 using FluentValidation;
-using FluentValidation.AspNetCore;
 using Infrastructure;
 using Infrastructure.Database;
 using MediatR;
@@ -30,7 +29,7 @@ public static class AuthHost
                .AddDefaultTokenProviders();
 
 
-   
+
 
         service.AddScoped<IAuthDbContext, AuthDbContext>();
         service.AddScoped<AuthUnitOfWork>();
@@ -53,7 +52,7 @@ public static class AuthHost
                 ValidateAudience = false
             };
         });
-     
+
 
 
         service.AddScoped<IAuthModule, AuthModule>();

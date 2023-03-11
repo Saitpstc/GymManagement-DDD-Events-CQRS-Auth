@@ -1,6 +1,5 @@
 ﻿namespace Authorization_Authentication.Infrastructure;
 
-using Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure;

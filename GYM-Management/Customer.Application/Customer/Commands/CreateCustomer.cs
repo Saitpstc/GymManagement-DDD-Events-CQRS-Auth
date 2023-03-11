@@ -1,24 +1,15 @@
-﻿using Customer.Core;
-using Customer.Core.ValueObjects;
-using MediatR;
-using Shared.Application.Config.Commands;
-using Shared.Application.Contracts;
+﻿namespace Customer.Application.Customer.Commands;
 
-namespace Customer.Application.Customer.Commands;
-
+using Core;
+using Core.ValueObjects;
 using DomainEvents;
-using Customer = global::Customer.Core.Customer;
+using Shared.Application.Contracts;
 
 public class CreateCustomer
 {
 
     public class Command:ICommand<Customer>
     {
-        public string _name { get; set; }
-        public string _surname { get; set; }
-        public string _countrycode { get; set; }
-        public string _number { get; set; }
-        public string _mail { get; set; }
 
         /*public Command(string name, string surname, string countrycode, string number, string mail)
         {
@@ -29,10 +20,11 @@ public class CreateCustomer
             _mail = mail;
         }*/
 
-        public Command()
-        {
-
-        }
+        public string _name { get; set; }
+        public string _surname { get; set; }
+        public string _countrycode { get; set; }
+        public string _number { get; set; }
+        public string _mail { get; set; }
 
         public Guid Id { get; }
     }
@@ -40,16 +32,21 @@ public class CreateCustomer
 
 
 
-    public class CreateCustomerHandler:CommandHandlerBase<CreateCustomer.Command, Customer>
+    public class CreateCustomerHandler:CommandHandlerBase<Command, Customer>
     {
         private readonly ICustomerRepository _repository;
 
+        public CreateCustomerHandler(ICustomerRepository repository, IErrorMessageCollector collector):base(collector)
+        {
+            _repository = repository;
+        }
+
         public override Task<Customer> Handle(Command request, CancellationToken cancellationToken)
         {
-            var customer = new Customer(new Name(request._name, request._surname), new PhoneNumber(request._countrycode, request._number),
+            Customer customer = new Customer(new Name(request._name, request._surname), new PhoneNumber(request._countrycode, request._number),
                 new Email(request._mail));
             var AddedCustomer = _repository.AddAsync(customer);
-            var newCustomerCreate = new integratioEvent()
+            integratioEvent newCustomerCreate = new integratioEvent
             {
                 CustomerId = Guid.NewGuid(),
                 password = "password",
@@ -57,15 +54,9 @@ public class CreateCustomer
             };
             return AddedCustomer;
         }
-
-        public CreateCustomerHandler(ICustomerRepository repository, IErrorMessageCollector collector):base(collector)
-        {
-            _repository = repository;
-        }
     }
 }
 
 public class test
 {
-
 }

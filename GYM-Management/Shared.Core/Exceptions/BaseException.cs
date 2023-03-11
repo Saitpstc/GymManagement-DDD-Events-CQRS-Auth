@@ -2,7 +2,6 @@
 
 public class BaseException:Exception
 {
-    public List<string> ErrorMessages { get; set; } = new List<string>();
 
     protected BaseException(string message)
     {
@@ -12,6 +11,8 @@ public class BaseException:Exception
             ErrorMessages.Add(message);
 
         }
-        
+
     }
+
+    public List<string> ErrorMessages { get; set; } = new List<string>();
 }

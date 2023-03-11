@@ -1,8 +1,7 @@
-﻿namespace Shared.Application.Contracts
-{
-    using MediatR;
+﻿namespace Shared.Application.Contracts;
 
-    public interface IQuery<out TResult> : IRequest<TResult>
-    {
-    }
+using MediatR;
+
+public interface IQuery<out TResult>:IRequest<TResult>
+{
 }

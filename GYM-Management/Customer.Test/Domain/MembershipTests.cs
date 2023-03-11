@@ -62,19 +62,19 @@ public class MembershipTests
     [Fact]
     public void Customer_Can_Freeze_Account_Only_For_4in1_Days_In_Total()
     {
-        var mem = Membership.CreateMembershipPeriodOf(SubscriptionEnum.Yearly, Guid.NewGuid());
+        Membership mem = Membership.CreateMembershipPeriodOf(SubscriptionEnum.Yearly, Guid.NewGuid());
 
-        Action act = (() => mem.FreezeFor(100));
+        Action act = () => mem.FreezeFor(100);
 
         act.Should().Throw<DomainValidationException>()
            .WithMessage(
-               $"Cannot Freeze Membership More Than {((mem.EndsAt() - mem.StartedAt()).Days) / 4} Days For {mem.SubscriptionType().ToString()} Subscriptions ");
+               $"Cannot Freeze Membership More Than {(mem.EndsAt() - mem.StartedAt()).Days / 4} Days For {mem.SubscriptionType().ToString()} Subscriptions ");
     }
 
     [Fact]
     public void Customer_Membership_Status_Will_Be_Frozen_If_Constraints_Are_Met()
     {
-        var mem = Membership.CreateMembershipPeriodOf(SubscriptionEnum.Yearly, Guid.NewGuid());
+        Membership mem = Membership.CreateMembershipPeriodOf(SubscriptionEnum.Yearly, Guid.NewGuid());
 
         mem.FreezeFor(80);
 
@@ -86,7 +86,7 @@ public class MembershipTests
     [Fact]
     public void Customer_Membership_Status_Cannot_Be_Frozen_If_No_Days_Left()
     {
-        var mem = Membership.CreateMembershipPeriodOf(SubscriptionEnum.Yearly, Guid.NewGuid());
+        Membership mem = Membership.CreateMembershipPeriodOf(SubscriptionEnum.Yearly, Guid.NewGuid());
         mem.FreezeFor(80);
 
         Action act = () => mem.FreezeFor(20);
@@ -99,8 +99,8 @@ public class MembershipTests
     public void Total_Membership_In_Months()
     {
 
-        var guid = Guid.NewGuid();
-        var mem = Membership.CreateMembershipPeriodOf(SubscriptionEnum.Yearly, guid);
+        Guid guid = Guid.NewGuid();
+        Membership mem = Membership.CreateMembershipPeriodOf(SubscriptionEnum.Yearly, guid);
 
         mem.GetTotalMembershipInMonths().Should().Be(12);
 
@@ -111,9 +111,6 @@ public class MembershipTests
 
         mem.RenewMembershipPeriod(SubscriptionEnum.Yearly, guid);
 
-        mem.GetTotalMembershipInMonths().Should().Be(25); 
+        mem.GetTotalMembershipInMonths().Should().Be(25);
     }
-
-
-
 }

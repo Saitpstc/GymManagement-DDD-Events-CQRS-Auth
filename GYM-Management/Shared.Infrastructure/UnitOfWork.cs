@@ -7,14 +7,14 @@ using Microsoft.EntityFrameworkCore;
 public class UnitOfWork:IUnitOfWork
 {
     private readonly IMediator Mediator;
-    private DbContext DbContext;
+    private readonly DbContext DbContext;
 
-    public UnitOfWork(IMediator mediator,DbContext context)
+    public UnitOfWork(IMediator mediator, DbContext context)
     {
         Mediator = mediator;
         DbContext = context;
     }
-    
+
 
     public async Task<int> SaveAsync(CancellationToken cancellationToken = default)
     {
@@ -57,7 +57,6 @@ public class UnitOfWork:IUnitOfWork
             await Mediator.Publish(domainEvent, cancellationToken);
         }
     }
-
 }
 
 public interface IUnitOfWork

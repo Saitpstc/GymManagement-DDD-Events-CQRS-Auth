@@ -15,14 +15,14 @@ public class NameTest
 
         var result = fullName.OfCustomer();
 
-     
+
         result.Should().Be("Sait Sait");
     }
 
     [Fact]
     public void Name_Should_Accept_Only_Letters()
     {
-        Action fullName =()=> new Name("sa@!t", "p0st4c!");
+        Action fullName = () => new Name("sa@!t", "p0st4c!");
 
         fullName.Should().Throw<DomainValidationException>();
     }
@@ -30,10 +30,10 @@ public class NameTest
     [Fact]
     public void GetName_And_GetSurname_Should_Return_Only_Name_Without_Surname()
     {
-        Name fullName = new Name("sait","postaci");
+        Name fullName = new Name("sait", "postaci");
 
-        var nameOnly=fullName.NameOnly();
-        var surnameOnly=fullName.SurNameOnly();
+        var nameOnly = fullName.NameOnly();
+        var surnameOnly = fullName.SurNameOnly();
 
         nameOnly.Should().Be("Sait");
         surnameOnly.Should().Be("Postaci");
@@ -42,7 +42,7 @@ public class NameTest
     [Fact]
     public void Normalized_Versions_Of_Name_And_Surname()
     {
-        Name fullName = new Name("sait","postaci");
+        Name fullName = new Name("sait", "postaci");
 
         var NormalizedName = fullName.NormalizedName();
         var NormalizedSurName = fullName.NormalizedSurName();
@@ -50,5 +50,4 @@ public class NameTest
         NormalizedName.Should().Be("SAIT");
         NormalizedSurName.Should().Be("POSTACI");
     }
-
 }

@@ -20,7 +20,7 @@ public class CustomerRepositoryTest
         var options = new DbContextOptionsBuilder<CustomerDbContext>()
                       .UseInMemoryDatabase(databaseName: "InMemoryDb")
                       .Options;
-        var mediator = new Mock<IMediator>().Object;
+        IMediator? mediator = new Mock<IMediator>().Object;
         Context = new CustomerDbContext(options);
 
     }
@@ -32,17 +32,17 @@ public class CustomerRepositoryTest
     public void CreateCustomer_Should_Add_One_Record_To_Database()
     {
         //Arrange
-        var repository = new CustomerRepository(Context);
+        CustomerRepository repository = new CustomerRepository(Context);
 
 
 
         //Act
-        var customer = Task.Run(()
+        Customer customer = Task.Run(()
             => repository.AddAsync(new Customer(new Name("sait", "postaci"), new PhoneNumber("90", "5435288568"), new Email("sait@gmail.com")))
         ).Result;
 
 
-        var customerDbs = Context.Customers.First(c => c.Id == customer.Id);
+        CustomerDB customerDbs = Context.Customers.First(c => c.Id == customer.Id);
 
         //Assert
         customerDbs.Should().NotBeNull();
@@ -55,15 +55,15 @@ public class CustomerRepositoryTest
     {
 
         //Arrange
-        var repository = new CustomerRepository(Context);
-        var result = Task.Run(()
+        CustomerRepository repository = new CustomerRepository(Context);
+        Customer result = Task.Run(()
             => repository.AddAsync(new Customer(new Name("sait", "postaci"), new PhoneNumber("90", "5435288568"), new Email("sait@gmail.com")))
         ).Result;
 
-        var Id = result.Id;
+        Guid Id = result.Id;
 
         //Act
-        var customer = Task.Run(() => repository.RetriveByAsync(Id)).Result;
+        Customer? customer = Task.Run(() => repository.RetriveByAsync(Id)).Result;
 
 
         //Assert
@@ -78,14 +78,14 @@ public class CustomerRepositoryTest
             new Email("sait@gmail.com"))));
         Context.SaveChanges();
         //Arrange
-        var repository = new CustomerRepository(Context);
-        var customerToDelete = Context.Customers.First();
+        CustomerRepository repository = new CustomerRepository(Context);
+        CustomerDB customerToDelete = Context.Customers.First();
 
         Context.Entry(customerToDelete).State = EntityState.Detached;
         //Act
 
-        var result = Task.Run(() => repository.DeleteByAsync(customerToDelete.FromEntity()));
-        var customer = Context.Customers.Find(customerToDelete.Id);
+        Task result = Task.Run(() => repository.DeleteByAsync(customerToDelete.FromEntity()));
+        CustomerDB? customer = Context.Customers.Find(customerToDelete.Id);
 
         //Assert
         result.Should().Be(true);
@@ -93,5 +93,4 @@ public class CustomerRepositoryTest
 
 
     }
-    
 }

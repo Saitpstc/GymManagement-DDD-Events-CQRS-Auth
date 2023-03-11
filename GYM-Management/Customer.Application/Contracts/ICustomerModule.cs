@@ -4,5 +4,4 @@ using Shared.Application.Contracts;
 
 public interface ICustomerModule:IModule
 {
-    
 }

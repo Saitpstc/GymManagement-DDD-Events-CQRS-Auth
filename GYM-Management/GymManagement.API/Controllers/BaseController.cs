@@ -1,10 +1,8 @@
 ﻿namespace GymManagement.API.Controllers;
 
 using System.Net;
-using global::Customer.Application.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Models;
 using Shared.Application.Contracts;
 using Shared.Presentation.Models;
 
@@ -22,20 +20,10 @@ public class BaseController:ControllerBase, IActionFilter
 
     }
 
-    protected ApiResponse<T> CreateResponse<T>(T response)
-    {
-        if (_collector.ErrorMessage.Any())
-        {
-            return ApiResponseFactory.Fail<T>(_collector.ErrorMessage);
-        }
-
-        return ApiResponseFactory.Success(response);
-    }
-
     [NonAction]
     public void OnActionExecuting(ActionExecutingContext context)
     {
-  
+
     }
 
     [NonAction]
@@ -49,5 +37,15 @@ public class BaseController:ControllerBase, IActionFilter
             context.HttpContext.Response.StatusCode = (int) HttpStatusCode.BadRequest;
         }
 
+    }
+
+    protected ApiResponse<T> CreateResponse<T>(T response)
+    {
+        if (_collector.ErrorMessage.Any())
+        {
+            return ApiResponseFactory.Fail<T>(_collector.ErrorMessage);
+        }
+
+        return ApiResponseFactory.Success(response);
     }
 }

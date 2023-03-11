@@ -7,23 +7,23 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Config" />
+        <Folder Include="Config"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="FluentValidation" Version="11.5.1" />
-      <PackageReference Include="MediatR" Version="11.1.0" />
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+        <PackageReference Include="FluentValidation" Version="11.5.1"/>
+        <PackageReference Include="MediatR" Version="11.1.0"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
-        <HintPath>..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\6.0.14\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
-      </Reference>
+        <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
+            <HintPath>..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\6.0.14\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Shared.Infrastructure\Shared.Infrastructure.csproj" />
+        <ProjectReference Include="..\Shared.Infrastructure\Shared.Infrastructure.csproj"/>
     </ItemGroup>
 
 </Project>

@@ -1,20 +1,18 @@
-﻿namespace Shared.Application.Config.Queries
+﻿namespace Shared.Application.Config.Queries;
+
+using Contracts;
+
+public abstract class QueryBase<TResult>:IQuery<TResult>
 {
-    using System;
-    using Contracts;
-
-    public abstract class QueryBase<TResult>:IQuery<TResult>
+    protected QueryBase()
     {
-        protected QueryBase()
-        {
-            this.Id = Guid.NewGuid();
-        }
-
-        protected QueryBase(Guid id)
-        {
-            this.Id = id;
-        }
-
-        public Guid Id { get; }
+        Id = Guid.NewGuid();
     }
+
+    protected QueryBase(Guid id)
+    {
+        Id = id;
+    }
+
+    public Guid Id { get; }
 }

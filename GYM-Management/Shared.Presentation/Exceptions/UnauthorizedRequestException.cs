@@ -6,6 +6,6 @@ public class UnauthorizedRequestException:BaseException
 {
     public UnauthorizedRequestException(string message):base(message)
     {
-        
+
     }
 }

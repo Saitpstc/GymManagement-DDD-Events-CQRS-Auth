@@ -1,30 +1,28 @@
-﻿namespace Shared.Application.Config.Commands
+﻿namespace Shared.Application.Config.Commands;
+
+using Contracts;
+
+public abstract class InternalCommandBase:ICommand
 {
-    using System;
-    using Shared.Application.Contracts;
-
-    public abstract class InternalCommandBase : ICommand
+    protected InternalCommandBase(Guid id)
     {
-        protected InternalCommandBase(Guid id)
-        {
-            this.Id = id;
-        }
-
-        public Guid Id { get; }
+        Id = id;
     }
 
-    public abstract class InternalCommandBase<TResult> : ICommand<TResult>
+    public Guid Id { get; }
+}
+
+public abstract class InternalCommandBase<TResult>:ICommand<TResult>
+{
+    protected InternalCommandBase()
     {
-        protected InternalCommandBase()
-        {
-            this.Id = Guid.NewGuid();
-        }
-
-        protected InternalCommandBase(Guid id)
-        {
-            this.Id = id;
-        }
-
-        public Guid Id { get; }
+        Id = Guid.NewGuid();
     }
+
+    protected InternalCommandBase(Guid id)
+    {
+        Id = id;
+    }
+
+    public Guid Id { get; }
 }

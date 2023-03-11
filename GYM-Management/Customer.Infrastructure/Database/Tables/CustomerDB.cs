@@ -3,7 +3,6 @@
 using Core;
 using Core.Enums;
 using Core.ValueObjects;
-using Shared.Core;
 using Shared.Infrastructure;
 
 public class CustomerDB:DataStructureBase
@@ -47,34 +46,34 @@ public class CustomerDB:DataStructureBase
             new PhoneNumber(NumberDb.CountryCode, NumberDb.Number), new Email(EmailDb.email));
         customer.Id = Id;
         return customer;
-        
+
     }
 
     public static CustomerDB FromDomainModel(Customer Aggregate)
     {
-        var customerDb = new CustomerDB()
+        CustomerDB customerDb = new CustomerDB
         {
-            EmailDb = new EmailDb()
+            EmailDb = new EmailDb
             {
                 email = Aggregate.GetMail().ToString()
             },
-            NameDb = new NameDb()
+            NameDb = new NameDb
             {
                 FirstName = Aggregate.GetName().NameOnly(),
                 LastName = Aggregate.GetName().SurNameOnly()
             },
-            NumberDb = new PhoneNumberDb()
+            NumberDb = new PhoneNumberDb
             {
                 Number = Aggregate.GetNumber().Number(),
                 CountryCode = Aggregate.GetNumber().CountryCode()
             },
             Id = Aggregate.Id,
-            LastUpdateAt = Aggregate.LastUpdateAt,
+            LastUpdateAt = Aggregate.LastUpdateAt
         };
 
         if (Aggregate.GetMembership() is not null)
         {
-            customerDb.MembershipDb = new MembershipDb()
+            customerDb.MembershipDb = new MembershipDb
             {
                 EndDate = Aggregate.GetMembership().EndsAt(),
                 StartDate = Aggregate.GetMembership().StartedAt(),

@@ -5,11 +5,10 @@ using ValueObjects;
 
 public class Customer:AggregateRoot
 {
-    private Name Name;
+    private readonly Email Email;
     private Membership? Membership;
-    private PhoneNumber PhoneNumber;
-    private Email Email;
-    public Guid UserId { get; set; }
+    private readonly Name Name;
+    private readonly PhoneNumber PhoneNumber;
 
 
 
@@ -22,11 +21,13 @@ public class Customer:AggregateRoot
         Membership = membership;
     }
 
+    public Guid UserId { get; set; }
+
     public void StartMembership(Membership membership)
     {
         Membership = membership;
 
-        var customerCreatedEvent = new MembershipCreatedEvent()
+        MembershipCreatedEvent customerCreatedEvent = new MembershipCreatedEvent
         {
             EventId = new Guid(),
             CustomerId = Id,
@@ -37,13 +38,23 @@ public class Customer:AggregateRoot
         Apply(customerCreatedEvent);
     }
 
-    public Email GetMail() => Email;
+    public Email GetMail()
+    {
+        return Email;
+    }
 
-    public Name GetName() => Name;
+    public Name GetName()
+    {
+        return Name;
+    }
 
-    public Membership? GetMembership() => Membership;
+    public Membership? GetMembership()
+    {
+        return Membership;
+    }
 
-    public PhoneNumber GetNumber() => PhoneNumber;
-
-
+    public PhoneNumber GetNumber()
+    {
+        return PhoneNumber;
+    }
 }

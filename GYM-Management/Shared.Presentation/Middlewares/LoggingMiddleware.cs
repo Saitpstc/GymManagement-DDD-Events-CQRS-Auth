@@ -2,19 +2,12 @@
 
 using System.Diagnostics;
 using System.Net;
-using System.Reflection;
 using System.Text;
-using Core;
-using Exceptions;
-using FluentValidation;
 using Infrastructure;
 using Microsoft.AspNetCore.Http;
-using Models;
 using Newtonsoft.Json;
 using Serilog;
 using Serilog.Context;
-using Serilog.Core.Enrichers;
-using Serilog.Events;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 public class LoggingMiddleware
@@ -36,12 +29,12 @@ public class LoggingMiddleware
         await PopulateLogContextForRequest(context);
 
 
-        var stopwatch = Stopwatch.StartNew();
+        Stopwatch stopwatch = Stopwatch.StartNew();
         Exception logException = null;
         HttpResponse response = context.Response;
 
-        var originalResponseBody = response.Body;
-        using var newResponseBody = new MemoryStream();
+        Stream originalResponseBody = response.Body;
+        using MemoryStream newResponseBody = new MemoryStream();
         response.Body = newResponseBody;
 
         try
@@ -75,7 +68,7 @@ public class LoggingMiddleware
         {
             Log.Error(logException, $"{logException.Message}");
         }
-        else if(statusCode==(int) HttpStatusCode.BadRequest)
+        else if (statusCode == (int) HttpStatusCode.BadRequest)
         {
             Log.Warning("Validation Failed ");
         }
@@ -123,7 +116,7 @@ public class LoggingMiddleware
 
         request.Body.Position = 0;
 
-        var reader = new StreamReader(request.Body, encoding ?? Encoding.UTF8);
+        StreamReader reader = new StreamReader(request.Body, encoding ?? Encoding.UTF8);
 
         var body = await reader.ReadToEndAsync();
 
@@ -131,9 +124,4 @@ public class LoggingMiddleware
 
         return body;
     }
-
-
-
-
-
 }

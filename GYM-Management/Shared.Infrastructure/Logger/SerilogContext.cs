@@ -1,8 +1,6 @@
 ﻿namespace Shared.Infrastructure;
 
-using System.Reflection;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using Serilog.Context;
 using Serilog.Core;
 
@@ -10,7 +8,7 @@ public class SerilogContext:ISerilogContext
 {
 
 
-    private Dictionary<string, object?> Properties = new Dictionary<string, object?>();
+    private readonly Dictionary<string, object?> Properties = new Dictionary<string, object?>();
 
 
 
@@ -62,9 +60,6 @@ public class SerilogContext:ISerilogContext
         LogContext.Reset();
         Properties.Clear();
     }
-
-
-
 }
 
 public class DictionaryConverter:JsonConverter

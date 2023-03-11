@@ -1,11 +1,6 @@
 ﻿namespace Customer.Test.Application;
 
 using Core;
-using Core.ValueObjects;
-using Customer.Application.Customer.Commands;
-using FluentAssertions;
-
-using MediatR;
 using Moq;
 
 public class CustomerCommandsTest

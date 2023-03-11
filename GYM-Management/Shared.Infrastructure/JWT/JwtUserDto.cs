@@ -14,6 +14,6 @@ public class JwtUserDto
     public string Email { get; set; }
     public List<string>? Roles { get; set; }
     public List<string>? Permissions { get; set; }
-    
+
     public JwtToken Token { get; set; }
 }
