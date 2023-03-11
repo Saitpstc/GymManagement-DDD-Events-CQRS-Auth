@@ -16,12 +16,14 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 public class JwtMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly IRequestElapsedTime _elapsedTime;
+    private readonly ISerilogContext _serilogContext;
 
-    public JwtMiddleware(RequestDelegate next, IRequestElapsedTime elapsedTime)
+
+    public JwtMiddleware(RequestDelegate next, ISerilogContext serilogContext)
     {
         _next = next;
-        _elapsedTime = elapsedTime;
+        _serilogContext = serilogContext;
+
     }
 
     public async Task InvokeAsync(HttpContext context)
@@ -37,14 +39,14 @@ public class JwtMiddleware
             {
                 var tokenIsExpired = JwtUtils.IsTokenExpired(authHeader);
 
-                if (tokenIsExpired)
+                if (!tokenIsExpired)
                 {
                     var response = new ApiResponse()
                     {
                         ErrorMessages = new List<string>() { "Token Expired" },
                         IsSuccessfull = false
                     };
-                    LogContext.PushProperty("Response", JsonSerializer.Serialize(response));
+                    _serilogContext.PushToLogContext(LogColumns.Response, JsonSerializer.Serialize(response));
                     await CreateUnauthorizedUserResponse(context, response);
                     return;
                 }

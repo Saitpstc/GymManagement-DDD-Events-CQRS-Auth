@@ -1,8 +1,6 @@
-﻿namespace GymManagement.API.Models;
+﻿namespace Shared.Presentation.Models;
 
-using Microsoft.AspNetCore.Hosting;
 using Shared.Core;
-using Shared.Presentation.Models;
 
 public static class ApiResponseFactory
 {

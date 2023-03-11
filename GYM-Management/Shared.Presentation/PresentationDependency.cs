@@ -13,7 +13,7 @@ public static class PresentationDependency
         
         configuration.Bind("AppOptions", myOptions);
         service.AddSingleton(myOptions);
-        service.AddSingleton<IRequestElapsedTime, RequestElapsedTime>();
+
         service.AddSwaggerGen(options =>
         {
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme

@@ -51,9 +51,10 @@ public class LoggingMiddleware
         }
 
         var statusCode = context.Response.StatusCode;
-        _serilogContext.PushToLogContext(LogColumns.ExecutionTime, stopwatch.Elapsed.TotalSeconds);
+        _serilogContext.PushToLogContext(LogColumns.ExecutionTime, Math.Round(stopwatch.Elapsed.TotalSeconds, 4).ToString("0.0000"));
         _serilogContext.PushToLogContext(LogColumns.StatusCode, statusCode);
 
+        
         LogContext.Push(_serilogContext.GetEnricher());
 
         if (logException is not null)
@@ -65,7 +66,7 @@ public class LoggingMiddleware
             Log.Information("Request has been processed");
         }
         _serilogContext.DisposeContext();
-        
+
 
     }
 
