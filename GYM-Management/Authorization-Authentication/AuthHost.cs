@@ -30,7 +30,7 @@ public static class AuthHost
                .AddDefaultTokenProviders();
 
 
-        // service.AddFluentValidationAutoValidation();
+   
 
         service.AddScoped<IAuthDbContext, AuthDbContext>();
         service.AddScoped<AuthUnitOfWork>();

@@ -2,12 +2,16 @@
 
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Authorization_Authentication.Application.Contracts;
+using Authorization_Authentication.Application.Superadmin.Commands;
+using Authorization_Authentication.Dto;
 using Authorization_Authentication.Infrastructure.JwtToken;
 using Authorization_Authentication.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Shared.Application.Contracts;
+using Shared.Infrastructure;
 using Shared.Presentation.Attributes;
 using Shared.Presentation.Models;
 
@@ -15,26 +19,25 @@ using Shared.Presentation.Models;
 public class AccountController:BaseController
 {
     private readonly UserManager<User> _manager;
+    private readonly IAuthModule _module;
 
-    public AccountController(IErrorMessageCollector collector, UserManager<User> manager):base(collector)
+    public AccountController(IErrorMessageCollector collector, UserManager<User> manager, IAuthModule module):base(collector)
     {
         _manager = manager;
+        _module = module;
     }
 
     [HttpPost]
-    public async Task<ApiResponse<User>> CreateAccount(UserReqDto dto)
+    public async Task<ApiResponse<PermissionResponseDto>> CreateRole(CreatePermissionCommand dto)
     {
-
-        throw new NotImplementedException();
-        var user = new User()
+       var result=await _module.ExecuteCommandAsync(new CreatePermissionCommand()
         {
-            Email = dto.Email,
-            UserName = dto.Email
-        };
+            Name = null,
 
-        var result = await _manager.CreateAsync(user);
+        });
 
-        return CreateResponse(user);
+       return CreateResponse(result);
+
     }
 
     [HttpPost("login")]
@@ -51,7 +54,7 @@ public class AccountController:BaseController
 
     [HttpPost("test")]
     [AuthorizeFilter("Account")]
-    public async Task<ApiResponse<string>> authorizeTest(string b="sait2",string a = "sait")
+    public async Task<ApiResponse<string>> authorizeTest(string b = "sait2", string a = "sait")
     {
 
         throw new NotImplementedException();

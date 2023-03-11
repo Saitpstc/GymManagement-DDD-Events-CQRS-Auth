@@ -37,29 +37,13 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.DefaultIgnoreCondition
         = JsonIgnoreCondition.WhenWritingNull);
 
-builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestPipeline<,>));
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<ICustomerModule, CustomerModule>();
 
-/*builder.Services.AddAuthentication(x =>
-{
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(x =>
-{
-    x.RequireHttpsMetadata = false;
-    x.SaveToken = true;
-    x.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(myOptions.AuthTokenKey)),
-        ValidateIssuer = false,
-        ValidateAudience = false
-    };
-});*/
+
 builder.Services.AddAuthorization();
 
 
@@ -79,11 +63,10 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseMiddleware<LoggingMiddleware>();
-app.UseMiddleware<JwtMiddleware>();
+
 app.UseMiddleware<CustomExceptionHandler>();
 app.UseAuthorization();
 
 
-//app.UseMiddleware<LoggingMiddleware>();
 app.MapControllers();
 app.Run();

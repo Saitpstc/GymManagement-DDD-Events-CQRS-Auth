@@ -1,7 +1,9 @@
 ﻿namespace Shared.Presentation;
 
 using Core;
+using FluentValidation.AspNetCore;
 using Infrastructure;
+using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -13,7 +15,7 @@ public static class PresentationDependency
         
         configuration.Bind("AppOptions", myOptions);
         service.AddSingleton(myOptions);
-
+        service.AddFluentValidationAutoValidation();
         service.AddSwaggerGen(options =>
         {
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme

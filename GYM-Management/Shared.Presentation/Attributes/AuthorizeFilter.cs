@@ -3,13 +3,9 @@
 using System.Net;
 using System.Text.Json;
 using Exceptions;
-using GymManagement.API.Models;
 using Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Models;
-using Serilog;
-using Serilog.Context;
 
 public class AuthorizeFilter:Attribute, IAuthorizationFilter
 {
@@ -31,15 +27,21 @@ public class AuthorizeFilter:Attribute, IAuthorizationFilter
 
         var authHeader = context.HttpContext.Request.Headers.Authorization;
         var hasClaim = context.HttpContext.User.HasClaim(x => x.Type == "Permission" && _claimvalue.Contains(x.Value));
+        var tokenIsExpired = JwtUtils.IsTokenExpired(authHeader);
 
         if (string.IsNullOrEmpty(authHeader) || !hasClaim)
         {
             throw new UnauthorizedRequestException("Unauthorized Request Has Been Made ");
         }
 
+        if (!tokenIsExpired)
+        {
+            throw new UnauthorizedRequestException("Token is expired");
+        }
+
 
     }
-    
+
     private bool IsLocalRequest(HttpContext context)
     {
         if (context.Request.Host.Value.StartsWith("localhost:")) return true;

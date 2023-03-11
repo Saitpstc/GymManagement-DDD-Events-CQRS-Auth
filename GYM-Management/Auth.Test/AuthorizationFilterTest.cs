@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
+using Shared.Infrastructure;
 using Shared.Presentation.Attributes;
 using Xunit.Abstractions;
 using RouteData = Microsoft.AspNetCore.Routing.RouteData;

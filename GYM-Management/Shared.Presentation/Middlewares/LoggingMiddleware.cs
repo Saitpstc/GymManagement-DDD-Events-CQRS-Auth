@@ -38,6 +38,11 @@ public class LoggingMiddleware
 
         var stopwatch = Stopwatch.StartNew();
         Exception logException = null;
+        HttpResponse response = context.Response;
+
+        var originalResponseBody = response.Body;
+        using var newResponseBody = new MemoryStream();
+        response.Body = newResponseBody;
 
         try
         {
@@ -54,16 +59,29 @@ public class LoggingMiddleware
         _serilogContext.PushToLogContext(LogColumns.ExecutionTime, Math.Round(stopwatch.Elapsed.TotalSeconds, 4).ToString("0.0000"));
         _serilogContext.PushToLogContext(LogColumns.StatusCode, statusCode);
 
-        
+
+        newResponseBody.Seek(0, SeekOrigin.Begin);
+        var responseBodyText =
+            await new StreamReader(response.Body).ReadToEndAsync();
+
+        newResponseBody.Seek(0, SeekOrigin.Begin);
+        await newResponseBody.CopyToAsync(originalResponseBody);
+
+        _serilogContext.PushToLogContext(LogColumns.Response, responseBodyText);
+
         LogContext.Push(_serilogContext.GetEnricher());
 
         if (logException is not null)
         {
-            Log.Error(logException, "An Exception Has Been Thrown");
+            Log.Error(logException, $"{logException.Message}");
+        }
+        else if(statusCode==(int) HttpStatusCode.BadRequest)
+        {
+            Log.Warning("Validation Failed ");
         }
         else
         {
-            Log.Information("Request has been processed");
+            Log.Information("Request Processed");
         }
         _serilogContext.DisposeContext();
 

@@ -10,6 +10,7 @@ using Serilog;
 using Serilog.Context;
 using Shared.Infrastructure;
 using Shared.Presentation.Attributes;
+using Shared.Presentation.Exceptions;
 using Shared.Presentation.Models;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -43,10 +44,9 @@ public class JwtMiddleware
                 {
                     var response = new ApiResponse()
                     {
-                        ErrorMessages = new List<string>() { "Token Expired" },
+                        ErrorMessages = new List<string>() { "Token is expired" },
                         IsSuccessfull = false
                     };
-                    _serilogContext.PushToLogContext(LogColumns.Response, JsonSerializer.Serialize(response));
                     await CreateUnauthorizedUserResponse(context, response);
                     return;
                 }

@@ -46,17 +46,17 @@ public class CustomExceptionHandler
 
                 context.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
             }
+            else if(e is RequestValidationException)
+            {
+             context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+            }
             else
             {
                 context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
 
             }
             await context.Response.WriteAsJsonAsync(apiResponse);
-
-            var response = JsonSerializer.Serialize(apiResponse);
-
-            _serilogContext.PushToLogContext(LogColumns.Response, response);
-
+            
             throw;
         }
 

@@ -1,6 +1,7 @@
 namespace Auth.Test;
 
 using Authorization_Authentication.Infrastructure.JwtToken;
+using Shared.Infrastructure;
 
 public class JwtHelperTest
 {

@@ -1,8 +1,9 @@
-﻿namespace Authorization_Authentication.Infrastructure.JwtToken;
+﻿namespace Shared.Infrastructure;
 
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Authorization_Authentication.Infrastructure.JwtToken;
 using Microsoft.IdentityModel.Tokens;
 
 public  class JwtUtils

@@ -12,10 +12,6 @@ public class BaseException:Exception
             ErrorMessages.Add(message);
 
         }
-
-        if (!string.IsNullOrEmpty(base.Message))
-        {
-            ErrorMessages.Add(message);
-        }
+        
     }
 }
