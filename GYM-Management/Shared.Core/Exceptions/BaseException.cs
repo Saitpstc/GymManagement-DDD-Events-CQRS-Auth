@@ -3,8 +3,6 @@
 public class BaseException:Exception
 {
 
-
-
     protected BaseException(string message)
     {
 
@@ -22,4 +20,5 @@ public class BaseException:Exception
     }
 
     public List<string> ErrorMessages { get; set; } = new List<string>();
+    public int StatusCode { get; protected set; }
 }

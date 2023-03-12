@@ -24,11 +24,11 @@ public class AssignPermissionToRoleValidator:AbstractValidator<AssignPermissionT
     }
 }
 
-public class AssignPermissionToRoleHandler:CommandHandlerBase<AssignPermissionToRoleCommand, Unit>
+public class AssignPermissionToRoleCommandHandler:CommandHandlerBase<AssignPermissionToRoleCommand, Unit>
 {
     private readonly AuthDbContext _db;
 
-    public AssignPermissionToRoleHandler(IErrorMessageCollector errorMessageCollector, AuthDbContext _db):base(errorMessageCollector)
+    public AssignPermissionToRoleCommandHandler(IErrorMessageCollector errorMessageCollector, AuthDbContext _db):base(errorMessageCollector)
     {
         this._db = _db;
     }

@@ -5,6 +5,8 @@ using System.ComponentModel.DataAnnotations;
 using Authorization_Authentication.Application.Contracts;
 using Authorization_Authentication.Application.Superadmin.Commands;
 using Authorization_Authentication.Application.User;
+using Authorization_Authentication.Application.User.Command;
+using Authorization_Authentication.Application.User.Query;
 using Authorization_Authentication.Dto;
 using Authorization_Authentication.Dto.User;
 using Authorization_Authentication.Infrastructure.JwtToken;
@@ -27,43 +29,22 @@ public class AccountController:BaseController
     }
 
     [HttpPost("CreateUser")]
-    public async Task<ApiResponse<UserCreatedResponse>> CreateRole(CreateUserCommand dto)
+    public async Task<ApiResponse<UserCreatedResponse>> CreateUser(CreateUserCommand createUserCommand)
     {
-        var result = await _module.ExecuteCommandAsync(dto);
+
+        var result = await _module.ExecuteCommandAsync(createUserCommand);
         return CreateResponse(result);
 
     }
 
-    [AuthorizeFilter("test")]
-    [HttpGet("test")]
-    public async Task<ApiResponse<JwtUserDto>> login()
+
+    [HttpPost("Login")]
+    public async Task<ApiResponse<JwtUserDto>> Login(LoginQuery loginQuery)
     {
 
-        throw new NotImplementedException();
-        JwtUserDto dt = new JwtUserDto(new Guid("89B4B112-3E93-4A05-EAB2-08DB18C46A04"), "user@example.com", "user@example.com");
-        JwtToken result = JwtUtils.CreateToken(dt, 60);
+       
+        var result = await _module.ExecuteQueryAsync(loginQuery);
 
-        dt.Token = result;
-
-        return CreateResponse(dt);
+        return CreateResponse(result);
     }
 }
-/*
-    [HttpPost("test")]
-    [AuthorizeFilter("Account")]
-    public async Task<ApiResponse<string>> authorizeTest(string b = "sait2", string a = "sait")
-    {
-
-        throw new NotImplementedException();
-    }
-}
-
-public class UserReqDto
-{
-    [EmailAddress] [Required] public string Email { get; set; }
-
-    [Required]
-    [StringLength(16, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-    [DefaultValue("P@ssw0rd1")]
-    public string Password { get; set; }
-}*/

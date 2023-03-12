@@ -1,16 +1,15 @@
-﻿namespace Authorization_Authentication.Application.User;
+﻿namespace Authorization_Authentication.Application.User.Command;
 
-using Dto.User;
+using Authorization_Authentication.Dto.User;
+using Authorization_Authentication.Models;
 using FluentValidation;
-using FluentValidation.Validators;
 using Microsoft.AspNetCore.Identity;
-using Models;
 using Shared.Application.Contracts;
 using Shared.Core.Exceptions;
 
-public record CreateUserCommand:ICommand<UserCreatedResponse>
+public class CreateUserCommand:ICommand<UserCreatedResponse>
 {
-    public string UserName { get; set; }
+    public string? UserName { get; set; }
     public string Password { get; set; }
     public string Email { get; set; }
 
@@ -40,14 +39,21 @@ public class CreateUserCommandHandler:CommandHandlerBase<CreateUserCommand, User
         var user = new User()
         {
             Email = request.Email,
+            
         };
 
         if (!string.IsNullOrEmpty(request.UserName))
         {
             user.UserName = request.UserName;
         }
+        else
+        {
+            user.UserName = request.Email;
+        }
 
+        user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, request.Password);
         var result = await _userManager.CreateAsync(user);
+
 
         if (!result.Succeeded)
         {

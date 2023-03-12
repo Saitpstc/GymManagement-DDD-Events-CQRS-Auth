@@ -1,4 +1,4 @@
-﻿namespace Shared.Infrastructure;
+﻿namespace Shared.Infrastructure.Logger;
 
 public enum LogColumns
 {
@@ -11,4 +11,5 @@ public enum LogColumns
     StatusCode,
     ExecutionTime,
     StructuredLog
+
 }

@@ -27,17 +27,23 @@ public class CustomExceptionHandler
         catch (Exception e)
         {
 
-          
-
             ApiResponse apiResponse = ApiResponseFactory.CreateExceptionResponse(e);
 
 
             if (e is BaseException)
             {
-                if (context.Response.StatusCode is 0)
+
+                var ex = (BaseException) e;
+
+                if (ex.StatusCode == 0)
                 {
-                    context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                    context.Response.StatusCode = (int) HttpStatusCode.Accepted;
                 }
+                else
+                {
+                    context.Response.StatusCode = ex.StatusCode;
+                }
+
 
             }
             else

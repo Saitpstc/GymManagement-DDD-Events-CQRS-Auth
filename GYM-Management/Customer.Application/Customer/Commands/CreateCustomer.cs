@@ -32,11 +32,11 @@ public class CreateCustomer
 
 
 
-    public class CreateCustomerHandler:CommandHandlerBase<Command, Customer>
+    public class CreateCustomerCommandHandler:CommandHandlerBase<Command, Customer>
     {
         private readonly ICustomerRepository _repository;
 
-        public CreateCustomerHandler(ICustomerRepository repository, IErrorMessageCollector collector):base(collector)
+        public CreateCustomerCommandHandler(ICustomerRepository repository, IErrorMessageCollector collector):base(collector)
         {
             _repository = repository;
         }
