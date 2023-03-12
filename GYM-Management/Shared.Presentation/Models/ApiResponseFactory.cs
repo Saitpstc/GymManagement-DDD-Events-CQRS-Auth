@@ -1,6 +1,7 @@
 ﻿namespace Shared.Presentation.Models;
 
 using Core;
+using Core.Exceptions;
 
 public static class ApiResponseFactory
 {

@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Authorization_Authentication.Application.Contracts;
 using Authorization_Authentication.Application.Superadmin.Commands;
+using Authorization_Authentication.Application.User;
 using Authorization_Authentication.Dto;
+using Authorization_Authentication.Dto.User;
 using Authorization_Authentication.Infrastructure.JwtToken;
 using Authorization_Authentication.Models;
 using Microsoft.AspNetCore.Identity;
@@ -17,32 +19,27 @@ using Shared.Presentation.Models;
 [Route("Auth")]
 public class AccountController:BaseController
 {
-    private readonly UserManager<User> _manager;
     private readonly IAuthModule _module;
 
     public AccountController(IErrorMessageCollector collector, UserManager<User> manager, IAuthModule module):base(collector)
     {
-        _manager = manager;
         _module = module;
     }
 
-    [HttpPost]
-    public async Task<ApiResponse<PermissionResponseDto>> CreateRole(CreatePermissionCommand dto)
+    [HttpPost("CreateUser")]
+    public async Task<ApiResponse<UserCreatedResponse>> CreateRole(CreateUserCommand dto)
     {
-        PermissionResponseDto result = await _module.ExecuteCommandAsync(new CreatePermissionCommand
-        {
-            Name = null
-
-        });
-
+        var result = await _module.ExecuteCommandAsync(dto);
         return CreateResponse(result);
 
     }
 
-    [HttpPost("login")]
-    public async Task<ApiResponse<JwtUserDto>> login(UserReqDto dto)
+    [AuthorizeFilter("test")]
+    [HttpGet("test")]
+    public async Task<ApiResponse<JwtUserDto>> login()
     {
 
+        throw new NotImplementedException();
         JwtUserDto dt = new JwtUserDto(new Guid("89B4B112-3E93-4A05-EAB2-08DB18C46A04"), "user@example.com", "user@example.com");
         JwtToken result = JwtUtils.CreateToken(dt, 60);
 
@@ -50,7 +47,8 @@ public class AccountController:BaseController
 
         return CreateResponse(dt);
     }
-
+}
+/*
     [HttpPost("test")]
     [AuthorizeFilter("Account")]
     public async Task<ApiResponse<string>> authorizeTest(string b = "sait2", string a = "sait")
@@ -68,4 +66,4 @@ public class UserReqDto
     [StringLength(16, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
     [DefaultValue("P@ssw0rd1")]
     public string Password { get; set; }
-}
+}*/

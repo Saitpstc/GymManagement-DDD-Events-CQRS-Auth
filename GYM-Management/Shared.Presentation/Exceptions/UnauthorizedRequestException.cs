@@ -1,10 +1,11 @@
 ﻿namespace Shared.Presentation.Exceptions;
 
 using Core;
+using Core.Exceptions;
 
 public class UnauthorizedRequestException:BaseException
 {
-    public UnauthorizedRequestException(string message):base(message)
+    public UnauthorizedRequestException(string? message):base(message)
     {
 
     }

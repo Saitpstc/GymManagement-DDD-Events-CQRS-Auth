@@ -64,13 +64,13 @@ public class LoggingMiddleware
 
         LogContext.Push(_serilogContext.GetEnricher());
 
-        if (logException is not null)
+        if ((logException != null && logException.GetType() == typeof(Exception)) || statusCode >= 500)
         {
             Log.Error(logException, $"{logException.Message}");
         }
-        else if (statusCode == (int) HttpStatusCode.BadRequest)
+        else if (statusCode >= 400)
         {
-            Log.Warning("Validation Failed ");
+            Log.Warning("Request Failed");
         }
         else
         {

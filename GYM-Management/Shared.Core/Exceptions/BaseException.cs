@@ -1,7 +1,9 @@
-﻿namespace Shared.Core;
+﻿namespace Shared.Core.Exceptions;
 
 public class BaseException:Exception
 {
+
+
 
     protected BaseException(string message)
     {
@@ -12,6 +14,11 @@ public class BaseException:Exception
 
         }
 
+    }
+
+    protected BaseException(List<string> errorMessages)
+    {
+        ErrorMessages = errorMessages;
     }
 
     public List<string> ErrorMessages { get; set; } = new List<string>();

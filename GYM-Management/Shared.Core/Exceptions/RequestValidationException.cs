@@ -1,15 +1,13 @@
-﻿namespace Shared.Core;
+﻿namespace Shared.Core.Exceptions;
 
 public class RequestValidationException:BaseException
 {
 
-    public RequestValidationException(string? message = null, List<string>? errorMessages = null):base(message)
+    public RequestValidationException(string message):base(message)
     {
-        if (errorMessages != null)
-        {
-            ErrorMessages = errorMessages;
-        }
+    }
 
-
+    public RequestValidationException(List<string> errorMessages):base(errorMessages)
+    {
     }
 }

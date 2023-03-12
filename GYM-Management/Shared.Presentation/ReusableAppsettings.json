@@ -1,0 +1,121 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "AppOptions": {
+    "ConnectionStrings": [
+      {
+        "Module": 1,
+        "ConnectionString": "Server=213.142.151.220;Database=GYM.Customer;User ID=server1;Password=Main.Server.2248;Trust Server Certificate=true"
+      },
+      {
+        "Module": 2,
+        "ConnectionString": "Server=213.142.151.220;Database=GYM.Auth;User ID=server1;Password=Main.Server.2248;Trust Server Certificate=true"
+      }
+    ],
+    "AuthTokenKey": "GymManagementAppTokenKey"
+  },
+  "Serilog": {
+    "Using": [
+      "Serilog.Sinks.MSSqlServer",
+      "Serilog.Sinks.Console"
+    ],
+    "Enrich": [
+      "FromLogContext"
+    ],
+    "MinimumLevel": {
+      "Default": "Information"
+    },
+    "WriteTo": [
+      {
+        "Name": "Console",
+        "Args": {
+          "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message}{NewLine}{Exception}"
+        }
+      },
+      {
+        "Name": "Logger",
+        "Args": {
+          "configureLogger": {
+            "Filter": [
+              {
+                "Name": "ByExcluding",
+                "Args": {
+                  "expression": "StartsWith(SourceContext, 'Microsoft.')"
+                }
+              }
+            ],
+            "WriteTo": [
+              {
+                "Name": "MSSqlServer",
+                "Args": {
+                  "connectionString": "Server=213.142.151.220;Database=GYM.Logs;User ID=server1;Password=Main.Server.2248;Trust Server Certificate=true",
+                  "tableName": "Logs",
+                  "Filter": [
+                    {
+                      "Name": "ByExcluding",
+                      "Args": {
+                        "expression": "SourceContext = 'Microsoft.AspNetCore'"
+                      }
+                    }
+                  ],
+                  "autoCreateSqlTable": true,
+                  "columnOptionsSection": {
+                    "removeStandardColumns": [
+                      "MessageTemplate",
+                      "Properties"
+                    ],
+                    "additionalColumns": [
+                      {
+                        "ColumnName": "Username",
+                        "DataType": "nvarchar",
+                        "DataLength": 100
+                      },
+                      {
+                        "ColumnName": "Endpoint",
+                        "DataType": "nvarchar",
+                        "DataLength": 250
+                      },
+                      {
+                        "ColumnName": "RequestBody",
+                        "DataType": "nvarchar",
+                        "DataLength": 2048
+                      },
+                      {
+                        "ColumnName": "RequestHeaders",
+                        "DataType": "nvarchar",
+                        "DataLength": 2048
+                      },
+                      {
+                        "ColumnName": "Response",
+                        "DataType": "nvarchar",
+                        "DataLength": 2048
+                      },
+                      {
+                        "ColumnName": "StatusCode",
+                        "DataType": "int"
+                      },
+                      {
+                        "ColumnName": "ExecutionTime",
+                        "DataType": "float"
+                      },
+                      {
+                        "ColumnName": "StructuredLog",
+                        "DataType": "nvarchar",
+                        "DataLength": 2048
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

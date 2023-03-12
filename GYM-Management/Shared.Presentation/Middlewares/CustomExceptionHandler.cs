@@ -2,6 +2,7 @@
 
 using System.Net;
 using Core;
+using Core.Exceptions;
 using Exceptions;
 using Microsoft.AspNetCore.Http;
 using Models;
@@ -26,18 +27,18 @@ public class CustomExceptionHandler
         catch (Exception e)
         {
 
-            context.Response.Clear();
+          
 
             ApiResponse apiResponse = ApiResponseFactory.CreateExceptionResponse(e);
 
-            if (e is UnauthorizedRequestException)
-            {
 
-                context.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
-            }
-            else if (e is RequestValidationException)
+            if (e is BaseException)
             {
-                context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                if (context.Response.StatusCode is 0)
+                {
+                    context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                }
+
             }
             else
             {

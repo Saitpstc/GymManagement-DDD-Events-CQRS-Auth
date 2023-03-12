@@ -40,6 +40,7 @@ public class JwtUtils
 
     public static bool IsTokenExpired(string jwtToken)
     {
+        if (string.IsNullOrEmpty(jwtToken)) return false;
         jwtToken = jwtToken["Bearer ".Length..];
         JwtSecurityToken token = new JwtSecurityToken(jwtEncodedString: jwtToken);
 

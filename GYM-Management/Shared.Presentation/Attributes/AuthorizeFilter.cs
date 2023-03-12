@@ -31,14 +31,16 @@ public class AuthorizeFilter:Attribute, IAuthorizationFilter
 
         if (string.IsNullOrEmpty(authHeader) || !hasClaim)
         {
+            context.HttpContext.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
             throw new UnauthorizedRequestException("Unauthorized Request Has Been Made ");
         }
 
         if (!tokenIsExpired)
         {
+            context.HttpContext.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
             throw new UnauthorizedRequestException("Token is expired");
         }
-
+       
 
     }
 
