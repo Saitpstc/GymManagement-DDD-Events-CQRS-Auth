@@ -2,9 +2,12 @@
 
 using Core;
 using FluentValidation.AspNetCore;
+using Infrastructure.Email;
+using Infrastructure.Email.EmailConfirmation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+
 
 public static class PresentationDependency
 {
@@ -14,6 +17,21 @@ public static class PresentationDependency
 
         configuration.Bind("AppOptions", myOptions);
         service.AddSingleton(myOptions);
+
+        service.AddScoped<IEmailConfirmationService, LinkConfirmation>();
+            service.AddScoped<IEmailConfirmationService, CodeConfirmation>();
+
+        
+        service.AddTransient<ConfirmationServiceResolver>(serviceProvider => token =>
+        {
+            // hardcoded strings can be extracted as constants
+            return token switch
+            {
+                "Code" => serviceProvider.GetService<CodeConfirmation>(),
+                "Link" => serviceProvider.GetService<LinkConfirmation>(),
+                _ => throw new InvalidOperationException()
+            };
+        });
         service.AddFluentValidationAutoValidation();
         service.AddSwaggerGen(options =>
         {
