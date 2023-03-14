@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Models;
 using Shared.Core;
+using Shared.Infrastructure;
 
 public static class AuthHost
 {
@@ -30,13 +31,13 @@ public static class AuthHost
         service.Configure<IdentityOptions>(options =>
         {
             options.SignIn.RequireConfirmedEmail = true;
+            options.User.RequireUniqueEmail = true;
         });
 
 
+        
 
 
-        service.AddScoped<IAuthDbContext, AuthDbContext>();
-        service.AddScoped<AuthUnitOfWork>();
         service.AddValidatorsFromAssembly(typeof(IAuthModule).Assembly);
         service.AddMediatR(typeof(IAuthModule).Assembly);
         service.AddAuthentication(x =>

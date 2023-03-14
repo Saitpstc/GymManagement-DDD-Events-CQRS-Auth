@@ -2,6 +2,7 @@
 
 using Dto;
 using Infrastructure;
+using Infrastructure.Database;
 using Microsoft.AspNetCore.Identity;
 using Models;
 using Shared.Application.Contracts;
@@ -14,15 +15,17 @@ public class CreateRoleCommand:ICommand<RoleResponseDto>
 public class CreateRoleCommandHandler:CommandHandlerBase<CreateRoleCommand, RoleResponseDto>
 {
     private readonly RoleManager<Role> _roleManager;
-    private readonly AuthUnitOfWork _unitOfWork;
+    private readonly AuthDbContext _context;
+
 
     public CreateRoleCommandHandler(
         IErrorMessageCollector errorMessageCollector,
         RoleManager<Role> roleManager,
-        AuthUnitOfWork unitOfWork):base(errorMessageCollector)
+        AuthDbContext context):base(errorMessageCollector)
     {
         _roleManager = roleManager;
-        _unitOfWork = unitOfWork;
+        _context = context;
+
     }
 
     public override async Task<RoleResponseDto> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
@@ -33,7 +36,7 @@ public class CreateRoleCommandHandler:CommandHandlerBase<CreateRoleCommand, Role
             IsActive = true
         };
 
-        await _unitOfWork.SaveAsync(cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
         IdentityResult? result = await _roleManager.CreateAsync(newRole);
 
         if (!result.Succeeded)

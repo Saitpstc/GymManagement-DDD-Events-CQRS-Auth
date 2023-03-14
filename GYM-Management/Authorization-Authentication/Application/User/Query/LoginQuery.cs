@@ -2,6 +2,7 @@
 
 using FluentValidation;
 using Infrastructure.JwtToken;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Models;
 using Shared.Application.Contracts;
@@ -28,30 +29,45 @@ public class LoginQueryCommandHandler:QueryHandlerBase<LoginQuery, JwtUserDto>
 {
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
+    private readonly IMediator _mediator;
+
 
     public LoginQueryCommandHandler(
         IErrorMessageCollector errorMessageCollector,
         UserManager<User> userManager,
-        SignInManager<User> signInManager):base(errorMessageCollector)
+        SignInManager<User> signInManager,
+        IMediator mediator
+   ):base(errorMessageCollector)
     {
         _userManager = userManager;
         _signInManager = signInManager;
+        _mediator = mediator;
+
     }
 
     public override async Task<JwtUserDto> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
         var result = await _signInManager.PasswordSignInAsync(request.UserName, request.Password, false, false);
         var user = _userManager.Users.FirstOrDefault(x => x.UserName == request.UserName);
-        
+
+        if (user is null)
+        {
+            throw new BusinessLogicException("User is not found");
+        }
+
 
         if (!result.Succeeded)
         {
             if (!user.EmailConfirmed)
             {
+                await _mediator.Publish(new EmailConfirmationEvent()
+                {
+                    UserName = user.UserName
+                });
                 throw new BusinessLogicException("Email is not confirmed");
             }
             throw new BusinessLogicException("Login attempt failed");
-            
+
         }
 
 
@@ -61,4 +77,9 @@ public class LoginQueryCommandHandler:QueryHandlerBase<LoginQuery, JwtUserDto>
         jwtuserDto.Token = token;
         return jwtuserDto;
     }
+}
+
+public class EmailConfirmationEvent:INotification
+{
+    public string UserName { get; set; }
 }

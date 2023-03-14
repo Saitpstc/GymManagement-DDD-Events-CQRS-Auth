@@ -38,21 +38,14 @@ public static class ApiResponseFactory
 
         };
 
-        if (!isDevelopment)
+        if (!isDevelopment && exception is not BaseException)
         {
             apiResponse.ErrorMessages.Add("Internal Server Error");
         }
         else
         {
-            if (exception is BaseException)
-            {
-                BaseException e = (BaseException) exception;
-                apiResponse.ErrorMessages = e.ErrorMessages;
-            }
-            else
-            {
-                apiResponse.ErrorMessages.Add(exception.Message);
-            }
+            BaseException e = (BaseException) exception;
+            apiResponse.ErrorMessages = e.ErrorMessages;
 
         }
 

@@ -3,7 +3,9 @@
 using Authorization_Authentication.Dto.User;
 using Authorization_Authentication.Models;
 using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Query;
 using Shared.Application.Contracts;
 using Shared.Core.Exceptions;
 
@@ -27,10 +29,13 @@ public class CreateUserCommandValidator:AbstractValidator<CreateUserCommand>
 
 public class CreateUserCommandHandler:CommandHandlerBase<CreateUserCommand, UserCreatedResponse>
 {
+    private readonly IMediator _mediator;
     private readonly UserManager<User> _userManager;
 
-    public CreateUserCommandHandler(IErrorMessageCollector errorMessageCollector, UserManager<User> userManager):base(errorMessageCollector)
+    public CreateUserCommandHandler(IMediator mediator, IErrorMessageCollector errorMessageCollector, UserManager<User> userManager):base(
+        errorMessageCollector)
     {
+        _mediator = mediator;
         _userManager = userManager;
     }
 
@@ -39,7 +44,7 @@ public class CreateUserCommandHandler:CommandHandlerBase<CreateUserCommand, User
         var user = new User()
         {
             Email = request.Email,
-            
+
         };
 
         if (!string.IsNullOrEmpty(request.UserName))
@@ -59,6 +64,11 @@ public class CreateUserCommandHandler:CommandHandlerBase<CreateUserCommand, User
         {
             throw new BusinessLogicException(result.Errors.Select(x => x.Description).ToList());
         }
+        await _mediator.Publish(new EmailConfirmationEvent()
+        {
+            UserName = user.UserName
+        }, cancellationToken);
+
 
         return new UserCreatedResponse()
         {

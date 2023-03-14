@@ -1,41 +1,70 @@
 ﻿namespace Authorization_Authentication.Application.User.Command;
 
+using FluentValidation;
+using Infrastructure.Database;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Models;
 using Shared.Application.Contracts;
-using Shared.Application.Emails;
-using Shared.Infrastructure.Email;
-using Shared.Infrastructure.Email.EmailConfirmation;
+using Shared.Core.Exceptions;
 
 public class ConfirmEmailCommand:ICommand<string>
 {
-    public readonly EmailConfirmationTypes ConfirmationType;
+    public string Code { get; set; }
+    public string UserName { get; set; }
+}
 
-    public ConfirmEmailCommand(EmailConfirmationTypes code)
+public class ConfirmEmailValidator:AbstractValidator<ConfirmEmailCommand>
+{
+    public ConfirmEmailValidator()
     {
-        ConfirmationType = code;
+        RuleFor(x => x.Code).NotEmpty();
+        RuleFor(x => x.UserName).NotEmpty();
+        RuleFor(x => x.Code).Length(6);
+        RuleFor(x => x.Code).Must(x => x.All(char.IsDigit)).WithMessage("Code should contain only numeric values");
     }
-
 }
 
 public class ConfirmEmailCommandHandler:CommandHandlerBase<ConfirmEmailCommand, string>
 {
-    private readonly IEmailConfirmationFactory _confirmationFactory;
+    private readonly AuthDbContext _context;
+    private readonly UserManager<User> _userManager;
 
-    public ConfirmEmailCommandHandler(IErrorMessageCollector errorMessageCollector, IEmailConfirmationFactory confirmationFactory):base(
-        errorMessageCollector)
+    public ConfirmEmailCommandHandler(
+        AuthDbContext context,
+        UserManager<User> userManager,
+        IErrorMessageCollector errorMessageCollector):base(errorMessageCollector)
     {
-        _confirmationFactory = confirmationFactory;
+        _context = context;
+        _userManager = userManager;
     }
 
-    public override Task<string> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
+    public override async Task<string> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
     {
-        
-        var confirmationService = _confirmationFactory.GetService(request.ConfirmationType.ToString());
+        User? user = await _userManager.FindByNameAsync(request.UserName);
 
-        var email = new EmailMessage();
+        if (user is null)
+        {
+            throw new BusinessLogicException("No user found to confirm email");
+        }
+        ConfirmationCode code = _context.ConfirmationCodes.First(x => x.UserId == user.Id);
 
+        if (!(DateTime.Now < code.ValidTo))
+        {
+            throw new BusinessLogicException("Code is expired");
+        }
 
-        confirmationService.SendConfirmationEmail(email);
+        if (code.Code != request.Code)
+        {
+            throw new BusinessLogicException("Incorrect Code");
+        }
 
-        return Task.FromResult("Confirmation Code has been sent");
+        user.EmailConfirmed = true;
+
+        _context.ConfirmationCodes.Remove(code);
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return "User confirmed";
+
     }
 }

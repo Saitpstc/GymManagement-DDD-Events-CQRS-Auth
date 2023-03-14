@@ -1,6 +1,5 @@
 ﻿namespace GymManagement.API.Controllers.Auth.v1;
 
-
 using Authorization_Authentication.Application.Contracts;
 using Authorization_Authentication.Application.User.Command;
 using Authorization_Authentication.Application.User.Query;
@@ -10,8 +9,6 @@ using Authorization_Authentication.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Application.Contracts;
-using Shared.Infrastructure.Email;
-using Shared.Infrastructure.Email.EmailConfirmation;
 using Shared.Presentation.Models;
 
 [Route("Auth")]
@@ -40,10 +37,19 @@ public class AccountController:BaseController
         return CreateResponse(result);
     }
 
-    [HttpPost("/ConfirmUser/Code")]
-    public async Task<ApiResponse<string>> ConfirmEmailWithCode()
+    [HttpPost("/GenerateConfirmationCode")]
+    public async Task<ApiResponse<string>> GenerateConfirmationCode(GenerateConfirmationCode confirmationCode)
     {
-        var result = await _module.ExecuteCommandAsync(new ConfirmEmailCommand(EmailConfirmationTypes.Code));
+        var result = await _module.ExecuteCommandAsync(confirmationCode);
+
+        return CreateResponse(result);
+    }
+
+    [HttpPost("/ConfirmEmailWithCode")]
+    public async Task<ApiResponse<string>> ConfirmEmailWithCode(ConfirmEmailCommand code)
+
+    {
+        var result = await _module.ExecuteCommandAsync(code);
 
         return CreateResponse(result);
     }

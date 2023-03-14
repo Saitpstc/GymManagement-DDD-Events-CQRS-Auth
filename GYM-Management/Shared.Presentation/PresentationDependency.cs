@@ -2,12 +2,13 @@
 
 using Core;
 using FluentValidation.AspNetCore;
-using Infrastructure.Email;
-using Infrastructure.Email.EmailConfirmation;
+using Infrastructure;
+using Infrastructure.Mail;
+using KAPorg.Shared.Service.Mail.Interface;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-
+using SendGrid.Extensions.DependencyInjection;
 
 public static class PresentationDependency
 {
@@ -18,20 +19,13 @@ public static class PresentationDependency
         configuration.Bind("AppOptions", myOptions);
         service.AddSingleton(myOptions);
 
-        service.AddScoped<IEmailConfirmationService, LinkConfirmation>();
-            service.AddScoped<IEmailConfirmationService, CodeConfirmation>();
 
-        
-        service.AddTransient<ConfirmationServiceResolver>(serviceProvider => token =>
-        {
-            // hardcoded strings can be extracted as constants
-            return token switch
-            {
-                "Code" => serviceProvider.GetService<CodeConfirmation>(),
-                "Link" => serviceProvider.GetService<LinkConfirmation>(),
-                _ => throw new InvalidOperationException()
-            };
-        });
+
+
+        service.AddSendGrid(options => options.ApiKey = myOptions.SendgridApi);
+        service.AddScoped<IEmailService, EmailService>();
+        service.AddScoped<IMailFactory, MailFactory>();
+        service.AddScoped<IMailTemplateProvider, TemplateProvider>(); 
         service.AddFluentValidationAutoValidation();
         service.AddSwaggerGen(options =>
         {

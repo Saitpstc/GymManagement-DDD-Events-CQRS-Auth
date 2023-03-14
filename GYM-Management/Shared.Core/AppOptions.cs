@@ -4,6 +4,7 @@ public class AppOptions
 {
     public List<ConnectionStrings> ConnectionStrings { get; set; }
     public string AuthTokenKey { get; set; }
+    public string SendgridApi { get; set; }
 
 
     public string GetConnectionString(Modules module)

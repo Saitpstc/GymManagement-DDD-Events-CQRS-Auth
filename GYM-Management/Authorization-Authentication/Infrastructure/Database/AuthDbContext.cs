@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Models;
 
 public class AuthDbContext:IdentityDbContext<User, Role, Guid, IdentityUserClaim<Guid>, UserRoleMap, IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>,
-                               IdentityUserToken<Guid>>, IAuthDbContext
+                               IdentityUserToken<Guid>>
 {
 
     public AuthDbContext(DbContextOptions<AuthDbContext> options):base(options)
@@ -15,6 +15,7 @@ public class AuthDbContext:IdentityDbContext<User, Role, Guid, IdentityUserClaim
     }
 
     public DbSet<Permission> Permissions { get; set; }
+    public DbSet<ConfirmationCode> ConfirmationCodes { get; set; }
     public DbSet<RolePermissionMap> RolePermissionMaps { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Role> Roles { get; set; }

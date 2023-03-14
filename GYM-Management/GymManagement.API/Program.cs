@@ -5,7 +5,7 @@ using Customer.Infrastructure;
 using Serilog;
 using Shared.Application;
 using Shared.Core;
-using Shared.Infrastructure.Email.EmailConfirmation;
+
 using Shared.Presentation;
 using Shared.Presentation.Middlewares;
 
@@ -35,7 +35,6 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<ICustomerModule, CustomerModule>();
 
-builder.Services.AddScoped<IEmailConfirmationFactory,EmailConfirmationFactory>();
 builder.Services.AddAuthorization();
 
 
