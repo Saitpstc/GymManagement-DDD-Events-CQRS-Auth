@@ -1,12 +1,11 @@
 ﻿namespace Shared.Infrastructure.Mail.Models;
 
 using System.Collections.Generic;
-using KAPorg.Shared.Model.Mail;
 
-public class KapMail
+public class AppMail
 {
-    public KapMailTypes? From { get; set; }
-    public MailTemplates? Template { get; set; }
+    public AppMailSender From { get; set; }
+    public MailTemplates Template { get; set; }
     public string To { get; set; }
     public string Subject { get; set; }
     public string PlainTextContent { get; set; }

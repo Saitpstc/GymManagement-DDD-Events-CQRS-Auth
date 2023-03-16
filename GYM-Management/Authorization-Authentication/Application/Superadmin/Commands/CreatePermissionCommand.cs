@@ -20,7 +20,6 @@ public class CreatePermissionValidator:AbstractValidator<CreatePermissionCommand
         RuleFor(x => x.Name).NotEmpty().NotNull();
     }
 }
-
 public class CreatePermissionCommandHandler:CommandHandlerBase<CreatePermissionCommand, PermissionResponseDto>
 {
     private readonly AuthDbContext _context;

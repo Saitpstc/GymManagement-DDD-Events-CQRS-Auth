@@ -1,4 +1,4 @@
-﻿namespace Authorization_Authentication.Infrastructure.JwtToken;
+﻿namespace Shared.Infrastructure.JWT;
 
 public class JwtToken
 {

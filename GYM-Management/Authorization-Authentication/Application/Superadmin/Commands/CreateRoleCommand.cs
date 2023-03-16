@@ -11,7 +11,6 @@ public class CreateRoleCommand:ICommand<RoleResponseDto>
 {
     public string Name { get; set; }
 }
-
 public class CreateRoleCommandHandler:CommandHandlerBase<CreateRoleCommand, RoleResponseDto>
 {
     private readonly RoleManager<Role> _roleManager;

@@ -1,20 +1,19 @@
 ﻿namespace Authorization_Authentication.Application.User.Query;
 
 using FluentValidation;
-using Infrastructure.JwtToken;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Models;
 using Shared.Application.Contracts;
 using Shared.Core.Exceptions;
 using Shared.Infrastructure;
+using Shared.Infrastructure.JWT;
 
 public class LoginQuery:IQuery<JwtUserDto>
 {
     public string UserName { get; set; }
     public string Password { get; set; }
 }
-
 public class LoginQueryValidator:AbstractValidator<LoginQuery>
 {
     public LoginQueryValidator()
@@ -37,7 +36,7 @@ public class LoginQueryCommandHandler:QueryHandlerBase<LoginQuery, JwtUserDto>
         UserManager<User> userManager,
         SignInManager<User> signInManager,
         IMediator mediator
-   ):base(errorMessageCollector)
+    ):base(errorMessageCollector)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -77,9 +76,4 @@ public class LoginQueryCommandHandler:QueryHandlerBase<LoginQuery, JwtUserDto>
         jwtuserDto.Token = token;
         return jwtuserDto;
     }
-}
-
-public class EmailConfirmationEvent:INotification
-{
-    public string UserName { get; set; }
 }

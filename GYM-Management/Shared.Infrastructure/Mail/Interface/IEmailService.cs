@@ -1,12 +1,11 @@
-﻿namespace KAPorg.Shared.Service.Mail.Interface;
+﻿namespace Shared.Infrastructure.Mail.Interface;
 
 using System.Threading.Tasks;
-using global::Shared.Infrastructure.Mail.Models;
-using Model.Mail;
+using Shared.Infrastructure.Mail.Models;
 
 public interface IEmailService
 {
-    Task SendEmailAsync(KapMail model);
+    Task SendEmailAsync(AppMail model);
     
 
 }

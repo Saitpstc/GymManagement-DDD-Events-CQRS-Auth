@@ -4,6 +4,7 @@ using Core.Enums;
 using Core.ValueObjects;
 using FluentAssertions;
 using Shared.Core;
+using Shared.Core.Domain;
 
 public class MembershipTests
 {

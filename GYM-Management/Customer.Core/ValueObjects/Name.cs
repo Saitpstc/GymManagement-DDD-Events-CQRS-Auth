@@ -1,6 +1,7 @@
 ﻿namespace Customer.Core.ValueObjects;
 
 using System.Text.RegularExpressions;
+using Shared.Core.Domain;
 
 public record Name:ValueObject
 {

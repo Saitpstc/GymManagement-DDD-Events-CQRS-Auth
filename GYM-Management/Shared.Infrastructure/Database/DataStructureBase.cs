@@ -1,7 +1,7 @@
-﻿namespace Shared.Infrastructure;
+﻿namespace Shared.Infrastructure.Database;
 
 using System.ComponentModel.DataAnnotations.Schema;
-using Core;
+using Core.Domain;
 
 public class DataStructureBase:BaseEntity
 {

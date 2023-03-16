@@ -1,6 +1,6 @@
-﻿namespace DomainEvents.CustomerModule;
+﻿namespace IntegrationEvents.CustomerModule;
 
-using Shared.Core;
+using Shared.Core.Domain;
 
 /// <summary>
 ///     Invoice Service Will Subscribe to this event to create invoice for customer

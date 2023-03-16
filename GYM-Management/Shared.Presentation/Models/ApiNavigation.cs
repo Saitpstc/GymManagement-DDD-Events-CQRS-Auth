@@ -1,4 +1,4 @@
-﻿namespace GymManagement.API.Models;
+﻿namespace Shared.Presentation.Models;
 
 public class ApiNavigation
 {

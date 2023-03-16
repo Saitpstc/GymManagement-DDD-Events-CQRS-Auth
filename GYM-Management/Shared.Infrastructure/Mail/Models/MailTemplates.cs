@@ -1,14 +1,10 @@
-﻿namespace KAPorg.Shared.Model.Mail;
+﻿namespace Shared.Infrastructure.Mail.Models;
+
+using System.ComponentModel;
 
 public enum MailTemplates
 {
-    EmailConfirmationTemplate=0,
-    ApprovalRequestReceivedTemplate=1,
-    ApprovalRequestApprovedTemplate=2,
-    ApprovalRequestRejectedTemplate=3,
-    RecoverPasswordTemplate=4,
-    SuccessfullyChangedPasswordTemplate=5,
-    WorkSpaceInvitationTemplate=6,
-    OrganizationStaffInvitationTemplate =7,
-    WelcomeToKapTeamTeamplate =8
+    [Description("d-c18a28c30eb54e42948be03b17f11d6b")]
+    EmailConfirmationTemplate,
+    None
 }

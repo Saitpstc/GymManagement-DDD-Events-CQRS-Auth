@@ -1,4 +1,6 @@
-﻿namespace Shared.Core;
+﻿namespace Shared.Core.Contracts;
+
+using Domain;
 
 public interface IRepository<T> where T: AggregateRoot
 {

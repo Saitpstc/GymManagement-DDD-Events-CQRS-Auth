@@ -2,8 +2,7 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using KAPorg.Shared.Model.Mail;
-using KAPorg.Shared.Service.Mail.Interface;
+using Interface;
 using Models;
 using SendGrid;
 using SendGrid.Helpers.Errors.Model;
@@ -20,7 +19,7 @@ public class EmailService : IEmailService
         _sendGridClient = sendGridClient;
     }
 
-    public async Task SendEmailAsync(KapMail model)
+    public async Task SendEmailAsync(AppMail model)
     {
         var message = _mailFactory.Create(model);
         try
@@ -34,7 +33,7 @@ public class EmailService : IEmailService
         }
     }
 
-    public async Task SendBulkMail(List<KapMail> mails)
+    public async Task SendBulkMail(List<AppMail> mails)
     {
         foreach (var mail in mails)
         {

@@ -1,4 +1,7 @@
-﻿namespace Shared.Core;
+﻿namespace Shared.Core.Domain;
+
+using Contracts;
+using Exceptions;
 
 public abstract class AggregateRoot:BaseEntity
 {

@@ -14,8 +14,3 @@ public class ErrorMessageCollector:IErrorMessageCollector
         ErrorMessage.Clear();
     }
 }
-
-public interface IErrorMessageCollector
-{
-    void AddError(string errorMessage);
-}

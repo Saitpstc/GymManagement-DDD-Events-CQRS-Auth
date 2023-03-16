@@ -1,6 +1,7 @@
 ﻿namespace Customer.Core;
 
-using DomainEvents.CustomerModule;
+using IntegrationEvents.CustomerModule;
+using Shared.Core.Domain;
 using ValueObjects;
 
 public class Customer:AggregateRoot

@@ -1,6 +1,6 @@
-﻿namespace Shared.Infrastructure;
+﻿namespace Shared.Infrastructure.Database;
 
-using Core;
+using Core.Domain;
 
 public interface DataStructureMap<T, Y> where T: DataStructureBase where Y: AggregateRoot
 {

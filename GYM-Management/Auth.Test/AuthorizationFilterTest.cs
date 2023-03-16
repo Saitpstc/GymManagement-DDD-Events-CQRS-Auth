@@ -1,13 +1,13 @@
 ﻿namespace Auth.Test;
 
 using System.Net;
-using Authorization_Authentication.Infrastructure.JwtToken;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
 using Shared.Infrastructure;
+using Shared.Infrastructure.JWT;
 using Shared.Presentation.Attributes;
 using Xunit.Abstractions;
 

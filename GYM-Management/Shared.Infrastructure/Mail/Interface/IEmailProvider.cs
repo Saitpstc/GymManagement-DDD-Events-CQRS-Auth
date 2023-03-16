@@ -1,10 +1,9 @@
-namespace KAPorg.Shared.Service.Mail.Interface;
+namespace Shared.Infrastructure.Mail.Interface;
 
-using global::Shared.Infrastructure.Mail.Models;
-using Model.Mail;
 using SendGrid.Helpers.Mail;
+using Shared.Infrastructure.Mail.Models;
 
 public interface IEmailProvider
 {
-    EmailAddress GetKapMail(KapMailTypes kapOrgMailType);
+    EmailAddress GetKapMail(AppMailSender appOrgMailSender);
 }

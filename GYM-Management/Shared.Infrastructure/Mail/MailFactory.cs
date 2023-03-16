@@ -1,23 +1,15 @@
 ﻿namespace Shared.Infrastructure.Mail;
 
-using KAPorg.Shared.Model.Mail;
-using KAPorg.Shared.Service.Mail.Interface;
+using Interface;
 using Models;
 using SendGrid.Helpers.Errors.Model;
 using SendGrid.Helpers.Mail;
 
 //todo modify this to make bulk actions
-public class MailFactory : IMailFactory
+public class MailFactory:IMailFactory
 {
-    private readonly IMailTemplateProvider _templateProvider;
 
-    public MailFactory(IMailTemplateProvider templateProvider)
-    {
-        _templateProvider = templateProvider;
-
-    }
-
-    public SendGridMessage Create(KapMail mail)
+    public SendGridMessage Create(AppMail mail)
     {
         try
         {
@@ -30,20 +22,21 @@ public class MailFactory : IMailFactory
     }
 
 
-    private SendGridMessage CreateMail(KapMail mail)
+    private SendGridMessage CreateMail(AppMail mail)
     {
         var message = new SendGridMessage();
         message.AddTo(mail.To);
-        message.From = new EmailAddress("saitpostaci8@gmail.com");
-        if (mail.Template != null)
+        message.From = new EmailAddress(mail.From.GetDescription());
+
+        if (mail.Template !=MailTemplates.None)
         {
-            message.SetTemplateId(_templateProvider.GetTemplateId(mail.Template));
+            message.SetTemplateId(mail.Template.GetDescription());
             message.SetTemplateData(mail.TemplateData);
         }
         else
         {
             message.Subject = mail.Subject;
-            message.PlainTextContent = mail.PlainTextContent;
+            message.PlainTextContent = mail.PlainTextContent; 
         }
         return message;
     }

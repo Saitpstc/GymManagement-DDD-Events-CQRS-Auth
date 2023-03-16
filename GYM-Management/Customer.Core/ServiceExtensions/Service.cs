@@ -2,6 +2,7 @@
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Shared.Core.Domain;
 
 public static class Service
 {

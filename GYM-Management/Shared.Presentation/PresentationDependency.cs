@@ -4,7 +4,7 @@ using Core;
 using FluentValidation.AspNetCore;
 using Infrastructure;
 using Infrastructure.Mail;
-using KAPorg.Shared.Service.Mail.Interface;
+using Infrastructure.Mail.Interface;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -25,7 +25,7 @@ public static class PresentationDependency
         service.AddSendGrid(options => options.ApiKey = myOptions.SendgridApi);
         service.AddScoped<IEmailService, EmailService>();
         service.AddScoped<IMailFactory, MailFactory>();
-        service.AddScoped<IMailTemplateProvider, TemplateProvider>(); 
+
         service.AddFluentValidationAutoValidation();
         service.AddSwaggerGen(options =>
         {

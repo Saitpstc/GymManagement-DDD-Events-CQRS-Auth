@@ -2,14 +2,13 @@ namespace Authorization_Authentication.Application.User.Command;
 
 using FluentValidation;
 using Infrastructure.Database;
-using KAPorg.Shared.Service.Mail.Interface;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Models;
 using Query;
 using Shared.Application.Contracts;
 using Shared.Core.Exceptions;
-using Shared.Infrastructure;
+using Shared.Infrastructure.Mail.Interface;
 using Shared.Infrastructure.Mail.Models;
 
 public class GenerateConfirmationCode:ICommand<string>
@@ -25,7 +24,6 @@ public class GenerateConfirmationCodeValidator:AbstractValidator<GenerateConfirm
         RuleFor(x => x.UserName).NotEmpty().WithMessage("Username cannot be empty");
     }
 }
-
 public class GenerateConfirmationCodeHandler:CommandHandlerBase<GenerateConfirmationCode, string>, INotificationHandler<EmailConfirmationEvent>
 {
     private readonly IEmailService _emailService;
@@ -71,12 +69,17 @@ public class GenerateConfirmationCodeHandler:CommandHandlerBase<GenerateConfirma
         await _context.ConfirmationCodes.AddAsync(confirmationCode, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
-        var kapmail = new KapMail()
+        var kapmail = new AppMail()
         {
-            From = null,
-            Subject = "Email Confirmation Code",
+            From = AppMailSender.NoReply,
+            Subject = "Account Confirmation Code",
             To = user.Email,
-            PlainTextContent = $"Here is your confirmation code :{code}"
+            Template = MailTemplates.EmailConfirmationTemplate,
+            TemplateData = new Dictionary<string, string>()
+            {
+                { "VerificationCode", code },
+                { "ReceiverMail", user.Email }
+            }
         };
         await _emailService.SendEmailAsync(kapmail);
 

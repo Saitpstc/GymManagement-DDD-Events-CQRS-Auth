@@ -4,6 +4,7 @@ using Core;
 using Core.Enums;
 using Core.ValueObjects;
 using Shared.Infrastructure;
+using Shared.Infrastructure.Database;
 
 public class CustomerDB:DataStructureBase
 {

@@ -1,6 +1,7 @@
 ﻿namespace Customer.Core.ValueObjects;
 
 using Enums;
+using Shared.Core.Domain;
 
 public class Membership:BaseEntity
 {

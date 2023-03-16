@@ -2,7 +2,7 @@
 
 using Core;
 using Core.ValueObjects;
-using DomainEvents;
+using IntegrationEvents;
 using Shared.Application.Contracts;
 
 public class CreateCustomer
@@ -46,17 +46,8 @@ public class CreateCustomer
             Customer customer = new Customer(new Name(request._name, request._surname), new PhoneNumber(request._countrycode, request._number),
                 new Email(request._mail));
             var AddedCustomer = _repository.AddAsync(customer);
-            integratioEvent newCustomerCreate = new integratioEvent
-            {
-                CustomerId = Guid.NewGuid(),
-                password = "password",
-                UserName = "user@gmail.com"
-            };
+           
             return AddedCustomer;
         }
     }
-}
-
-public class test
-{
 }

@@ -3,7 +3,6 @@
 using FluentValidation;
 using Infrastructure.Database;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Models;
 using Shared.Application.Contracts;
 using Shared.Core.Exceptions;
@@ -12,17 +11,6 @@ public class ConfirmEmailCommand:ICommand<string>
 {
     public string Code { get; set; }
     public string UserName { get; set; }
-}
-
-public class ConfirmEmailValidator:AbstractValidator<ConfirmEmailCommand>
-{
-    public ConfirmEmailValidator()
-    {
-        RuleFor(x => x.Code).NotEmpty();
-        RuleFor(x => x.UserName).NotEmpty();
-        RuleFor(x => x.Code).Length(6);
-        RuleFor(x => x.Code).Must(x => x.All(char.IsDigit)).WithMessage("Code should contain only numeric values");
-    }
 }
 
 public class ConfirmEmailCommandHandler:CommandHandlerBase<ConfirmEmailCommand, string>
@@ -39,6 +27,16 @@ public class ConfirmEmailCommandHandler:CommandHandlerBase<ConfirmEmailCommand, 
         _userManager = userManager;
     }
 
+    public class ConfirmEmailValidator:AbstractValidator<ConfirmEmailCommand>
+    {
+        public ConfirmEmailValidator()
+        {
+            RuleFor(x => x.Code).NotEmpty();
+            RuleFor(x => x.UserName).NotEmpty();
+            RuleFor(x => x.Code).Length(6);
+            RuleFor(x => x.Code).Must(x => x.All(char.IsDigit)).WithMessage("Code should contain only numeric values");
+        }
+    }
     public override async Task<string> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
     {
         User? user = await _userManager.FindByNameAsync(request.UserName);

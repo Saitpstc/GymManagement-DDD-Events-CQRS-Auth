@@ -1,6 +1,8 @@
 ﻿namespace Shared.Infrastructure;
 
 using Core;
+using Core.Domain;
+using Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -57,9 +59,4 @@ public class UnitOfWork:IUnitOfWork
             await Mediator.Publish(domainEvent, cancellationToken);
         }
     }
-}
-
-public interface IUnitOfWork
-{
-    Task<int> SaveAsync(CancellationToken token);
 }

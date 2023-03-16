@@ -2,6 +2,7 @@
 
 using Core.Enums;
 using Shared.Core;
+using Shared.Core.Domain;
 
 public class MembershipDb:BaseEntity
 {

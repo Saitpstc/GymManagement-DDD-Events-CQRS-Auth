@@ -2,6 +2,7 @@
 
 using System.Text.RegularExpressions;
 using ServiceExtensions;
+using Shared.Core.Domain;
 
 public class PhoneNumber
 {

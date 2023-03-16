@@ -4,11 +4,11 @@ using Authorization_Authentication.Application.Contracts;
 using Authorization_Authentication.Application.User.Command;
 using Authorization_Authentication.Application.User.Query;
 using Authorization_Authentication.Dto.User;
-using Authorization_Authentication.Infrastructure.JwtToken;
 using Authorization_Authentication.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Application.Contracts;
+using Shared.Infrastructure.JWT;
 using Shared.Presentation.Models;
 
 [Route("Auth")]
@@ -52,6 +52,12 @@ public class AccountController:BaseController
         var result = await _module.ExecuteCommandAsync(code);
 
         return CreateResponse(result);
+    }
+
+    [HttpPost("/ConfirmEmailWithCode")]
+    public Task<ApiResponse<string>> ConfirmEmailWithLink(ConfirmEmailCommand code)
+    {
+        throw new NotImplementedException();
     }
 
 }

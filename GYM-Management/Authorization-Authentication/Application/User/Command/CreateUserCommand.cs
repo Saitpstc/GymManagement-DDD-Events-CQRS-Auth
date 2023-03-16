@@ -1,10 +1,10 @@
 ﻿namespace Authorization_Authentication.Application.User.Command;
 
-using Authorization_Authentication.Dto.User;
-using Authorization_Authentication.Models;
+using Dto.User;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Models;
 using Query;
 using Shared.Application.Contracts;
 using Shared.Core.Exceptions;
@@ -38,6 +38,7 @@ public class CreateUserCommandHandler:CommandHandlerBase<CreateUserCommand, User
         _mediator = mediator;
         _userManager = userManager;
     }
+
 
     public override async Task<UserCreatedResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {

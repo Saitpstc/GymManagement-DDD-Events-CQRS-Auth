@@ -1,4 +1,6 @@
-namespace Shared.Core;
+namespace Shared.Core.Exceptions;
+
+using Contracts;
 
 public class BusinessRuleValidationException:Exception
 {
