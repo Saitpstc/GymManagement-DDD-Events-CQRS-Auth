@@ -54,10 +54,10 @@ public class AccountController:BaseController
         return CreateResponse(result);
     }
 
-    [HttpPost("/ConfirmEmailWithCode")]
+    /*[HttpPost("/ConfirmEmailWithCode")]
     public Task<ApiResponse<string>> ConfirmEmailWithLink(ConfirmEmailCommand code)
     {
         throw new NotImplementedException();
-    }
+    }*/
 
 }
