@@ -1,6 +1,7 @@
 ﻿namespace Authorization_Authentication.Application.User.Command;
 
 using Dto.User;
+using Events;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;

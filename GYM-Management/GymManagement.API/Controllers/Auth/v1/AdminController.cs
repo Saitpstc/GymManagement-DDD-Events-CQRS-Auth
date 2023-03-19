@@ -8,11 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 using Shared.Application.Contracts;
 using Shared.Presentation.Models;
 
-public class SuperAdminController:BaseController
+public class AdminController:BaseController
 {
     private readonly IAuthModule _module;
 
-    public SuperAdminController(IErrorMessageCollector collector, IAuthModule module):base(collector)
+    public AdminController(IErrorMessageCollector collector, IAuthModule module):base(collector)
     {
         _module = module;
     }
@@ -34,6 +34,7 @@ public class SuperAdminController:BaseController
         var results = CreateResponse(result);
         return results;
     }
+
 
     [HttpPost("AssignPermissionToRole")]
     public async Task<ApiResponse<Unit>> AssignPermissionToRole(AssignPermissionToRoleCommand assignPermission)

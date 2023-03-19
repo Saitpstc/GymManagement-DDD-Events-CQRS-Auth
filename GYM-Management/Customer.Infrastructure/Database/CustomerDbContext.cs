@@ -1,13 +1,16 @@
 ﻿namespace Customer.Infrastructure.Database;
 
 using Configuration;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Shared.Infrastructure;
 using Tables;
 
-public class CustomerDbContext:DbContext, ICustomerDbContext
+public class CustomerDbContext:AppDbContext
 {
 
-    public CustomerDbContext(DbContextOptions<CustomerDbContext> options):base(options)
+
+    public CustomerDbContext(DbContextOptions<CustomerDbContext> options, IMediator mediator):base(options, mediator)
     {
 
     }

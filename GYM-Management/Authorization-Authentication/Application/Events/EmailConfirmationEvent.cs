@@ -1,4 +1,4 @@
-﻿namespace Authorization_Authentication.Application.User.Query;
+﻿namespace Authorization_Authentication.Application.Events;
 
 using MediatR;
 

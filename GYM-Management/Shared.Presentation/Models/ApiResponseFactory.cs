@@ -28,8 +28,7 @@ public static class ApiResponseFactory
 
     public static ApiResponse CreateExceptionResponse(Exception exception)
     {
-        var isDevelopment = string.Equals(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"), "development",
-            StringComparison.InvariantCultureIgnoreCase);
+
 
         ApiResponse apiResponse = new ApiResponse
         {
@@ -38,19 +37,16 @@ public static class ApiResponseFactory
 
         };
 
-        if (!isDevelopment)
+        if (exception is BaseException)
         {
-            apiResponse.ErrorMessages.Add("Internal Server Error");
-        }
-        else if (exception is BaseException)
-        {
-            BaseException e = (BaseException) exception;
-            apiResponse.ErrorMessages = e.ErrorMessages;
+            var ex = exception as BaseException;
+            apiResponse.ErrorMessages = ex.ErrorMessages;
         }
         else
         {
             apiResponse.ErrorMessages.Add(exception.Message);
         }
+
 
 
         return apiResponse;

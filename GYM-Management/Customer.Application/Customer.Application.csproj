@@ -22,4 +22,8 @@
         <PackageReference Include="Serilog" Version="3.0.0-dev-01910" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="DTO\Request" />
+    </ItemGroup>
+
 </Project>

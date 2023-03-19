@@ -1,5 +1,6 @@
 ﻿namespace Authorization_Authentication.Application.Superadmin.Commands;
 
+using System.ComponentModel.DataAnnotations;
 using FluentValidation;
 using Infrastructure.Database;
 using MediatR;
@@ -7,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Models;
 using Shared.Application.Contracts;
 using Shared.Application.CustomValidators;
+using Shared.Core.Domain;
+using Shared.Core.Exceptions;
 
 public class AssignPermissionToRoleCommand:ICommand<Unit>
 {
@@ -38,36 +41,31 @@ public class AssignPermissionToRoleCommandHandler:CommandHandlerBase<AssignPermi
         RolePermissionMap? rolePermissionMap =
             await _db.RolePermissionMaps.FirstOrDefaultAsync(x => x.PermissionId == request.PermissionId && x.RoleId == request.RoleId);
 
-        if (rolePermissionMap is not null)
-        {
-            ErrorMessageCollector.AddError("Permission already assigned to the role");
-            return Unit.Value;
-        }
+        if (rolePermissionMap is not null) throw new BusinessLogicException("Permission already assigned to the role");
+
         Role? role = await _db.Roles.FirstOrDefaultAsync(x => x.Id == request.RoleId);
 
-
-
-        if (role is null)
-        {
-            ErrorMessageCollector.AddError("Role is not found");
-            return Unit.Value;
-        }
+        if (role is null) throw new ArgumentNullException($"Role is not found for given  {request.RoleId}");
 
         Permission? permission = await _db.Permissions.FirstOrDefaultAsync(x => x.Id == request.PermissionId);
 
-        if (permission is null)
+        if (permission is null) throw new ArgumentNullException($"Permission is not found for given  {request.PermissionId}");
+
+        try
         {
-            ErrorMessageCollector.AddError("Permission is not found");
-            return Unit.Value;
+            await _db.RolePermissionMaps.AddAsync(new RolePermissionMap
+            {
+                Role = role,
+                Permission = permission
+            });
+
+            await _db.SaveChangesAsync(cancellationToken);
+        }
+        catch (Exception e)
+        {
+            throw new DbUpdateException("An error occured in databa while adding permission to role", e);
         }
 
-        await _db.RolePermissionMaps.AddAsync(new RolePermissionMap
-        {
-            Role = role,
-            Permission = permission
-        });
-
-        await _db.SaveChangesAsync();
 
         return Unit.Value;
     }

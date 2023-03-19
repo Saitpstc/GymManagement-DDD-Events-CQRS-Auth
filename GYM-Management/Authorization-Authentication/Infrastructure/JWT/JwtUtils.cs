@@ -1,8 +1,9 @@
-﻿namespace Shared.Infrastructure.JWT;
+﻿namespace Authorization_Authentication.Infrastructure.JWT;
 
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Authorization_Authentication.Models;
 using Microsoft.IdentityModel.Tokens;
 
 public class JwtUtils
@@ -10,7 +11,7 @@ public class JwtUtils
 
     /// <param name="user">Application's user object</param>
     /// <param name="lifeTimeInMinute"> How many minutes will this token will be valid  </param>
-    public static JwtToken CreateToken(JwtUserDto user, int lifeTimeInMinute)
+    public static JwtUserDto CreateToken(User user, int lifeTimeInMinute)
     {
         var claims = SetIdentityClaims(user);
 
@@ -24,7 +25,8 @@ public class JwtUtils
 
         var aJwtToken = tokenHandler.WriteToken(aToken);
 
-        return new JwtToken(aJwtToken, tokenDescriptor.Expires);
+        var userDto = new JwtUserDto(user, new JwtToken(aJwtToken, tokenDescriptor.Expires));
+        return userDto;
     }
 
     public static List<Claim> GetUserClaims(string tokenToken)
@@ -48,7 +50,7 @@ public class JwtUtils
         return false;
     }
 
-    static private Dictionary<string, object> SetIdentityClaims(JwtUserDto user)
+    static private Dictionary<string, object> SetIdentityClaims(User user)
     {
         var claims = new Dictionary<string, object>
         {
@@ -57,19 +59,25 @@ public class JwtUtils
             { "Email", user.Email }
         };
 
-        if (user.Roles != null && user.Roles.Any())
+        var roles = user.UserRoles.Select(x => x.Role).ToList();
+
+        if (roles.Any())
         {
-            foreach (var role in user.Roles)
+            foreach (var role in roles.Where(x => x.IsActive))
             {
-                claims.Add("Role", role);
+
+                claims.Add("Role", role.Name);
             }
         }
 
-        if (user.Permissions != null && user.Permissions.Any())
+
+        var permissions = user.UserRoles.Select(x => x.Role).SelectMany(x => x.RolePermissionMaps).Select(x => x.Permission).ToList();
+
+        if (permissions.Any())
         {
-            foreach (var permission in user.Permissions)
+            foreach (var permission in permissions)
             {
-                claims.Add("Permission", permission);
+                claims.Add("Permission", $"{permission.Context}.{permission.Type.ToString()}");
             }
         }
 

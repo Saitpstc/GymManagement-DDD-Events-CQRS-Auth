@@ -1,9 +1,11 @@
 namespace Authorization_Authentication.Application.User.Command;
 
+using Events;
 using FluentValidation;
 using Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using Query;
 using Shared.Application.Contracts;
@@ -11,12 +13,14 @@ using Shared.Core.Exceptions;
 using Shared.Infrastructure.Mail.Interface;
 using Shared.Infrastructure.Mail.Models;
 
+//Request
 public class GenerateConfirmationCode:ICommand<string>
 {
     public string UserName { get; set; }
 
 }
 
+//Request validator
 public class GenerateConfirmationCodeValidator:AbstractValidator<GenerateConfirmationCode>
 {
     public GenerateConfirmationCodeValidator()
@@ -24,6 +28,7 @@ public class GenerateConfirmationCodeValidator:AbstractValidator<GenerateConfirm
         RuleFor(x => x.UserName).NotEmpty().WithMessage("Username cannot be empty");
     }
 }
+//Request Handler
 public class GenerateConfirmationCodeHandler:CommandHandlerBase<GenerateConfirmationCode, string>, INotificationHandler<EmailConfirmationEvent>
 {
     private readonly IEmailService _emailService;
@@ -55,19 +60,27 @@ public class GenerateConfirmationCodeHandler:CommandHandlerBase<GenerateConfirma
             throw new BusinessLogicException($"User is not found with {request.UserName} Username ");
         }
 
-        var generator = new Random();
-        var code = generator.Next(0, 1000000).ToString("D6");
-        var dateNow = DateTime.Now;
-        var confirmationCode = new ConfirmationCode()
-        {
-            Code = code,
-            Created = dateNow,
-            ValidTo = dateNow.AddMinutes(2),
-            UserId = user.Id
-        };
+        var code = CreateConfirmationCode(user, out ConfirmationCode confirmationCode);
 
-        await _context.ConfirmationCodes.AddAsync(confirmationCode, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
+
+        try
+        {
+            await _context.ConfirmationCodes.AddAsync(confirmationCode, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        catch (Exception e)
+        {
+            throw new DbUpdateException("An error occured while saving confirmation code to database", e);
+        }
+
+
+        await SendCodeWithEmail(user, code);
+
+        return "Confirmation Code has been sent";
+    }
+
+    async private Task SendCodeWithEmail(User user, string code)
+    {
 
         var kapmail = new AppMail()
         {
@@ -82,8 +95,22 @@ public class GenerateConfirmationCodeHandler:CommandHandlerBase<GenerateConfirma
             }
         };
         await _emailService.SendEmailAsync(kapmail);
+    }
 
-        return "Confirmation Code has been sent";
+    static private string CreateConfirmationCode(User user, out ConfirmationCode confirmationCode)
+    {
+
+        var generator = new Random();
+        var code = generator.Next(0, 1000000).ToString("D6");
+        var dateNow = DateTime.Now;
+        confirmationCode = new ConfirmationCode()
+        {
+            Code = code,
+            Created = dateNow,
+            ValidTo = dateNow.AddMinutes(2),
+            UserId = user.Id
+        };
+        return code;
     }
 
     public async Task Handle(EmailConfirmationEvent notification, CancellationToken cancellationToken)

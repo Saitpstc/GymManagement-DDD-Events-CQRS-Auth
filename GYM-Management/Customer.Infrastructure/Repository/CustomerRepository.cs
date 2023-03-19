@@ -3,6 +3,7 @@
 using Core;
 using Database;
 using Database.Tables;
+using Microsoft.EntityFrameworkCore;
 
 public class CustomerRepository:ICustomerRepository
 {
@@ -32,7 +33,15 @@ public class CustomerRepository:ICustomerRepository
 
     public async Task<bool> UpdateAsync(Customer Aggregate)
     {
-        _dbContext.Update(CustomerDB.FromDomainModel(Aggregate));
+
+        try
+        {
+            _dbContext.Update(CustomerDB.FromDomainModel(Aggregate));
+        }
+        catch (Exception e)
+        {
+            throw new DbUpdateException("An error occurred while updating  to the database.", e);
+        }
 
         return true;
     }
@@ -41,8 +50,15 @@ public class CustomerRepository:ICustomerRepository
     {
         CustomerDB dbTable = CustomerDB.FromDomainModel(Aggregate);
         dbTable.IsDeleted = true;
-        _dbContext.Update(dbTable);
 
+        try
+        {
+            _dbContext.Update(dbTable);
+        }
+        catch (Exception e)
+        {
+            throw new DbUpdateException("An error occurred while updating  to the database.", e);
+        }
 
 
     }
@@ -52,8 +68,14 @@ public class CustomerRepository:ICustomerRepository
     {
         CustomerDB dbTable = CustomerDB.FromDomainModel(Aggregate);
 
-        await _dbContext.Customers.AddAsync(dbTable);
-
+        try
+        {
+            await _dbContext.Customers.AddAsync(dbTable);
+        }
+        catch (Exception e)
+        {
+            throw new DbUpdateException("An error occurred while adding the entity to the database.", e);
+        }
 
 
         return dbTable.FromEntity();
@@ -66,6 +88,17 @@ public class CustomerRepository:ICustomerRepository
 
     public async Task<int> CommitAsync()
     {
-        return await _dbContext.SaveChangesAsync();
+        int result = 0;
+
+        try
+        {
+            result = await _dbContext.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            throw new DbUpdateException("An error occurred while saving changes in the  database.", e);
+        }
+
+        return result;
     }
 }

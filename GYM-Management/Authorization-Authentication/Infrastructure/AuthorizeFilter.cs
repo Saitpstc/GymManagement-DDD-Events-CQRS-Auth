@@ -1,12 +1,11 @@
-﻿namespace Shared.Presentation.Attributes;
+﻿namespace Authorization_Authentication.Infrastructure;
 
 using System.Net;
-using Exceptions;
-using Infrastructure;
-using Infrastructure.JWT;
+using JWT;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Primitives;
+using Shared.Presentation.Exceptions;
 
 public class AuthorizeFilter:Attribute, IAuthorizationFilter
 {

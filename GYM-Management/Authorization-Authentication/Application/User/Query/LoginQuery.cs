@@ -1,7 +1,9 @@
 ﻿namespace Authorization_Authentication.Application.User.Query;
 
+using Events;
 using FluentValidation;
 using Infrastructure.Database;
+using Infrastructure.JWT;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +11,6 @@ using Models;
 using Shared.Application.Contracts;
 using Shared.Core.Exceptions;
 using Shared.Infrastructure;
-using Shared.Infrastructure.JWT;
 
 public class LoginQuery:IQuery<JwtUserDto>
 {
@@ -82,17 +83,8 @@ public class LoginQueryCommandHandler:QueryHandlerBase<LoginQuery, JwtUserDto>
         }
 
 
-        var jwtuserDto = new JwtUserDto(user.Id, user.UserName, user.Email);
-
-        var roles = await _userManager.GetRolesAsync(user);
-        var token = JwtUtils.CreateToken(jwtuserDto, 60);
-        var permissions = user.UserRoles.Select(x => x.Role).SelectMany(x => x.RolePermissionMaps).Select(x => x.Permission).ToList();
-
-
-        jwtuserDto.Token = token;
-        jwtuserDto.Roles = roles.ToList();
-        jwtuserDto.Permissions = permissions.Select(x => x.Name).ToList();
-
-        return jwtuserDto;
+        var userDto = JwtUtils.CreateToken(user, 60);
+       
+        return userDto;
     }
 }

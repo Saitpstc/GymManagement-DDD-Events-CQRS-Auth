@@ -24,8 +24,6 @@ public static class CustomerHost
 
 
         services.AddScoped<ICustomerRepository, CustomerRepository>();
-        services.AddScoped<ICustomerDbContext, CustomerDbContext>();
-        services.AddScoped<CustomerUnitOfWork>();
 
 
 

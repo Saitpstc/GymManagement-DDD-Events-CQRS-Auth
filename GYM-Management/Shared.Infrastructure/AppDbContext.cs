@@ -6,35 +6,36 @@ using Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-public class UnitOfWork:IUnitOfWork
+public class AppDbContext:DbContext
 {
     private readonly IMediator Mediator;
-    private readonly DbContext DbContext;
 
-    public UnitOfWork(IMediator mediator, DbContext context)
+
+    public AppDbContext(DbContextOptions options, IMediator mediator):base(options)
     {
         Mediator = mediator;
-        DbContext = context;
+
     }
+    
 
 
     public async Task<int> SaveAsync(CancellationToken cancellationToken = default)
     {
-        var entries = DbContext.ChangeTracker.Entries<DataStructureBase>()
-                               .Where(e => e.State is EntityState.Added or EntityState.Modified)
-                               .ToList();
+        var entries = ChangeTracker.Entries<DataStructureBase>()
+                                   .Where(e => e.State is EntityState.Added or EntityState.Modified)
+                                   .ToList();
 
 
-        var updatedEntries = DbContext.ChangeTracker.Entries<BaseEntity>()
-                                      .Where(e => e.State is EntityState.Modified)
-                                      .ToList();
+        var updatedEntries = ChangeTracker.Entries<BaseEntity>()
+                                          .Where(e => e.State is EntityState.Modified)
+                                          .ToList();
 
         foreach (var updated in updatedEntries)
         {
             updated.Entity.LastUpdateAt = DateTime.Now;
         }
 
-        var result = await DbContext.SaveChangesAsync(cancellationToken);
+        var result = await SaveChangesAsync(cancellationToken);
         var events = entries.SelectMany(x => x.Entity.Events).ToList();
 
         if (events.Any())
