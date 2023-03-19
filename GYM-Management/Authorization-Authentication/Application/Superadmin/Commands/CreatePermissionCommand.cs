@@ -5,12 +5,14 @@ using FluentValidation;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Modules.Shared;
 using Shared.Application.Contracts;
 
 public class CreatePermissionCommand:ICommand<PermissionResponseDto>
 {
 
     public PermissionType PermissionType { get; set; }
+    public PermissionContext Context { get; set; }
 }
 
 public class CreatePermissionValidator:AbstractValidator<CreatePermissionCommand>
@@ -18,6 +20,7 @@ public class CreatePermissionValidator:AbstractValidator<CreatePermissionCommand
     public CreatePermissionValidator()
     {
         RuleFor(x => x.PermissionType).NotEmpty().NotNull();
+        RuleFor(x => x.Context).NotEmpty().NotNull();
     }
 }
 
@@ -36,7 +39,8 @@ public class CreatePermissionCommandHandler:CommandHandlerBase<CreatePermissionC
 
         Permission newPermission = new Permission
         {
-            Type = request.PermissionType
+            Type = request.PermissionType,
+            Context = request.Context
         };
 
         try
@@ -51,11 +55,6 @@ public class CreatePermissionCommandHandler:CommandHandlerBase<CreatePermissionC
         }
 
 
-        return new PermissionResponseDto
-        {
-            Description = newPermission.Description,
-            Name = newPermission.Name,
-            Id = newPermission.Id
-        };
+        return new PermissionResponseDto(newPermission);
     }
 }

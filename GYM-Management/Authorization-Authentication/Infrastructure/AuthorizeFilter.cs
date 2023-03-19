@@ -24,9 +24,9 @@ public class AuthorizeFilter:Attribute, IAuthorizationFilter
         //Uncomment this code if you dont want to require authorization for local requests
         //if (IsLocalRequest(context.HttpContext)) return;
 
-        var userIsSuperAdmin = context.HttpContext.User.HasClaim(x => x.Type == "Role" && _claimvalue.Contains("SuperAdmin"));
+        var userIsSuperAdmin = context.HttpContext.User.HasClaim(x => x is { Type: "Role", Value: "SuperAdmin" });
 
-        if (userIsSuperAdmin) return;
+         if (userIsSuperAdmin) return;
 
 
         StringValues authHeader = context.HttpContext.Request.Headers.Authorization;
@@ -40,7 +40,7 @@ public class AuthorizeFilter:Attribute, IAuthorizationFilter
             throw new UnauthorizedRequestException("Unauthorized Request Has Been Made ");
         }
 
-        if (!tokenIsExpired)
+        if (tokenIsExpired)
         {
 
             throw new UnauthorizedRequestException("Token is expired");

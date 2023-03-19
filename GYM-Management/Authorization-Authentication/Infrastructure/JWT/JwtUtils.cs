@@ -13,7 +13,8 @@ public class JwtUtils
     /// <param name="lifeTimeInMinute"> How many minutes will this token will be valid  </param>
     public static JwtUserDto CreateToken(User user, int lifeTimeInMinute)
     {
-        var claims = SetIdentityClaims(user);
+        JwtUserDto userDto = new JwtUserDto();
+        var claims = SetIdentityClaims(user, userDto);
 
         JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 
@@ -25,7 +26,10 @@ public class JwtUtils
 
         var aJwtToken = tokenHandler.WriteToken(aToken);
 
-        var userDto = new JwtUserDto(user, new JwtToken(aJwtToken, tokenDescriptor.Expires));
+        userDto.UserName = user.UserName;
+        userDto.Id = user.Id;
+        userDto.Email = user.Email;
+        userDto.Token = new JwtToken(aJwtToken, tokenDescriptor.Expires);
         return userDto;
     }
 
@@ -50,7 +54,7 @@ public class JwtUtils
         return false;
     }
 
-    static private Dictionary<string, object> SetIdentityClaims(User user)
+    static private Dictionary<string, object> SetIdentityClaims(User user, JwtUserDto jwtUserDto)
     {
         var claims = new Dictionary<string, object>
         {
@@ -67,6 +71,7 @@ public class JwtUtils
             {
 
                 claims.Add("Role", role.Name);
+                jwtUserDto.Roles.Add(role.Name);
             }
         }
 
@@ -77,7 +82,10 @@ public class JwtUtils
         {
             foreach (var permission in permissions)
             {
-                claims.Add("Permission", $"{permission.Context}.{permission.Type.ToString()}");
+                var normalizedPermission = $"{permission.Context}.{permission.Type.ToString()}";
+                claims.Add("Permission", normalizedPermission);
+                jwtUserDto.Permissions.Add(normalizedPermission);
+
             }
         }
 

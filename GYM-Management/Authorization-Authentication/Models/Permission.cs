@@ -1,25 +1,13 @@
 ﻿namespace Authorization_Authentication.Models;
 
+using Modules.Shared;
+
 public class Permission
 {
     public Guid Id { get; set; }
     public PermissionType Type { get; set; }
     public PermissionContext Context { get; set; }
     public ICollection<RolePermissionMap> RolePermissionMap { get; set; }
-}
-
-public enum PermissionContext
-{
-    Customer,
-    
-}
-
-public enum PermissionType
-{
-    Create,
-    Update,
-    Delete,
-    Read
 }
 
 /*

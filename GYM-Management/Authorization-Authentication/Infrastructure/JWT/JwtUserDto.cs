@@ -8,20 +8,13 @@ public class JwtUserDto
     {
 
     }
-
-    public JwtUserDto(User user, JwtToken JwtToken)
-    {
-        Id = user.Id;
-        UserName = user.UserName;
-        Email = user.Email;
-        Token = JwtToken;
-    }
+    
 
     public Guid Id { get; set; }
     public string UserName { get; set; }
     public string Email { get; set; }
-    public List<string>? Roles { get; set; }
-    public List<string>? Permissions { get; set; }
+    public List<string> Roles { get; set; } = new List<string>();
+    public List<string> Permissions { get; set; } = new List<string>();
 
     public JwtToken Token { get; set; }
 }

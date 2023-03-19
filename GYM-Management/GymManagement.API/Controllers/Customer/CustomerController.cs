@@ -2,6 +2,7 @@
 
 using global::Customer.Application.Contracts;
 using global::Customer.Application.Customer.Commands;
+using global::Customer.Application.DTO.Response;
 using global::Customer.Core;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Application.Contracts;
@@ -33,9 +34,9 @@ public class CustomerController:BaseController
     }
 
     [HttpPost]
-    public async Task<ApiResponse<Customer>> Create(CreateCustomer.Command command)
+    public async Task<ApiResponse<CustomerCreatedResponse>> Create(CreateCustomer.Command command)
     {
-        Customer result = await _module.ExecuteCommandAsync(command);
+        var result = await _module.ExecuteCommandAsync(command);
         return CreateResponse(result);
     }
 }
