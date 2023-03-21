@@ -2,6 +2,7 @@
 
 using System.Text.RegularExpressions;
 using Shared.Core.Domain;
+using Shared.Core.Exceptions;
 
 public record Name:ValueObject
 {

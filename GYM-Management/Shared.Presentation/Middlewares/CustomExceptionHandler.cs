@@ -28,29 +28,7 @@ public class CustomExceptionHandler
         {
 
             ApiResponse apiResponse = ApiResponseFactory.CreateExceptionResponse(e);
-
-
-            if (e is BaseException)
-            {
-
-                var ex = (BaseException) e;
-
-                if (ex.StatusCode == 0)
-                {
-                    context.Response.StatusCode = (int) HttpStatusCode.Accepted;
-                }
-                else
-                {
-                    context.Response.StatusCode = ex.StatusCode;
-                }
-
-
-            }
-            else
-            {
-                context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
-
-            }
+            
             await context.Response.WriteAsJsonAsync(apiResponse);
 
             throw;

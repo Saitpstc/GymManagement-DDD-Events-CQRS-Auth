@@ -14,9 +14,9 @@ public class AuthDbContext:IdentityDbContext<User, Role, Guid, IdentityUserClaim
 
     }
 
-    public DbSet<Permission> Permissions { get; set; }
+
     public DbSet<ConfirmationCode> ConfirmationCodes { get; set; }
-    public DbSet<RolePermissionMap> RolePermissionMaps { get; set; }
+    public DbSet<RolePermission> RolePermissionMaps { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Role> Roles { get; set; }
 

@@ -98,7 +98,7 @@ namespace Authorization_Authentication.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Authorization_Authentication.Models.RolePermissionMap", b =>
+            modelBuilder.Entity("Authorization_Authentication.Models.RolePermission", b =>
                 {
                     b.Property<Guid>("PermissionId")
                         .HasColumnType("uniqueidentifier");
@@ -282,10 +282,10 @@ namespace Authorization_Authentication.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Authorization_Authentication.Models.RolePermissionMap", b =>
+            modelBuilder.Entity("Authorization_Authentication.Models.RolePermission", b =>
                 {
                     b.HasOne("Authorization_Authentication.Models.Permission", "Permission")
-                        .WithMany("RolePermissionMap")
+                        .WithMany("RolePermission")
                         .HasForeignKey("PermissionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -358,7 +358,7 @@ namespace Authorization_Authentication.Migrations
 
             modelBuilder.Entity("Authorization_Authentication.Models.Permission", b =>
                 {
-                    b.Navigation("RolePermissionMap");
+                    b.Navigation("RolePermission");
                 });
 
             modelBuilder.Entity("Authorization_Authentication.Models.Role", b =>

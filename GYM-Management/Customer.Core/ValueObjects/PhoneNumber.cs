@@ -3,6 +3,7 @@
 using System.Text.RegularExpressions;
 using ServiceExtensions;
 using Shared.Core.Domain;
+using Shared.Core.Exceptions;
 
 public class PhoneNumber
 {

@@ -8,6 +8,6 @@ public class UnauthorizedRequestException:BaseException
 {
     public UnauthorizedRequestException(string? message):base(message)
     {
-        StatusCode = (int) HttpStatusCode.Unauthorized;
+
     }
 }

@@ -76,13 +76,13 @@ public class JwtUtils
         }
 
 
-        var permissions = user.UserRoles.Select(x => x.Role).SelectMany(x => x.RolePermissionMaps).Select(x => x.Permission).ToList();
+        var permissions = user.UserRoles.Select(x => x.Role).SelectMany(x => x.RolePermissionMaps).ToList();
 
         if (permissions.Any())
         {
             foreach (var permission in permissions)
             {
-                var normalizedPermission = $"{permission.Context}.{permission.Type.ToString()}";
+                var normalizedPermission = $"{permission.PermissionContext.ToString()}.{permission.PermissionType.ToString()}";
                 claims.Add("Permission", normalizedPermission);
                 jwtUserDto.Permissions.Add(normalizedPermission);
 

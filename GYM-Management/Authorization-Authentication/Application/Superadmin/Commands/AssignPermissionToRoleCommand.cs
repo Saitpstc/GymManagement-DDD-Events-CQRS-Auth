@@ -38,22 +38,23 @@ public class AssignPermissionToRoleCommandHandler:CommandHandlerBase<AssignPermi
 
     public override async Task<Unit> Handle(AssignPermissionToRoleCommand request, CancellationToken cancellationToken)
     {
-        RolePermissionMap? rolePermissionMap =
+        /*RolePermission? rolePermissionMap =
             await _db.RolePermissionMaps.FirstOrDefaultAsync(x => x.PermissionId == request.PermissionId && x.RoleId == request.RoleId);
+            */
 
-        if (rolePermissionMap is not null) throw new BusinessLogicException("Permission already assigned to the role");
+        /*if (rolePermissionMap is not null) throw new BusinessLogicException("Permission already assigned to the role");*/
 
         Role? role = await _db.Roles.FirstOrDefaultAsync(x => x.Id == request.RoleId);
 
         if (role is null) throw new ArgumentNullException($"Role is not found for given  {request.RoleId}");
 
-        Permission? permission = await _db.Permissions.FirstOrDefaultAsync(x => x.Id == request.PermissionId);
+      //  Permission? permission = await _db.Permissions.FirstOrDefaultAsync(x => x.Id == request.PermissionId);
 
-        if (permission is null) throw new ArgumentNullException($"Permission is not found for given  {request.PermissionId}");
+        //if (permission is null) throw new ArgumentNullException($"Permission is not found for given  {request.PermissionId}");
 
-        try
+        /*try
         {
-            await _db.RolePermissionMaps.AddAsync(new RolePermissionMap
+            await _db.RolePermissionMaps.AddAsync(new RolePermission
             {
                 Role = role,
                 Permission = permission
@@ -64,7 +65,7 @@ public class AssignPermissionToRoleCommandHandler:CommandHandlerBase<AssignPermi
         catch (Exception e)
         {
             throw new DbUpdateException("An error occured in databa while adding permission to role", e);
-        }
+        }*/
 
 
         return Unit.Value;

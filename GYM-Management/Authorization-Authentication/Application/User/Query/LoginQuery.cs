@@ -59,7 +59,6 @@ public class LoginQueryCommandHandler:QueryHandlerBase<LoginQuery, JwtUserDto>
                                .Include(x => x.UserRoles)
                                .ThenInclude(x => x.Role)
                                .ThenInclude(x => x.RolePermissionMaps)
-                               .ThenInclude(x => x.Permission)
                                .FirstOrDefault(x => x.UserName == request.UserName);
 
         if (user is null)

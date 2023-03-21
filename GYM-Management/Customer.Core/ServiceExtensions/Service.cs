@@ -3,6 +3,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Shared.Core.Domain;
+using Shared.Core.Exceptions;
 
 public static class Service
 {

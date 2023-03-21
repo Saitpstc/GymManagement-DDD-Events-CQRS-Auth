@@ -30,9 +30,5 @@ public static class EnumExtensions
 
         return list;
     }
-
-    public static string CombinePermission(Enum firstValue, Enum secondValue)
-    {
-        return $"{firstValue.ToString()}.{secondValue.ToString()}";
-    }
+    
 }

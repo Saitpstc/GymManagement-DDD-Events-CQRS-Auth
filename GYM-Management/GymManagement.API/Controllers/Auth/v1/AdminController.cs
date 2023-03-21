@@ -29,16 +29,7 @@ public class AdminController:BaseController
         var results = CreateResponse(result);
         return results;
     }
-
-    [HttpPost("Permission")]
-    public async Task<ApiResponse<PermissionResponseDto>> CreatePermission(CreatePermissionCommand createPermission)
-    {
-        PermissionResponseDto result = await _module.ExecuteCommandAsync(createPermission);
-
-        var results = CreateResponse(result);
-        return results;
-    }
-
+    
 
     [HttpPost("AssignPermissionToRole")]
     public async Task<ApiResponse<Unit>> AssignPermissionToRole(AssignPermissionToRoleCommand assignPermission)

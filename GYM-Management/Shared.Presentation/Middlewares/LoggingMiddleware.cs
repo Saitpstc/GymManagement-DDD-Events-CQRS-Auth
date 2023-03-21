@@ -66,8 +66,6 @@ public class LoggingMiddleware
             }
             catch (Exception e)
             {
-
-
                 logException = e;
             }
 
@@ -96,14 +94,11 @@ public class LoggingMiddleware
 
         LogContext.PushProperty("Response", responseBody);
 
-        if ((logException != null && logException.GetType() == typeof(Exception)) || statusCode >= 500)
+        if ((logException != null))
         {
             Log.Error(logException, $"{logException.Message}");
         }
-        else if (statusCode >= 400)
-        {
-            Log.Warning("Request Failed");
-        }
+
         else
         {
             Log.Information("Request Processed");

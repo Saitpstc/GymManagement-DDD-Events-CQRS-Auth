@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Authorization_Authentication.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    [Migration("20230227073250_Initial")]
-    partial class Initial
+    [Migration("20230319202303_PermissionTableRemoved")]
+    partial class PermissionTableRemoved
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,19 +24,41 @@ namespace Authorization_Authentication.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("Authorization_Authentication.Models.ConfirmationCode", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ValidTo")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ConfirmationCodes");
+                });
+
             modelBuilder.Entity("Authorization_Authentication.Models.Permission", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Context")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -72,17 +94,35 @@ namespace Authorization_Authentication.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("c28efd96-582e-4855-9822-5cfe4d988543"),
+                            ConcurrencyStamp = "8fc74bdd-ca85-4d84-af2c-9b1e5b513769",
+                            IsActive = true,
+                            Name = "SuperAdmin",
+                            NormalizedName = "SUPERADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Authorization_Authentication.Models.RolePermission", b =>
                 {
-                    b.Property<Guid>("PermissionId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("PermissionType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PermissionContext")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("PermissionId", "RoleId");
+                    b.Property<Guid?>("PermissionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("PermissionType", "PermissionContext", "RoleId");
+
+                    b.HasIndex("PermissionId");
 
                     b.HasIndex("RoleId");
 
@@ -153,6 +193,24 @@ namespace Authorization_Authentication.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("f482bcca-98db-438b-906b-4860e14adcce"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "630113ee-2155-48e3-afc2-9254e511c611",
+                            Email = "saitpostaci8@gmail.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "SAITPOSTACI8@GMAIL.COM",
+                            NormalizedUserName = "SUPERADMIN",
+                            PasswordHash = "AQAAAAEAACcQAAAAEH2TfU620rkePzXUk56nOAs94Kis0Z6caqz7U23jEVaYc255b7A9RN8Z+gTK7Bnjkw==",
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = "6cd014e1-44a0-451a-95b4-0d76fd574a93",
+                            TwoFactorEnabled = false,
+                            UserName = "SuperAdmin"
+                        });
                 });
 
             modelBuilder.Entity("Authorization_Authentication.Models.UserRoleMap", b =>
@@ -168,6 +226,13 @@ namespace Authorization_Authentication.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("f482bcca-98db-438b-906b-4860e14adcce"),
+                            RoleId = new Guid("c28efd96-582e-4855-9822-5cfe4d988543")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -260,19 +325,15 @@ namespace Authorization_Authentication.Migrations
 
             modelBuilder.Entity("Authorization_Authentication.Models.RolePermission", b =>
                 {
-                    b.HasOne("Authorization_Authentication.Models.Permission", "Permission")
-                        .WithMany("RolePermission")
-                        .HasForeignKey("PermissionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Authorization_Authentication.Models.Permission", null)
+                        .WithMany("RolePermissionMap")
+                        .HasForeignKey("PermissionId");
 
                     b.HasOne("Authorization_Authentication.Models.Role", "Role")
                         .WithMany("RolePermissionMaps")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Permission");
 
                     b.Navigation("Role");
                 });
@@ -334,7 +395,7 @@ namespace Authorization_Authentication.Migrations
 
             modelBuilder.Entity("Authorization_Authentication.Models.Permission", b =>
                 {
-                    b.Navigation("RolePermission");
+                    b.Navigation("RolePermissionMap");
                 });
 
             modelBuilder.Entity("Authorization_Authentication.Models.Role", b =>

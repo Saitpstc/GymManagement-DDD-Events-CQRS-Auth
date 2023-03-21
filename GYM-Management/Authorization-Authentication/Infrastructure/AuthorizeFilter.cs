@@ -40,7 +40,7 @@ public class AuthorizeFilter:Attribute, IAuthorizationFilter
             throw new UnauthorizedRequestException("Unauthorized Request Has Been Made ");
         }
 
-        if (tokenIsExpired)
+        if (!tokenIsExpired)
         {
 
             throw new UnauthorizedRequestException("Token is expired");
