@@ -22,7 +22,7 @@ public class CustomerCommandsTest
 
         
         _repository.Setup(repository => repository.AddAsync(customer)).ReturnsAsync(customer);
-        var command = new CreateCustomer.Command("name", "surname", "90", "1234567891", "test@mail");
+        var command = new CreateCustomer.CreateCustomerCommand("name", "surname", "90", "1234567891", "test@mail");
         
       var handler = new CreateCustomer.CommandHandler(_repository.Object);
 

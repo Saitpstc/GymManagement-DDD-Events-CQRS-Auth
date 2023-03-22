@@ -10,12 +10,13 @@ using Shared.Presentation.Exceptions;
 public class AuthorizeFilter:Attribute, IAuthorizationFilter
 {
 
-    private readonly string[] _claimvalue;
 
-    public AuthorizeFilter(params string[] claimvalue)
+    private readonly string[] _permission;
+
+    public AuthorizeFilter(params string[] permission)
     {
 
-        _claimvalue = claimvalue;
+        _permission = permission;
     }
 
     public void OnAuthorization(AuthorizationFilterContext context)
@@ -26,11 +27,15 @@ public class AuthorizeFilter:Attribute, IAuthorizationFilter
 
         var userIsSuperAdmin = context.HttpContext.User.HasClaim(x => x is { Type: "Role", Value: "SuperAdmin" });
 
-         if (userIsSuperAdmin) return;
+        if (userIsSuperAdmin) return;
 
+        if (!context.HttpContext.User.Identity.IsAuthenticated)
+        {
+            throw new UnauthorizedRequestException("User is not logged in");
+        }
 
         StringValues authHeader = context.HttpContext.Request.Headers.Authorization;
-        var hasClaim = context.HttpContext.User.HasClaim(x => x.Type == "Permission" && _claimvalue.Contains(x.Value));
+        var hasClaim = context.HttpContext.User.HasClaim(x => x.Type == "Permission" && _permission.Contains(x.Value));
 
 
         var tokenIsExpired = JwtUtils.IsTokenExpired(authHeader);
@@ -40,7 +45,7 @@ public class AuthorizeFilter:Attribute, IAuthorizationFilter
             throw new UnauthorizedRequestException("Unauthorized Request Has Been Made ");
         }
 
-        if (!tokenIsExpired)
+        if (tokenIsExpired)
         {
 
             throw new UnauthorizedRequestException("Token is expired");

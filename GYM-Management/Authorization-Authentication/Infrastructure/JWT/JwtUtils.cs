@@ -43,15 +43,24 @@ public class JwtUtils
         return claims;
     }
 
+    /// <summary>
+    /// returns false if token 
+    /// </summary>
+    /// <param name="jwtToken"></param>
+    /// <returns></returns>
     public static bool IsTokenExpired(string jwtToken)
     {
-        if (string.IsNullOrEmpty(jwtToken)) return false;
+        if (string.IsNullOrEmpty(jwtToken))
+        {
+            return true;
+        }
+        
         jwtToken = jwtToken["Bearer ".Length..];
         JwtSecurityToken token = new JwtSecurityToken(jwtEncodedString: jwtToken);
 
-        if (DateTime.Compare(DateTime.UtcNow, token.ValidTo) > 0) return true;
+        if (DateTime.Compare(DateTime.UtcNow, token.ValidTo) > 0) return false;
 
-        return false;
+        return true;
     }
 
     static private Dictionary<string, object> SetIdentityClaims(User user, JwtUserDto jwtUserDto)

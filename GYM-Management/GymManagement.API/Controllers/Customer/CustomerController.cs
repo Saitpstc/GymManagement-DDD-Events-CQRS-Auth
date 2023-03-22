@@ -29,12 +29,12 @@ public class CustomerController:BaseController
             Action = "POST",
             Operation = "Create Customer",
             EndPoint = "/customer",
-            AcceptedData = new CreateCustomer.Command()
+            AcceptedData = new CreateCustomerCommand()
         };
     }
 
     [HttpPost]
-    public async Task<ApiResponse<CustomerCreatedResponse>> Create(CreateCustomer.Command command)
+    public async Task<ApiResponse<CustomerCreatedResponse>> Create(CreateCustomerCommand command)
     {
         var result = await _module.ExecuteCommandAsync(command);
         return CreateResponse(result);

@@ -43,7 +43,7 @@ namespace Authorization_Authentication.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ConfirmationCodes");
+                    b.ToTable("ConfirmationCodes", (string)null);
                 });
 
             modelBuilder.Entity("Authorization_Authentication.Models.Role", b =>
@@ -102,7 +102,7 @@ namespace Authorization_Authentication.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RolePermissionMaps");
+                    b.ToTable("RolePermissionMaps", (string)null);
                 });
 
             modelBuilder.Entity("Authorization_Authentication.Models.User", b =>

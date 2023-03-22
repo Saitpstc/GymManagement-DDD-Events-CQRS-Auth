@@ -3,6 +3,7 @@
 using Application.Contracts;
 using Core;
 using Database;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,7 +22,7 @@ public static class CustomerHost
             options.UseSqlServer(appOptions.GetConnectionString(Modules.Customer));
         });
 
-
+        services.AddValidatorsFromAssembly(typeof(ICustomerModule).Assembly);
 
         services.AddScoped<ICustomerRepository, CustomerRepository>();
 
