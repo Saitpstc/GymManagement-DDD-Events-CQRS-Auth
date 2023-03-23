@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 public class CustomerRepository:ICustomerRepository
 {
     private readonly CustomerDbContext _dbContext;
+    public CustomerDB TrackedModel { get; set; }
 
     public CustomerRepository(CustomerDbContext dbContext)
     {
@@ -18,7 +19,8 @@ public class CustomerRepository:ICustomerRepository
 
     public async Task<Customer?> RetriveByAsync(Guid Id)
     {
-        CustomerDB? databaseRecord = await _dbContext.Customers.FindAsync(Id);
+        CustomerDB? databaseRecord = await _dbContext.Customers.FirstOrDefaultAsync(x => x.Id == Id);
+
 
         if (databaseRecord is null)
         {
@@ -26,14 +28,17 @@ public class CustomerRepository:ICustomerRepository
         }
 
         Customer customer = databaseRecord.FromEntity();
-
+        TrackedModel = databaseRecord;
 
         return customer;
     }
 
+
+
     public async Task<bool> UpdateAsync(Customer Aggregate)
     {
 
+        
         try
         {
             _dbContext.Update(CustomerDB.FromDomainModel(Aggregate));

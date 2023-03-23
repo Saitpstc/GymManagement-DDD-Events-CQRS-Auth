@@ -4,8 +4,12 @@ using global::Customer.Application.Contracts;
 using global::Customer.Application.Customer.Commands;
 using global::Customer.Application.DTO.Response;
 using global::Customer.Core;
+using global::Customer.Core.Enums;
+using global::Customer.Core.ValueObjects;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Application;
 using Shared.Application.Contracts;
+using Shared.Infrastructure;
 using Shared.Presentation.Models;
 
 [Route("/customer")]
@@ -39,4 +43,19 @@ public class CustomerController:BaseController
         var result = await _module.ExecuteCommandAsync(command);
         return CreateResponse(result);
     }
+    [HttpPost("Membership")]
+    public async Task<ApiResponse<MembershipStartedResponse>> Membership(StartMembershipCommand command)
+    {
+        var result = await _module.ExecuteCommandAsync(command);
+        return CreateResponse(result);
+    }
+
+    [HttpGet("MembershipPeriods")]
+    public Task<ApiResponse<List<EnumResponse>>> GetMembershipPeriods()
+    {
+        var response = EnumExtensions.CreateEnumResponseList<SubscriptionEnum>();
+
+        return Task.FromResult(CreateResponse(response));
+    }
 }
+

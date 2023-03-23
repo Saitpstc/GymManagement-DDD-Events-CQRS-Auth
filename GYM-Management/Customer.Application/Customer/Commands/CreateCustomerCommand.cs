@@ -64,9 +64,9 @@ public class CreateCustomerCommandHandler:CommandHandlerBase<CreateCustomerComma
         var response = new CustomerCreatedResponse()
         {
             Id = AddedCustomer.Id,
-            Name = customer.GetName().OfCustomer(),
-            PhoneNumber = customer.GetNumber().Number(),
-            Email = customer.GetMail().ToString()
+            Name = customer.Name.OfCustomer(),
+            PhoneNumber = customer.PhoneNumber.Number(),
+            Email = customer.Email.ToString()
         };
         return response;
     }

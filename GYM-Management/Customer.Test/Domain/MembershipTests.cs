@@ -33,68 +33,52 @@ public class MembershipTests
     [Fact]
     public void Times_Should_Only_Contain_Date()
     {
-        Membership membership = Membership.CreateMembershipPeriodOf(SubscriptionEnum.Monthly, Guid.NewGuid());
+        Membership membership = Membership.Custom(DateTime.Now, DateTime.Now.AddMonths(1), Guid.NewGuid());
 
 
-        membership.StartedAt()
+        membership.StartDate
                   .Should()
                   .Be(DateTime.Now.Date);
 
-        membership.EndsAt()
+        membership.EndDate
                   .Should()
                   .Be(DateTime.Now.AddMonths(1).Date);
     }
 
 
 
-    [Fact]
-    public void Difference_Between_StartDate_And_EndDate_Should_Be_Exactly_Described_In_SubscriptionType()
-    {
-        Membership membership = Membership.CreateMembershipPeriodOf(SubscriptionEnum.Monthly, Guid.NewGuid());
-
-        var mont1 = membership.EndsAt().Month;
-        var mont2 = membership.StartedAt().Month;
-
-        var differenceInMonths = mont1 - mont2;
-
-        differenceInMonths.Should()
-                          .Be(membership.TimePeriodInMonths());
-    }
 
     [Fact]
     public void Customer_Can_Freeze_Account_Only_For_4in1_Days_In_Total()
     {
-        Membership mem = Membership.CreateMembershipPeriodOf(SubscriptionEnum.Yearly, Guid.NewGuid());
+        Membership mem = Membership.Custom(DateTime.Now, DateTime.Now.AddDays(360), Guid.NewGuid());
 
         Action act = () => mem.FreezeFor(100);
 
-        act.Should().Throw<DomainValidationException>()
-           .WithMessage(
-               $"Cannot Freeze Membership More Than {(mem.EndsAt() - mem.StartedAt()).Days / 4} Days For {mem.SubscriptionType().ToString()} Subscriptions ");
+        act.Should().Throw<DomainValidationException>();
     }
 
     [Fact]
     public void Customer_Membership_Status_Will_Be_Frozen_If_Constraints_Are_Met()
     {
-        Membership mem = Membership.CreateMembershipPeriodOf(SubscriptionEnum.Yearly, Guid.NewGuid());
+        Membership mem = Membership.Custom(DateTime.Now, DateTime.Now.AddDays(2000), Guid.NewGuid());
 
         mem.FreezeFor(80);
 
         Action act = () => mem.FreezeFor(20);
 
-        mem.Status().Should().Be(MembershipStatus.Frozen);
+        mem.Status.Should().Be(MembershipStatus.Frozen);
     }
 
     [Fact]
     public void Customer_Membership_Status_Cannot_Be_Frozen_If_No_Days_Left()
     {
-        Membership mem = Membership.CreateMembershipPeriodOf(SubscriptionEnum.Yearly, Guid.NewGuid());
-        mem.FreezeFor(80);
+        Membership mem = Membership.Custom(DateTime.Now, DateTime.Now.AddDays(360), Guid.NewGuid());
+        mem.FreezeFor(90);
 
         Action act = () => mem.FreezeFor(20);
 
-        act.Should().Throw<DomainValidationException>()
-           .WithMessage($"Customer's Does Not Have Available Days to Freeze Membership;  Available Days Are {mem.AvailableDaysToFreezeMembership()}");
+        act.Should().Throw<DomainValidationException>();
     }
 
     [Fact]
@@ -102,16 +86,16 @@ public class MembershipTests
     {
 
         Guid guid = Guid.NewGuid();
-        Membership mem = Membership.CreateMembershipPeriodOf(SubscriptionEnum.Yearly, guid);
+        Membership mem = Membership.Custom(DateTime.Now, DateTime.Now.AddMonths(12), Guid.NewGuid());
 
         mem.GetTotalMembershipInMonths().Should().Be(12);
 
 
-        mem.RenewMembershipPeriod(SubscriptionEnum.Custom, guid, DateTime.Now, DateTime.Now.AddMonths(1));
+        mem.RenewMembershipPeriod(guid, DateTime.Now, DateTime.Now.AddMonths(1));
 
         mem.GetTotalMembershipInMonths().Should().Be(13);
 
-        mem.RenewMembershipPeriod(SubscriptionEnum.Yearly, guid);
+        mem.RenewMembershipPeriod(guid, DateTime.Now, DateTime.Now.AddMonths(12));
 
         mem.GetTotalMembershipInMonths().Should().Be(25);
     }

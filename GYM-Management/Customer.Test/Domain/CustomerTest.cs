@@ -12,8 +12,7 @@ public class CustomerTest
     public void d()
     {
         Customer cus = new Customer(new Name("sait", "postaic"), new PhoneNumber("90", "5435288568"), new Email("sait@gmail.com"));
-
-        Membership? t = cus.GetMembership();
+        
         cus.Should().NotBeNull();
     }
 }

@@ -6,13 +6,17 @@ using ValueObjects;
 
 public class Customer:AggregateRoot
 {
-    private readonly Email Email;
-    private Membership? Membership;
-    private readonly Name Name;
-    private readonly PhoneNumber PhoneNumber;
+    public Email Email { get; private set; }
+    public Membership? Membership { get; set; }
+    public Name Name { get; private set; }
+    public PhoneNumber PhoneNumber { get; private set; }
 
 
 
+    private Customer()
+    {
+
+    }
 
     public Customer(Name name, PhoneNumber phoneNumber, Email email, Membership? membership = null)
     {
@@ -32,30 +36,11 @@ public class Customer:AggregateRoot
         {
             EventId = new Guid(),
             CustomerId = Id,
-            MembershipType = membership.SubscriptionType().ToString(),
-            MembershipStartDate = membership.StartedAt(),
-            MembershipEndDate = membership.EndsAt()
+            MembershipStartDate = membership.StartDate,
+            MembershipEndDate = membership.EndDate
         };
         Apply(customerCreatedEvent);
     }
 
-    public Email GetMail()
-    {
-        return Email;
-    }
 
-    public Name GetName()
-    {
-        return Name;
-    }
-
-    public Membership? GetMembership()
-    {
-        return Membership;
-    }
-
-    public PhoneNumber GetNumber()
-    {
-        return PhoneNumber;
-    }
 }
