@@ -7,24 +7,29 @@ using Shared.Core.Exceptions;
 
 public class PhoneNumber
 {
-    private readonly string _number;
-    private readonly string Code;
+    public string Number { get; private set; }
+    public string CountryCode { get; private set; }
 
-    public PhoneNumber(string countryCode, string number)
+    protected PhoneNumber()
+    {
+
+    }
+
+    public PhoneNumber(string countryCountryCode, string number)
     {
 
         if (!ValidateNumber(number))
         {
-            throw new DomainValidationException($"Phone _number:{number} Is Not Valid");
+            throw new DomainValidationException($"Phone Number:{number} Is Not Valid");
         }
-        _number = number;
+        Number = number;
 
-        if (!ValidateCountryCode(countryCode))
+        if (!ValidateCountryCode(countryCountryCode))
         {
-            throw new DomainValidationException($"Country Code:{countryCode} Is Not Valid");
+            throw new DomainValidationException($"Country CountryCodeOnly:{countryCountryCode} Is Not Valid");
         }
 
-        Code = countryCode;
+        CountryCode = countryCountryCode;
 
     }
 
@@ -47,16 +52,16 @@ public class PhoneNumber
 
     public override string ToString()
     {
-        return "+" + Code + _number;
+        return "+" + CountryCode + Number;
     }
 
-    public string CountryCode()
+    public string CountryCodeOnly()
     {
-        return Code;
+        return CountryCode;
     }
 
-    public string Number()
+    public string NumberOnly()
     {
-        return _number;
+        return Number;
     }
 }

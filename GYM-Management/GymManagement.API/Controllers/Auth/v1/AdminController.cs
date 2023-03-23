@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Modules.Shared;
 using Shared.Application;
 using Shared.Application.Contracts;
+using Shared.Core;
 using Shared.Infrastructure;
 using Shared.Presentation.Models;
 

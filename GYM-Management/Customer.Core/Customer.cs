@@ -7,12 +7,10 @@ using ValueObjects;
 public class Customer:AggregateRoot
 {
     public Email Email { get; private set; }
-    public Membership? Membership { get; set; }
+    public Membership? Membership { get; private set; }
     public Name Name { get; private set; }
     public PhoneNumber PhoneNumber { get; private set; }
-
-
-
+    
     private Customer()
     {
 

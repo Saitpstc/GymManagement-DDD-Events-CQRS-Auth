@@ -1,12 +1,16 @@
 ﻿namespace Shared.Core.Domain;
 
+using System.ComponentModel.DataAnnotations.Schema;
 using Contracts;
 using Exceptions;
 
 public abstract class AggregateRoot:BaseEntity
 {
     private readonly List<DomainEvent> _domainEvents = new List<DomainEvent>();
+    
+    
 
+    [NotMapped]
     public IReadOnlyList<DomainEvent> DomainEvents => _domainEvents;
 
 

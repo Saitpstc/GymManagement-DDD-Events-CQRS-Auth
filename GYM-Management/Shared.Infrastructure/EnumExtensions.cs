@@ -2,7 +2,7 @@
 
 using System.ComponentModel;
 using System.Reflection;
-using Application;
+using Core;
 
 public static class EnumExtensions
 {

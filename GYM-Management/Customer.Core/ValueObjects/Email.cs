@@ -7,14 +7,18 @@ using Shared.Core.Exceptions;
 
 public record Email:ValueObject
 {
+    protected Email()
+    {
+
+    }
 
     static private readonly Regex EmailPattern = new Regex(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$");
-    private readonly string email;
+    public string MailAddress { get; private set; }
 
     public Email(string email)
     {
         ValidateEmail(email);
-        this.email = email;
+        MailAddress = email;
     }
 
     private void ValidateEmail(string email)
@@ -30,6 +34,6 @@ public record Email:ValueObject
 
     public override string ToString()
     {
-        return email;
+        return MailAddress;
     }
 }

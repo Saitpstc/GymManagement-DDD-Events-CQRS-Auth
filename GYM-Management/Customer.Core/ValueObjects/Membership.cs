@@ -4,25 +4,27 @@ using Enums;
 using Shared.Core.Domain;
 using Shared.Core.Exceptions;
 
-public class Membership:BaseEntity
+public record Membership:ValueObject
 {
-    private int _availableFreezePeriod;
+    public int AvailableFreezePeriod { get; private set; }
     public DateTime EndDate { get; private set; }
     public DateTime StartDate { get; private set; }
     public MembershipStatus Status { get; private set; }
-    private int _totalMonthsOfMembership;
-
-    public Guid CustomerId { get; set; }
+    public int TotalMonthsOfMembership { get; private set; }
 
 
+
+    protected Membership()
+    {
+
+    }
 
 
     private void ValidateMembership(Guid customerId, DateTime? startDate = null, DateTime? endDate = null)
     {
         CustomTypeChecks(startDate, endDate);
         Status = MembershipStatus.Active;
-        _availableFreezePeriod = (EndDate - StartDate).Days / 4;
-        CustomerId = customerId;
+        AvailableFreezePeriod = (EndDate - StartDate).Days / 4;
     }
 
 
@@ -38,14 +40,14 @@ public class Membership:BaseEntity
         {
             StartDate = (DateTime) startDate;
             EndDate = (DateTime) endDate;
-            _totalMonthsOfMembership += TimePeriodInMonths();
+            TotalMonthsOfMembership += TimePeriodInMonths();
         }
         else
         {
             var totalMonths = ((DateTime) endDate).Subtract((DateTime) startDate).TotalDays / 30.44;
             var integerValueOfMonths = (int) Math.Round(totalMonths);
             EndDate = EndDate.AddMonths(integerValueOfMonths);
-            _totalMonthsOfMembership += integerValueOfMonths;
+            TotalMonthsOfMembership += integerValueOfMonths;
         }
 
     }
@@ -98,13 +100,13 @@ public class Membership:BaseEntity
                 $"Cannot Freeze Membership More Than {maximumPossible} Days");
         }
 
-        if (freezePeriodAsked > _availableFreezePeriod)
+        if (freezePeriodAsked > AvailableFreezePeriod)
         {
             throw new DomainValidationException(
-                $"Customer's Does Not Have Available Days to Freeze Membership;  Available Days Are {_availableFreezePeriod}");
+                $"Customer's Does Not Have Available Days to Freeze Membership;  Available Days Are {AvailableFreezePeriod}");
         }
         Status = MembershipStatus.Frozen;
-        _availableFreezePeriod -= freezePeriodAsked;
+        AvailableFreezePeriod -= freezePeriodAsked;
     }
 
     public void TerminateMembership()
@@ -116,6 +118,6 @@ public class Membership:BaseEntity
 
     public int GetTotalMembershipInMonths()
     {
-        return _totalMonthsOfMembership;
+        return TotalMonthsOfMembership;
     }
 }

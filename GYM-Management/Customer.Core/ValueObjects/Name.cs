@@ -6,14 +6,18 @@ using Shared.Core.Exceptions;
 
 public record Name:ValueObject
 {
-    private readonly string _name;
-    private readonly string _surname;
+    public string FirstName {get; private set;}
+    public string Surname {get; private set;}
 
+    protected Name()
+    {
+        
+    }
     public Name(string name, string surname)
     {
         InputContainsOnlyLetters(name, surname);
-        _name = name[..1].ToUpper() + name[1..];
-        _surname = surname[..1].ToUpper() + surname[1..];
+        FirstName = name[..1].ToUpper() + name[1..];
+        Surname = surname[..1].ToUpper() + surname[1..];
 
     }
 
@@ -34,26 +38,26 @@ public record Name:ValueObject
 
     public string OfCustomer()
     {
-        return _name + " " + _surname;
+        return FirstName + " " + Surname;
     }
 
     public string NameOnly()
     {
-        return _name;
+        return FirstName;
     }
 
     public string SurNameOnly()
     {
-        return _surname;
+        return Surname;
     }
 
     public string NormalizedName()
     {
-        return _name.ToUpper();
+        return FirstName.ToUpper();
     }
 
     public string NormalizedSurName()
     {
-        return _surname.ToUpper();
+        return Surname.ToUpper();
     }
 }

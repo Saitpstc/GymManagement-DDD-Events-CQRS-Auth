@@ -1,10 +1,12 @@
 ﻿namespace Customer.Infrastructure.Database;
 
 using Configuration;
+using Core;
+
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure;
-using Tables;
+
 
 public class CustomerDbContext:AppDbContext
 {
@@ -15,8 +17,7 @@ public class CustomerDbContext:AppDbContext
 
     }
 
-    public DbSet<CustomerDB> Customers { get; set; }
-    public DbSet<MembershipDb> Membership { get; set; }
+    public DbSet<Customer> Customers { get; set; }
 
 
 

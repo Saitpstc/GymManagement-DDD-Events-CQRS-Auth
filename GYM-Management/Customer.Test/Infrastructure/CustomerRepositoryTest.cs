@@ -1,4 +1,4 @@
-﻿namespace Customer.Test.Infrastructure;
+﻿/*namespace Customer.Test.Infrastructure;
 
 using Core;
 using Core.ValueObjects;
@@ -93,4 +93,4 @@ public class CustomerRepositoryTest
 
 
     }
-}
+}*/

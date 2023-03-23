@@ -16,12 +16,12 @@ public class AppDbContext:DbContext
         Mediator = mediator;
 
     }
-    
+
 
 
     public async Task<int> SaveAsync(CancellationToken cancellationToken = default)
     {
-        var entries = ChangeTracker.Entries<DataStructureBase>()
+        var entries = ChangeTracker.Entries<AggregateRoot>()
                                    .Where(e => e.State is EntityState.Added or EntityState.Modified)
                                    .ToList();
 
@@ -36,7 +36,7 @@ public class AppDbContext:DbContext
         }
 
         var result = await SaveChangesAsync(cancellationToken);
-        var events = entries.SelectMany(x => x.Entity.Events).ToList();
+        var events = entries.SelectMany(x => x.Entity.DomainEvents).ToList();
 
         if (events.Any())
         {
@@ -49,15 +49,17 @@ public class AppDbContext:DbContext
     }
 
 
-    async private Task PublishEvents(CancellationToken cancellationToken, List<DataStructureBase> entries)
+    async private Task PublishEvents(CancellationToken cancellationToken, List<AggregateRoot> entries)
     {
 
-        var domainEvents = entries.First()
-                                  .Events;
-
-        foreach (DomainEvent domainEvent in domainEvents)
+        foreach (var VARIABLE in entries)
         {
-            await Mediator.Publish(domainEvent, cancellationToken);
+            foreach (DomainEvent domainEvent in VARIABLE.DomainEvents)
+            {
+                await Mediator.Publish(domainEvent, cancellationToken);
+            }
         }
+
+
     }
 }

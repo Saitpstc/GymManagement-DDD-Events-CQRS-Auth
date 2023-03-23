@@ -50,12 +50,5 @@ public class CustomerController:BaseController
         return CreateResponse(result);
     }
 
-    [HttpGet("MembershipPeriods")]
-    public Task<ApiResponse<List<EnumResponse>>> GetMembershipPeriods()
-    {
-        var response = EnumExtensions.CreateEnumResponseList<SubscriptionEnum>();
-
-        return Task.FromResult(CreateResponse(response));
-    }
 }
 

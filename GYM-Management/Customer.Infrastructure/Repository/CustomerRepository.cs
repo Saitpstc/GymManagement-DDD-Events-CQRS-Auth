@@ -2,13 +2,12 @@
 
 using Core;
 using Database;
-using Database.Tables;
 using Microsoft.EntityFrameworkCore;
 
 public class CustomerRepository:ICustomerRepository
 {
     private readonly CustomerDbContext _dbContext;
-    public CustomerDB TrackedModel { get; set; }
+
 
     public CustomerRepository(CustomerDbContext dbContext)
     {
@@ -19,7 +18,7 @@ public class CustomerRepository:ICustomerRepository
 
     public async Task<Customer?> RetriveByAsync(Guid Id)
     {
-        CustomerDB? databaseRecord = await _dbContext.Customers.FirstOrDefaultAsync(x => x.Id == Id);
+        var databaseRecord = await _dbContext.Customers.FirstOrDefaultAsync(x => x.Id == Id);
 
 
         if (databaseRecord is null)
@@ -27,43 +26,41 @@ public class CustomerRepository:ICustomerRepository
             return null;
         }
 
-        Customer customer = databaseRecord.FromEntity();
-        TrackedModel = databaseRecord;
-
-        return customer;
-    }
-
-
-
-    public async Task<bool> UpdateAsync(Customer Aggregate)
-    {
-
         
-        try
-        {
-            _dbContext.Update(CustomerDB.FromDomainModel(Aggregate));
-        }
-        catch (Exception e)
-        {
-            throw new DbUpdateException("An error occurred while updating  to the database.", e);
-        }
-
-        return true;
+        return databaseRecord;
     }
 
-    public async Task DeleteByAsync(Customer Aggregate)
+
+
+    public Task<bool> UpdateAsync(Customer Aggregate)
     {
-        CustomerDB dbTable = CustomerDB.FromDomainModel(Aggregate);
-        dbTable.IsDeleted = true;
 
         try
         {
-            _dbContext.Update(dbTable);
+            _dbContext.Update(Aggregate);
         }
         catch (Exception e)
         {
             throw new DbUpdateException("An error occurred while updating  to the database.", e);
         }
+
+        return Task.FromResult(true);
+    }
+
+    public Task DeleteByAsync(Customer Aggregate)
+    {
+
+        Aggregate.IsDeleted = true;
+
+        try
+        {
+            _dbContext.Update(Aggregate);
+        }
+        catch (Exception e)
+        {
+            throw new DbUpdateException("An error occurred while updating  to the database.", e);
+        }
+        return Task.CompletedTask;
 
 
     }
@@ -71,11 +68,10 @@ public class CustomerRepository:ICustomerRepository
 
     public async Task<Customer> AddAsync(Customer Aggregate)
     {
-        CustomerDB dbTable = CustomerDB.FromDomainModel(Aggregate);
 
         try
         {
-            await _dbContext.Customers.AddAsync(dbTable);
+            await _dbContext.Customers.AddAsync(Aggregate);
         }
         catch (Exception e)
         {
@@ -83,7 +79,7 @@ public class CustomerRepository:ICustomerRepository
         }
 
 
-        return dbTable.FromEntity();
+        return Aggregate;
     }
 
     public Task<IEnumerable<Customer>> GetAllAsync(Customer Aggregate)

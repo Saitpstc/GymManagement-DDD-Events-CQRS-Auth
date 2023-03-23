@@ -1,4 +1,4 @@
-﻿namespace Shared.Application;
+﻿namespace Shared.Core;
 
 public class EnumResponse
 {
