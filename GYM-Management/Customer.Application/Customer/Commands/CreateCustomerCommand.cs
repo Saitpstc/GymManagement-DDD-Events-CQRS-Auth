@@ -55,7 +55,7 @@ public class CreateCustomerCommandHandler:CommandHandlerBase<CreateCustomerComma
     public override async Task<CustomerCreatedResponse> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
     {
         Customer customer = new Customer(new Name(request.Name, request.Surname), new PhoneNumber(request.Countrycode, request.Number),
-            new Email(request.Mail));
+            new Email(request.Mail),request.UserId);
         var AddedCustomer = await _repository.AddAsync(customer);
         await _repository.CommitAsync();
 
@@ -64,6 +64,7 @@ public class CreateCustomerCommandHandler:CommandHandlerBase<CreateCustomerComma
         var response = new CustomerCreatedResponse()
         {
             Id = AddedCustomer.Id,
+            UserId=request.UserId,
             Name = customer.Name.OfCustomer(),
             PhoneNumber = customer.PhoneNumber.ToString(),
             Email = customer.Email.ToString()

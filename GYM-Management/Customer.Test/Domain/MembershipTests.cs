@@ -1,5 +1,6 @@
 namespace Customer.Test.Domain;
 
+using Core;
 using Core.Enums;
 using Core.ValueObjects;
 using FluentAssertions;

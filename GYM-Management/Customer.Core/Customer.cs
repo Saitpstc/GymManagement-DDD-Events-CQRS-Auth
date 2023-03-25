@@ -8,23 +8,26 @@ public class Customer:AggregateRoot
 {
     public Email Email { get; private set; }
     public Membership? Membership { get; private set; }
+    public Guid? MembershipId { get; private set; }
     public Name Name { get; private set; }
     public PhoneNumber PhoneNumber { get; private set; }
-    
+    public Guid UserId { get; private set; }
+
     private Customer()
     {
 
     }
 
-    public Customer(Name name, PhoneNumber phoneNumber, Email email, Membership? membership = null)
+    public Customer(Name name, PhoneNumber phoneNumber, Email email, Guid userId, Membership? membership = null)
     {
         Name = name;
         PhoneNumber = phoneNumber;
         Email = email;
+        UserId = userId;
         Membership = membership;
     }
 
-    public Guid UserId { get; set; }
+
 
     public void StartMembership(Membership membership)
     {

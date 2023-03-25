@@ -1,12 +1,14 @@
-﻿namespace Customer.Core.ValueObjects;
+﻿namespace Customer.Core;
 
 using Enums;
 using Shared.Core.Domain;
 using Shared.Core.Exceptions;
 
-public record Membership:ValueObject
+public class Membership:BaseEntity
 {
-    public int AvailableFreezePeriod { get; private set; }
+    public int AvailableFreezeDays { get; private set; }
+    public Customer Customer { get; private set; }
+    
     public DateTime EndDate { get; private set; }
     public DateTime StartDate { get; private set; }
     public MembershipStatus Status { get; private set; }
@@ -24,7 +26,7 @@ public record Membership:ValueObject
     {
         CustomTypeChecks(startDate, endDate);
         Status = MembershipStatus.Active;
-        AvailableFreezePeriod = (EndDate - StartDate).Days / 4;
+        AvailableFreezeDays = (EndDate - StartDate).Days / 4;
     }
 
 
@@ -100,13 +102,13 @@ public record Membership:ValueObject
                 $"Cannot Freeze Membership More Than {maximumPossible} Days");
         }
 
-        if (freezePeriodAsked > AvailableFreezePeriod)
+        if (freezePeriodAsked > AvailableFreezeDays)
         {
             throw new DomainValidationException(
-                $"Customer's Does Not Have Available Days to Freeze Membership;  Available Days Are {AvailableFreezePeriod}");
+                $"Customer's Does Not Have Available Days to Freeze Membership;  Available Days Are {AvailableFreezeDays}");
         }
         Status = MembershipStatus.Frozen;
-        AvailableFreezePeriod -= freezePeriodAsked;
+        AvailableFreezeDays -= freezePeriodAsked;
     }
 
     public void TerminateMembership()

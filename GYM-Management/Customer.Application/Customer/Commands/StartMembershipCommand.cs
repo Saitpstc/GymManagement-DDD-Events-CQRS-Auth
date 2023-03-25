@@ -1,5 +1,6 @@
 ﻿namespace Customer.Application.Customer.Commands;
 
+using System.ComponentModel;
 using Core;
 using Core.Enums;
 using Core.ValueObjects;
@@ -12,6 +13,7 @@ public class StartMembershipCommand:ICommand<MembershipStartedResponse>
 {
     public Guid CustomerId { get; set; }
 
+    public DateTime StartDate { get; set; } = DateTime.Now;
     public DateTime? EndDate { get; set; }
 }
 
@@ -39,11 +41,8 @@ public class StartMembershipCommandHandler:CommandHandlerBase<StartMembershipCom
 
     public override async Task<MembershipStartedResponse> Handle(StartMembershipCommand request, CancellationToken cancellationToken)
     {
-        Membership membership;
 
-
-        membership = Membership.Custom(DateTime.Now, (DateTime) request.EndDate, request.CustomerId);
-
+        Membership membership = Membership.Custom(DateTime.Now, (DateTime) request.EndDate, request.CustomerId);
 
         var customer = await _repository.RetriveByAsync(request.CustomerId);
 

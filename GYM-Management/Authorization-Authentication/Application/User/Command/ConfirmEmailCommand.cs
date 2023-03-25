@@ -45,6 +45,11 @@ public class ConfirmEmailCommandHandler:CommandHandlerBase<ConfirmEmailCommand, 
         {
             throw new BusinessLogicException("No user found to confirm email");
         }
+
+        if (user.EmailConfirmed)
+        {
+            throw new BusinessLogicException("Email already confirmed");
+        }
         ConfirmationCode code = _context.ConfirmationCodes.First(x => x.UserId == user.Id);
 
         if (!(DateTime.Now < code.ValidTo))

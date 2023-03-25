@@ -11,8 +11,8 @@ public class CustomerTest
     [Fact]
     public void d()
     {
-        Customer cus = new Customer(new Name("sait", "postaic"), new PhoneNumber("90", "5435288568"), new Email("sait@gmail.com"));
-        
+        Customer cus = new Customer(new Name("sait", "postaic"), new PhoneNumber("90", "5435288568"), new Email("sait@gmail.com"), Guid.NewGuid());
+
         cus.Should().NotBeNull();
     }
 }

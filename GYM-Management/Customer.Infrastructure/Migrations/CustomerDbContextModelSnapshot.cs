@@ -37,16 +37,63 @@ namespace Customer.Infrastructure.Migrations
                     b.Property<DateTime>("LastUpdateAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid?>("MembershipId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MembershipId")
+                        .IsUnique()
+                        .HasFilter("[MembershipId] IS NOT NULL");
+
                     b.ToTable("Customers");
+                });
+
+            modelBuilder.Entity("Customer.Core.Membership", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AvailableFreezeDays")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalMonthsOfMembership")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Membership");
                 });
 
             modelBuilder.Entity("Customer.Core.Customer", b =>
                 {
+                    b.HasOne("Customer.Core.Membership", "Membership")
+                        .WithOne("Customer")
+                        .HasForeignKey("Customer.Core.Customer", "MembershipId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.OwnsOne("Customer.Core.ValueObjects.Email", "Email", b1 =>
                         {
                             b1.Property<Guid>("CustomerId")
@@ -55,34 +102,6 @@ namespace Customer.Infrastructure.Migrations
                             b1.Property<string>("MailAddress")
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)");
-
-                            b1.HasKey("CustomerId");
-
-                            b1.ToTable("Customers");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CustomerId");
-                        });
-
-                    b.OwnsOne("Customer.Core.ValueObjects.Membership", "Membership", b1 =>
-                        {
-                            b1.Property<Guid>("CustomerId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<int>("AvailableFreezePeriod")
-                                .HasColumnType("int");
-
-                            b1.Property<DateTime>("EndDate")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<DateTime>("StartDate")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<int>("Status")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("TotalMonthsOfMembership")
-                                .HasColumnType("int");
 
                             b1.HasKey("CustomerId");
 
@@ -143,6 +162,12 @@ namespace Customer.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("PhoneNumber")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Customer.Core.Membership", b =>
+                {
+                    b.Navigation("Customer")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618
