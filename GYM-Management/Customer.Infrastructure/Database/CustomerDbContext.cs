@@ -18,7 +18,6 @@ public class CustomerDbContext:AppDbContext
     }
 
     public DbSet<Customer> Customers { get; set; }
-    public DbSet<Membership> Membership { get; set; }
 
 
 

@@ -11,8 +11,7 @@ public class CustomerConfiguration:IEntityTypeConfiguration<Customer>
         builder.OwnsOne(customer => customer.Name);
         builder.OwnsOne(customer => customer.PhoneNumber);
         builder.OwnsOne(customer => customer.Email);
+        builder.OwnsOne(customer => customer.Membership);
         builder.HasKey(customer => customer.Id);
-
-        builder.HasOne(x => x.Membership).WithOne(x => x.Customer).HasForeignKey<Customer>(x => x.MembershipId).OnDelete(DeleteBehavior.SetNull);
     }
 }

@@ -13,8 +13,7 @@ public class StartMembershipCommand:ICommand<MembershipStartedResponse>
 {
     public Guid CustomerId { get; set; }
 
-    public DateTime StartDate { get; set; } = DateTime.Now;
-    public DateTime? EndDate { get; set; }
+    public DateTime EndDate { get; set; }
 }
 
 public class StartMembershipCommandValidator:AbstractValidator<StartMembershipCommand>
@@ -25,8 +24,7 @@ public class StartMembershipCommandValidator:AbstractValidator<StartMembershipCo
             .NotEmpty();
 
         RuleFor(command => command.EndDate)
-            .GreaterThanOrEqualTo(command => DateTime.Now)
-            .When(command => command.EndDate != null);
+            .GreaterThanOrEqualTo(command => DateTime.Now);
     }
 }
 
@@ -42,7 +40,7 @@ public class StartMembershipCommandHandler:CommandHandlerBase<StartMembershipCom
     public override async Task<MembershipStartedResponse> Handle(StartMembershipCommand request, CancellationToken cancellationToken)
     {
 
-        Membership membership = Membership.Custom(DateTime.Now, (DateTime) request.EndDate, request.CustomerId);
+        Membership membership = Membership.CreateNew(DateTime.Now, request.EndDate);
 
         var customer = await _repository.RetriveByAsync(request.CustomerId);
 
