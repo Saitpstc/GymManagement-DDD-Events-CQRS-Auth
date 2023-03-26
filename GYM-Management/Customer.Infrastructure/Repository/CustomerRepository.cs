@@ -26,7 +26,7 @@ public class CustomerRepository:ICustomerRepository
             return null;
         }
 
-        
+
         return databaseRecord;
     }
 
@@ -93,7 +93,7 @@ public class CustomerRepository:ICustomerRepository
 
         try
         {
-            result = await _dbContext.SaveChangesAsync();
+            result = await _dbContext.SaveAsync();
         }
         catch (Exception e)
         {

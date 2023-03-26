@@ -10,7 +10,7 @@ public class Customer:AggregateRoot
     public Email Email { get; private set; }
     public Membership? Membership { get; private set; }
     public int TotalMonthsOfMembership { get; private set; }
-
+    public ICollection<InvoiceId> Bills { get; private set; }
     public Name Name { get; private set; }
     public PhoneNumber PhoneNumber { get; private set; }
     public Guid UserId { get; private set; }
@@ -64,7 +64,7 @@ public class Customer:AggregateRoot
         TimeSpan result = EndDate.Subtract(Membership.StartDate);
         var totalMonths = Math.Round(result.TotalDays / 30.44);
         return (int) totalMonths;
- 
+
     }
 
     public void TerminateMembership()

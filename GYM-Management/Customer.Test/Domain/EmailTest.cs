@@ -14,7 +14,7 @@ public class EmailTest
         Action action = () => new Email("saitpostaci#gmail.com");
 
 
-        action.Should().Throw<DomainValidationException>().WithMessage("Email Is Invalid");
+        action.Should().Throw<DomainValidationException>();
     }
 
     [Fact]

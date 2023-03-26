@@ -10,7 +10,8 @@ public record Membership:ValueObject
 
     public DateTime EndDate { get; private set; }
     public DateTime StartDate { get; private set; }
-    public MembershipStatus Status { get; private set; }
+
+    public Status Status { get; private set; }
 
 
 
@@ -18,7 +19,7 @@ public record Membership:ValueObject
     {
         StartDate = startDate;
         EndDate = endDate;
-        Status = MembershipStatus.Active;
+        Status = new Status(MembershipStatus.Active,"New membership created at");
         AvailableFreezeDays = (EndDate - StartDate).Days / 4;
     }
 
@@ -41,12 +42,12 @@ public record Membership:ValueObject
 
     public int TimePeriodInMonths()
     {
-        
+
         TimeSpan result = EndDate.Subtract(StartDate);
         var totalMonths = Math.Round(result.TotalDays / 30.44);
         return (int) totalMonths;
     }
-    
+
     public void FreezeFor(int freezePeriodAsked)
     {
         var totalMembershipInDays = (EndDate - StartDate).Days;
@@ -63,7 +64,7 @@ public record Membership:ValueObject
             throw new DomainValidationException(
                 $"Customer's Does Not Have Available Days to Freeze Membership;  Available Days Are {AvailableFreezeDays}");
         }
-        Status = MembershipStatus.Frozen;
+        Status = new Status(MembershipStatus.Frozen, $"Customer asked for freeze period on {DateTime.Now.Date}");
         AvailableFreezeDays -= freezePeriodAsked;
     }
 

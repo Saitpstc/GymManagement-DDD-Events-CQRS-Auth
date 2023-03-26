@@ -28,16 +28,10 @@ public class CommandValidator:AbstractValidator<CreateCustomerCommand>
     {
         RuleFor(command => command.Name).NotEmpty().WithMessage("Name is required");
         RuleFor(command => command.Surname).NotEmpty().WithMessage("Surname is required");
-        ;
         RuleFor(command => command.Countrycode).NotEmpty().WithMessage("Countrycode is required");
-        ;
         RuleFor(command => command.Number).NotEmpty().WithMessage("Number is required");
-        ;
         RuleFor(command => command.Mail).NotEmpty().EmailAddress().WithMessage("Mail is not valid");
-        ;
         RuleFor(command => command.UserId).NotEmpty().NotEqual(Guid.Empty).WithMessage("UserId is required");
-        ;
-
     }
 }
 
@@ -55,7 +49,7 @@ public class CreateCustomerCommandHandler:CommandHandlerBase<CreateCustomerComma
     public override async Task<CustomerCreatedResponse> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
     {
         Customer customer = new Customer(new Name(request.Name, request.Surname), new PhoneNumber(request.Countrycode, request.Number),
-            new Email(request.Mail),request.UserId);
+            new Email(request.Mail), request.UserId);
         var AddedCustomer = await _repository.AddAsync(customer);
         await _repository.CommitAsync();
 
@@ -64,7 +58,7 @@ public class CreateCustomerCommandHandler:CommandHandlerBase<CreateCustomerComma
         var response = new CustomerCreatedResponse()
         {
             Id = AddedCustomer.Id,
-            UserId=request.UserId,
+            UserId = request.UserId,
             Name = customer.Name.OfCustomer(),
             PhoneNumber = customer.PhoneNumber.ToString(),
             Email = customer.Email.ToString()

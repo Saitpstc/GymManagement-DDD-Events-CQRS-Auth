@@ -2,7 +2,8 @@
 
 public enum MembershipStatus
 {
-    Frozen,
-    Active
+    Frozen=0,
+    Active=1,
+    DeActive=2
 
 }
