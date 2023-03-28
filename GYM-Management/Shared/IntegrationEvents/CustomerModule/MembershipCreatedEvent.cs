@@ -9,7 +9,7 @@ public record MembershipCreatedEvent:DomainEvent
 {
 
     public Guid CustomerId { get; set; }
-    public string MembershipType { get; set; }
+
     public DateTime MembershipStartDate { get; set; }
     public DateTime MembershipEndDate { get; set; }
 }

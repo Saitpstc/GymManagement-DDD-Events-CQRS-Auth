@@ -34,16 +34,8 @@ public class Customer:AggregateRoot
     public void StartMembership(Membership membership)
     {
         Membership = membership;
-
-        MembershipCreatedEvent customerCreatedEvent = new MembershipCreatedEvent
-        {
-            EventId = new Guid(),
-            CustomerId = Id,
-            MembershipStartDate = membership.StartDate,
-            MembershipEndDate = membership.EndDate
-        };
         TotalMonthsOfMembership += membership.TimePeriodInMonths();
-        Apply(customerCreatedEvent);
+
     }
 
     public void ExtendMembership(DateTime endDate)
