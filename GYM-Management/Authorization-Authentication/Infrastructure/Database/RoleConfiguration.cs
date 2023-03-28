@@ -16,7 +16,8 @@ public class RoleConfiguration:IEntityTypeConfiguration<Role>
                 Id = new Guid("C28EFD96-582E-4855-9822-5CFE4D988543"),
                 IsActive = true,
                 Name = "SuperAdmin",
-                NormalizedName = "SUPERADMIN"
+                NormalizedName = "SUPERADMIN",
+                ConcurrencyStamp = "39e9d8ff-e09a-431d-a43d-c14927f4d196"
 
             }
         });
