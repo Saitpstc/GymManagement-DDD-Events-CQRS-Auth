@@ -1,7 +1,6 @@
 ﻿namespace Ledger.Test;
 
 using FluentAssertions;
-using Shared.Core.Exceptions;
 
 public class InvoiceTest
 {
@@ -42,46 +41,115 @@ public class InvoiceTest
     }
 
     [Fact]
-    public void Throws_When_DueDate_Is_Lower_Than_DateTimeNow()
+    public void DueDate_Will_Be_Created_During_Object_Creation()
     {
 
-        Action action = () => new Invoice(new TotalAmount(12), DateTime.Now);
+        Invoice invoice = new Invoice(new TotalAmount(12));
 
-        action.Should().Throw<Exception>();
+        invoice.DueDate.Should().NotBe(null);
+    }
+
+
+
+    [Fact]
+    public void Description_Cannot_Be_More_Than_255_Characters()
+    {
+        // Act
+        Action act = () => new Description(new string('x', 256));
+
+        // Assert
+        act.Should().Throw<Exception>();
     }
 
     [Fact]
-    public void InvoiceShouldNotBeNull_When_ParametersAreCorrect()
+    public void Pass_If_Description_Lower_Than_255_Characters()
     {
-        
-        
-    }
-}
-
-public class Invoice
-{
-    public TotalAmount TotalAmount { get; }
-
-    public Invoice(TotalAmount totalAmount, DateTime dateTime)
-    {
-        throw new DomainValidationException("An exception has been thrown");
-        TotalAmount = totalAmount;
-    }
-}
-
-public record TotalAmount
-{
-    public TotalAmount(double amount)
-    {
-        if (amount < 0)
+        // Act
+        Action act = () =>
         {
-            throw new DomainValidationException("An exception has been thrown");
-        }
-        this.amount = amount;
+            var Description = new Description(new string('x', 254));
+        };
 
+        Description description = new Description(new string('x', 254));
+
+        // Assert
+        act.Should().NotThrow();
+        description.Value.Should().Be(new string('x', 254));
     }
 
-    public double amount { get; }
+    [Fact]
+    public void Set_Description_After_Invoice_Is_Created()
+    {
+        // Act
+        var invoice = new Invoice(new TotalAmount(12));
+
+        Description description = new Description(new string('x', 254));
+
+        invoice.SetDescription(description);
+
+        invoice.Description.Value.Should().Be(new string('x', 254));
+    }
+
+    [Fact]
+    public void Invoice_Status_Cannot_Be_Paid_If_PayerUserId_Is_Null()
+    {
+        // Act
+        var invoice = new Invoice(new TotalAmount(12));
+
+        Action act = () => invoice.ChangeStatus(InvoiceStatus.Paid);
+
+        act.Should().Throw<Exception>();
+    }
+
+    [Fact]
+    public void Invoice_Status_Cannot_Be_Canceled_If_It_Is_Paid()
+    {
+        // Act
+        var invoice = new Invoice(new TotalAmount(12));
+
+        Action act = () => invoice.ChangeStatus(InvoiceStatus.Canceled);
+
+        act.Should().Throw<Exception>();
+    }
+
+    [Fact]
+    public void Invoice_Status_Should_Be_Changed_To_Different_Value()
+    {
+        // Act
+        var invoice = new Invoice(new TotalAmount(12));
+
+        Action act = () => invoice.ChangeStatus(InvoiceStatus.Canceled);
+
+        act.Should().NotThrow<Exception>();
+        invoice.Status.Should().Be(InvoiceStatus.Canceled);
+    }
+
+    [Fact]
+    public void PostponeDueDate_ShouldPostponeDueDateByOneWeek()
+    {
+        // Arrange
+        var invoice = new Invoice(new TotalAmount(12));
+        var dueDate = invoice.DueDate;
+
+        // Act
+        invoice.PostponeDueDate();
+
+        // Assert
+        invoice.DueDate.Should().Be(dueDate.AddDays(7));
+        invoice.Status.Should().Be(InvoiceStatus.Postponed);
+    }
 
 
+    /*[Fact]
+    public void ProcessedDate_Cannot_Be_Higher_Than_DueDate()
+    {
+        // Arrange
+        Action action = () => new Invoice(new TotalAmount(12), DateTime.Now);
+
+        // Act
+        Action act = () => invoice.ValidateProcessedDate(); // This method will throw an exception if the processed date is higher than due date
+
+        // Assert
+        Assert.Throws<InvalidOperationException>(act);
+    }*/
 }
