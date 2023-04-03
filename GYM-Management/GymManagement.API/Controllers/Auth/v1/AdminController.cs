@@ -26,7 +26,7 @@ public class AdminController:BaseController
     public async Task<ApiResponse<RoleResponseDto>> CreateRole(CreateRoleCommand createRoleCommand)
     {
         RoleResponseDto result = await _module.ExecuteCommandAsync(createRoleCommand);
-
+        
         var results = CreateResponse(result);
         return results;
     }

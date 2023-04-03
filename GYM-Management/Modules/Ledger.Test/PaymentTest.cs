@@ -2,6 +2,7 @@
 
 using Core;
 using FluentAssertions;
+using Infrastructure;
 
 public class PaymentTest
 {
@@ -23,28 +24,4 @@ public class PaymentTest
         result.IsSuccess.Should().Be(true);
 
     }
-}
-
-public class CreditCardPaymentService:IPaymentService
-{
-    public PaymentResult PayTheInvoice(PaymentModel model)
-    {
-        model.Invoice.PayTheInvoice(model);
-
-        return new PaymentResult()
-        {
-            IsSuccess = true
-        };
-    }
-}
-
-public class PaymentResult
-{
-    public object IsSuccess { get; set; }
-}
-
-
-public interface IPaymentService
-{
-    PaymentResult PayTheInvoice(PaymentModel model);
 }

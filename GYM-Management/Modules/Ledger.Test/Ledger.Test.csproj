@@ -25,6 +25,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\Shared.Core\Shared.Core.csproj" />
       <ProjectReference Include="..\Ledger.Core\Ledger.Core.csproj" />
+      <ProjectReference Include="..\Ledger.Infrastructure\Ledger.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
