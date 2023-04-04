@@ -6,6 +6,9 @@ using Authorization_Authentication.Application.User.Query;
 using Authorization_Authentication.Dto.User;
 using Authorization_Authentication.Infrastructure.JWT;
 using Authorization_Authentication.Models;
+using global::Auth.Entry;
+using Ledger.Core;
+using Ledger.Test;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Application.Contracts;
@@ -14,10 +17,17 @@ using Shared.Presentation.Models;
 [Route("Auth")]
 public class AccountController:BaseController
 {
+
+  
     private readonly IAuthModule _module;
 
-    public AccountController(IErrorMessageCollector collector, UserManager<User> manager, IAuthModule module):base(collector)
+    public AccountController(
+        IErrorMessageCollector collector,
+        UserManager<User> manager,
+        IAuthModule module):base(collector)
     {
+
+
         _module = module;
     }
 
@@ -34,6 +44,7 @@ public class AccountController:BaseController
     public async Task<ApiResponse<JwtUserDto>> Login(LoginQuery loginQuery)
     {
         var result = await _module.ExecuteQueryAsync(loginQuery);
+
         return CreateResponse(result);
     }
 

@@ -1,23 +1,29 @@
 ﻿namespace Ledger.Infrastructure;
 
+using Auth.Entry;
 using Core;
 using Shared.Core;
 using Test;
 
 public class CreditCardPaymentService:IPaymentService
 {
-    private readonly AppOptions _appOptions;
+    private readonly IStripeService _stripeService;
 
-    public CreditCardPaymentService(AppOptions appOptions)
+    public CreditCardPaymentService(IStripeService stripeService)
     {
-        _appOptions = appOptions;
+        _stripeService = stripeService;
+
 
     }
+
     public PaymentResult PayTheInvoice(PaymentModel model)
     {
-        
-        
+
+        //var stripeUserId = _stripeService.GetCurrentUserStripeId();
+
+        _stripeService.CreatePaymentAsync(model);
         model.Invoice.PayTheInvoice(model);
+
 
         return new PaymentResult()
         {

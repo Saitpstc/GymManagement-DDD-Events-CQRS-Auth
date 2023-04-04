@@ -21,7 +21,7 @@ namespace Authorization_Authentication.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
+            
             modelBuilder.Entity("Authorization_Authentication.Models.ConfirmationCode", b =>
                 {
                     b.Property<Guid>("Id")

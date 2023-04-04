@@ -6,16 +6,16 @@ using Exceptions;
 
 public abstract class AggregateRoot:BaseEntity
 {
-    private readonly List<DomainEvent> _domainEvents = new List<DomainEvent>();
+    private readonly List<IntegrationEvent> _domainEvents = new List<IntegrationEvent>();
     
     
 
     [NotMapped]
-    public IReadOnlyList<DomainEvent> DomainEvents => _domainEvents;
+    public IReadOnlyList<IntegrationEvent> DomainEvents => _domainEvents;
 
 
 
-    protected void Apply(DomainEvent @event)
+    protected void Apply(IntegrationEvent @event)
     {
         _domainEvents.Add(@event);
     }

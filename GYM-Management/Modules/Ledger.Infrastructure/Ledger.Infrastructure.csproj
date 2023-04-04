@@ -7,11 +7,20 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="MediatR" Version="11.1.0" />
       <PackageReference Include="Stripe.net" Version="41.12.0" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Shared\IntegrationEvents\IntegrationEvents.csproj" />
+      <ProjectReference Include="..\Auth.Entry\Auth.Entry.csproj" />
       <ProjectReference Include="..\Ledger.Core\Ledger.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
+        <HintPath>..\..\..\..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\6.0.15\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

@@ -54,7 +54,7 @@ public class AppDbContext:DbContext
 
         foreach (var VARIABLE in entries)
         {
-            foreach (DomainEvent domainEvent in VARIABLE.DomainEvents)
+            foreach (IntegrationEvent domainEvent in VARIABLE.DomainEvents)
             {
                 await Mediator.Publish(domainEvent, cancellationToken);
             }

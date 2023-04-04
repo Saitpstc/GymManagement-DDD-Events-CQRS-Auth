@@ -1,6 +1,7 @@
-﻿namespace Ledger.Test;
+﻿namespace Ledger.Core;
 
 using Shared.Core.Exceptions;
+using Test;
 
 public class Invoice
 {

@@ -6,6 +6,6 @@ using Core.Domain;
 public class DataStructureBase:BaseEntity
 {
     [NotMapped]
-    public List<DomainEvent> Events = new List<DomainEvent>();
+    public List<IntegrationEvent> Events = new List<IntegrationEvent>();
     public bool IsDeleted { get; set; }
 }

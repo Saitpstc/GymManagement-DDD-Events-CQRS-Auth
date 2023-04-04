@@ -28,6 +28,7 @@
         <ProjectReference Include="..\Authorization-Authentication\Authorization-Authentication.csproj" />
         <ProjectReference Include="..\Customer.Application\Customer.Application.csproj" />
         <ProjectReference Include="..\Customer.Infrastructure\Customer.Infrastructure.csproj" />
+        <ProjectReference Include="..\Modules\Ledger.Infrastructure\Ledger.Infrastructure.csproj" />
         <ProjectReference Include="..\Shared.Presentation\Shared.Presentation.csproj" />
     </ItemGroup>
 

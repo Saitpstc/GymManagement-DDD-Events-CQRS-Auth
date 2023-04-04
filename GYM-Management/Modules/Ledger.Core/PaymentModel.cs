@@ -1,6 +1,6 @@
-﻿namespace Ledger.Test;
+﻿namespace Ledger.Core;
 
-using Core;
+using Test;
 
 public class PaymentModel
 {

@@ -2,6 +2,7 @@
 
 using System.Text;
 using Application.Contracts;
+using Auth.Entry;
 using FluentValidation;
 using Infrastructure;
 using Infrastructure.Database;
@@ -33,6 +34,9 @@ public static class AuthHost
             options.SignIn.RequireConfirmedEmail = true;
             options.User.RequireUniqueEmail = true;
         });
+        
+        service.AddHttpContextAccessor();
+        service.AddScoped<IAuthService,AuthService>();
 
 
         

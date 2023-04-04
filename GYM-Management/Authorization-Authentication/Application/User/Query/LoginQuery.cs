@@ -1,5 +1,6 @@
 ﻿namespace Authorization_Authentication.Application.User.Query;
 
+using System.ComponentModel;
 using Events;
 using FluentValidation;
 using Infrastructure.Database;
@@ -14,7 +15,9 @@ using Shared.Infrastructure;
 
 public class LoginQuery:IQuery<JwtUserDto>
 {
+    [DefaultValue("SuperAdmin")]
     public string UserName { get; set; }
+    [DefaultValue( "Sait.Modular.2248")]
     public string Password { get; set; }
 }
 

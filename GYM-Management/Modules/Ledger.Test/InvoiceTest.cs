@@ -1,5 +1,6 @@
 ﻿namespace Ledger.Test;
 
+using Core;
 using FluentAssertions;
 
 public class InvoiceTest
