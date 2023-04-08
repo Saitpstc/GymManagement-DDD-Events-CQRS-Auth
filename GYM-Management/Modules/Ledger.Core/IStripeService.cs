@@ -8,5 +8,5 @@ public interface IStripeService
 
     Task<bool> DeleteCustomerAsync(string customerId);
 
-    Task<string> GetCurrentUserStripeId();
+    Task<(string, string)> GetCurrentUserStripeId();
 }

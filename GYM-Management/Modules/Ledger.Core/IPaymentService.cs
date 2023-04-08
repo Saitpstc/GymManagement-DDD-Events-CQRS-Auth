@@ -4,5 +4,5 @@ using Test;
 
 public interface IPaymentService
 {
-    PaymentResult PayTheInvoice(PaymentModel model);
+    Task<PaymentResult> PayTheInvoice(PaymentModel model);
 }

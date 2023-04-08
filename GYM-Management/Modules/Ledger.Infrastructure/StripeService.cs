@@ -5,6 +5,7 @@ using Core;
 using IntegrationEvents.LedgerModule;
 using MediatR;
 using Shared.Core;
+using Shared.Core.Exceptions;
 using Stripe;
 using Test;
 using Invoice = Ledger.Core.Invoice;
@@ -44,30 +45,26 @@ public class StripeService:IStripeService
         StripeConfiguration.ApiKey = _appOptions.StripeApi;
 
 
-
-        var options =new PaymentIntentCreateOptions
+        var options = new PaymentIntentCreateOptions
         {
-            Amount = 543,
+            Amount = (long) model.Invoice.TotalAmount.amount,
             Currency = "gbp",
             PaymentMethod = "pm_card_visa",
-        }; /*new ChargeCreateOptions
-        {
-            Amount = (long) (model.Invoice.TotalAmount.amount * 100), // Amount in cents
-            Currency = "usd",
-            Description = model.Invoice.Description.Value,
-            Source = new AnyOf<string, CardCreateNestedOptions>(new CardCreateNestedOptions()
-            {
-                Number = model.CreditCardInformation.CardNumber,
-                Cvc = model.CreditCardInformation.Cvc,
-                ExpMonth = model.CreditCardInformation.ExpMonth,
-                ExpYear = model.CreditCardInformation.ExpYear,
-                Name = model.CreditCardInformation.CardFullName,
-                
-            })
-        };*/
+        };
 
         var service = new PaymentIntentService();
-        var charge = await service.CreateAsync(options);
+
+        PaymentIntent charge;
+
+        try
+        {
+            charge = await service.CreateAsync(options);
+        }
+        catch (StripeException e)
+        {
+            throw new DomainValidationException(e.Message);
+        }
+
 
         return charge.Id;
     }
@@ -77,7 +74,7 @@ public class StripeService:IStripeService
         throw new NotImplementedException();
     }
 
-    public async Task<string> GetCurrentUserStripeId()
+    public async Task<(string, string)> GetCurrentUserStripeId()
     {
         var user = _authService.GetCurrentUser();
 
@@ -90,6 +87,6 @@ public class StripeService:IStripeService
             user.StripeId = stripeId;
         }
 
-        return user.StripeId;
+        return (user.StripeId, user.UserId);
     }
 }

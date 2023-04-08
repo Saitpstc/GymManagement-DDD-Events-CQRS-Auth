@@ -16,12 +16,16 @@ public class CreditCardPaymentService:IPaymentService
 
     }
 
-    public PaymentResult PayTheInvoice(PaymentModel model)
+    public async Task<PaymentResult> PayTheInvoice(PaymentModel model)
     {
 
-        //var stripeUserId = _stripeService.GetCurrentUserStripeId();
+        var stripeUserId = await _stripeService.GetCurrentUserStripeId();
 
-        _stripeService.CreatePaymentAsync(model);
+        model.StripeId = stripeUserId.Item1;
+        model.PayerUserId = new Guid(stripeUserId.Item2);
+        
+        await _stripeService.CreatePaymentAsync(model);
+
         model.Invoice.PayTheInvoice(model);
 
 
