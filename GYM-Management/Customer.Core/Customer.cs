@@ -5,7 +5,7 @@ using Shared.Core.Domain;
 using Shared.Core.Exceptions;
 using ValueObjects;
 
-public class Customer:AggregateRoot
+internal class Customer:AggregateRoot
 {
     public Email Email { get; private set; }
     public Membership? Membership { get; private set; }

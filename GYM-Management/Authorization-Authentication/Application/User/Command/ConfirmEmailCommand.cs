@@ -13,7 +13,7 @@ public class ConfirmEmailCommand:ICommand<string>
     public string UserName { get; set; }
 }
 
-public class ConfirmEmailCommandHandler:CommandHandlerBase<ConfirmEmailCommand, string>
+internal class ConfirmEmailCommandHandler:CommandHandlerBase<ConfirmEmailCommand, string>
 {
     private readonly AuthDbContext _context;
     private readonly UserManager<User> _userManager;

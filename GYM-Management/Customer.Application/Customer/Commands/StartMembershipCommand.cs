@@ -29,7 +29,7 @@ public class StartMembershipCommandValidator:AbstractValidator<StartMembershipCo
     }
 }
 
-public class StartMembershipCommandHandler:CommandHandlerBase<StartMembershipCommand, MembershipStartedResponse>
+internal class StartMembershipCommandHandler:CommandHandlerBase<StartMembershipCommand, MembershipStartedResponse>
 {
     private readonly ICustomerRepository _repository;
     private readonly IMediator _mediator;

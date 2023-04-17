@@ -24,7 +24,7 @@ AppOptions myOptions = new AppOptions();
 builder.Services.AddPresentationDependency(builder.Configuration, myOptions);
 builder.Services.CustomerDependency(builder.Configuration, myOptions);
 builder.Services.AddSharedDependency();
-builder.Services.AddAuthDependency(myOptions);
+builder.Services.AddAuthDependency(myOptions,builder.Environment);
 builder.Services.AddLedgerDependency(myOptions);
 
 builder.Services.AddControllers().AddJsonOptions(options =>
@@ -35,7 +35,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddScoped<ICustomerModule, CustomerModule>();
+
 
 builder.Services.AddAuthorization();
 
@@ -62,3 +62,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.Run();
+
+
+public partial class Program { } // so you can reference it from tests

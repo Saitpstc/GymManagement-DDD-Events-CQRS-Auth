@@ -1,6 +1,5 @@
 ﻿namespace Ledger.Infrastructure;
 
-using Auth.Entry;
 using Core;
 using Shared.Core;
 using Test;

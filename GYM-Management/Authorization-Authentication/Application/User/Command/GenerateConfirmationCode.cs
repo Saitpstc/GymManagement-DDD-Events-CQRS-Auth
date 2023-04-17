@@ -29,7 +29,7 @@ public class GenerateConfirmationCodeValidator:AbstractValidator<GenerateConfirm
     }
 }
 //Request Handler
-public class GenerateConfirmationCodeHandler:CommandHandlerBase<GenerateConfirmationCode, string>, INotificationHandler<EmailConfirmationEvent>
+internal class GenerateConfirmationCodeHandler:CommandHandlerBase<GenerateConfirmationCode, string>, INotificationHandler<EmailConfirmationEvent>
 {
     private readonly IEmailService _emailService;
     private readonly AuthDbContext _context;

@@ -28,7 +28,7 @@ public class CreateUserCommandValidator:AbstractValidator<CreateUserCommand>
     }
 }
 
-public class CreateUserCommandHandler:CommandHandlerBase<CreateUserCommand, UserCreatedResponse>
+internal class CreateUserCommandHandler:CommandHandlerBase<CreateUserCommand, UserCreatedResponse>
 {
     private readonly IMediator _mediator;
     private readonly UserManager<User> _userManager;

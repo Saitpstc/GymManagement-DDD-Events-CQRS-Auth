@@ -1,6 +1,6 @@
 ﻿namespace Authorization_Authentication.Models;
 
-public class ConfirmationCode
+internal  class ConfirmationCode
 {
     public Guid Id { get; set; }
     public Guid UserId { get; set; }

@@ -13,7 +13,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Shared\IntegrationEvents\IntegrationEvents.csproj" />
-      <ProjectReference Include="..\Auth.Entry\Auth.Entry.csproj" />
       <ProjectReference Include="..\Ledger.Core\Ledger.Core.csproj" />
     </ItemGroup>
 

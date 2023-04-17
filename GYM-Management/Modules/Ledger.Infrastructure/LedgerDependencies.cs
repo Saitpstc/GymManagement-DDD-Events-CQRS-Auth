@@ -8,8 +8,8 @@ public static class LedgerDependencies
 {
     public static void AddLedgerDependency(this IServiceCollection service, AppOptions appOptions)
     {
-        service.AddScoped<IStripeService, StripeService>();
-        service.AddScoped<IPaymentService, CreditCardPaymentService>();
+       // service.AddScoped<IStripeService, StripeService>();
+        //service.AddScoped<IPaymentService, CreditCardPaymentService>();
 
     }
 }

@@ -6,7 +6,7 @@ using System.Text;
 using Authorization_Authentication.Models;
 using Microsoft.IdentityModel.Tokens;
 
-public class JwtUtils
+internal class JwtUtils
 {
 
     /// <param name="user">Application's user object</param>

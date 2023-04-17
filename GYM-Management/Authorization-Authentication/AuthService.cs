@@ -1,11 +1,11 @@
-﻿namespace Authorization_Authentication;
+﻿/*namespace Authorization_Authentication;
 
 using System.Security.Claims;
 using Auth.Entry;
 using Infrastructure.Database;
 using Microsoft.AspNetCore.Http;
 
-public class AuthService:IAuthService
+internal class AuthService:IAuthService
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly AuthDbContext _dbContext;
@@ -31,4 +31,4 @@ public class AuthService:IAuthService
         };
 
     }
-}
+}*/

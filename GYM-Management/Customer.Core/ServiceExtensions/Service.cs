@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 using Shared.Core.Domain;
 using Shared.Core.Exceptions;
 
-public static class Service
+static internal class Service
 {
     public static bool ValidateCountryCode(string countryCode)
     {

@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using Shared.Core.Domain;
 using Shared.Core.Exceptions;
 
-public record Name:ValueObject
+internal record Name:ValueObject
 {
     public string FirstName {get; private set;}
     public string Surname {get; private set;}

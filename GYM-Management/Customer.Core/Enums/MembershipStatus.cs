@@ -1,6 +1,6 @@
 ﻿namespace Customer.Core.Enums;
 
-public enum MembershipStatus
+internal enum MembershipStatus
 {
     Frozen=0,
     Active=1,

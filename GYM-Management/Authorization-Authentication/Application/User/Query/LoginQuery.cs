@@ -31,7 +31,7 @@ public class LoginQueryValidator:AbstractValidator<LoginQuery>
     }
 }
 
-public class LoginQueryCommandHandler:QueryHandlerBase<LoginQuery, JwtUserDto>
+internal class LoginQueryCommandHandler:QueryHandlerBase<LoginQuery, JwtUserDto>
 {
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;

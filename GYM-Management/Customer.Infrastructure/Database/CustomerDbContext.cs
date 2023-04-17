@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure;
 
 
-public class CustomerDbContext:AppDbContext
+internal class CustomerDbContext:AppDbContext
 {
 
 

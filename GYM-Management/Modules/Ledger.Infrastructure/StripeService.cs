@@ -1,4 +1,4 @@
-﻿namespace Ledger.Infrastructure;
+﻿/*namespace Ledger.Infrastructure;
 
 using Auth.Entry;
 using Core;
@@ -89,4 +89,4 @@ public class StripeService:IStripeService
 
         return (user.StripeId, user.UserId);
     }
-}
+}*/

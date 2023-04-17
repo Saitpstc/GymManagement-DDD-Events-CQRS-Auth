@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Models;
 
-public class UserRoleConfig:IEntityTypeConfiguration<UserRoleMap>
+internal class UserRoleConfig:IEntityTypeConfiguration<UserRoleMap>
 {
 
     public void Configure(EntityTypeBuilder<UserRoleMap> builder)

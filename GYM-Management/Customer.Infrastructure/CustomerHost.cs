@@ -25,7 +25,7 @@ public static class CustomerHost
         services.AddValidatorsFromAssembly(typeof(ICustomerModule).Assembly);
 
         services.AddScoped<ICustomerRepository, CustomerRepository>();
-
+        services.AddScoped<ICustomerModule, CustomerModule>();
 
 
 

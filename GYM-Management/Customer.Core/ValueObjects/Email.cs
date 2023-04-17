@@ -5,7 +5,7 @@ using ServiceExtensions;
 using Shared.Core.Domain;
 using Shared.Core.Exceptions;
 
-public record Email:ValueObject
+internal record Email:ValueObject
 {
     protected Email()
     {

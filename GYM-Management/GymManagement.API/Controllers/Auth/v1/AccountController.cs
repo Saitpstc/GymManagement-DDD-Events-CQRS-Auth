@@ -6,7 +6,6 @@ using Authorization_Authentication.Application.User.Query;
 using Authorization_Authentication.Dto.User;
 using Authorization_Authentication.Infrastructure.JWT;
 using Authorization_Authentication.Models;
-using global::Auth.Entry;
 using Ledger.Core;
 using Ledger.Test;
 using Microsoft.AspNetCore.Identity;
@@ -23,7 +22,6 @@ public class AccountController:BaseController
 
     public AccountController(
         IErrorMessageCollector collector,
-        UserManager<User> manager,
         IAuthModule module):base(collector)
     {
 

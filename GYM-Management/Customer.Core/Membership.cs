@@ -4,7 +4,7 @@ using Enums;
 using Shared.Core.Domain;
 using Shared.Core.Exceptions;
 
-public record Membership:ValueObject
+internal record Membership:ValueObject
 {
     public int AvailableFreezeDays { get; private set; }
 

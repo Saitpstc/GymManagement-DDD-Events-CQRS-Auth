@@ -2,7 +2,7 @@
 
 using Microsoft.AspNetCore.Identity;
 
-public class User:IdentityUser<Guid>
+internal class User:IdentityUser<Guid>
 {
     public ICollection<UserRoleMap> UserRoles { get; set; }
 }

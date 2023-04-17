@@ -1,16 +1,18 @@
 ﻿namespace Authorization_Authentication;
 
+using System.Reflection;
 using System.Text;
 using Application.Contracts;
-using Auth.Entry;
 using FluentValidation;
 using Infrastructure;
 using Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Models;
 using Shared.Core;
@@ -19,11 +21,23 @@ using Shared.Infrastructure;
 public static class AuthHost
 {
 
-    public static void AddAuthDependency(this IServiceCollection service, AppOptions appOptions)
+    public static void AddAuthDependency(this IServiceCollection service, AppOptions appOptions, IWebHostEnvironment webHostEnvironment)
     {
+
+        var hosten = webHostEnvironment.EnvironmentName;
+
         // Register DbContext
-        service.AddDbContext<AuthDbContext>(options =>
-            options.UseSqlServer(appOptions.GetConnectionString(Modules.Auth)));
+        if (hosten.Equals("Testing"))
+        {
+            service.AddDbContext<AuthDbContext>(options =>
+                options.UseInMemoryDatabase("TestingAuth"));
+        }
+        else
+        {
+            service.AddDbContext<AuthDbContext>(options =>
+                options.UseSqlServer(appOptions.GetConnectionString(Modules.Auth)));
+
+        }
 
         // Register Identity services
         service.AddIdentity<User, Role>()
@@ -34,12 +48,12 @@ public static class AuthHost
             options.SignIn.RequireConfirmedEmail = true;
             options.User.RequireUniqueEmail = true;
         });
-        
+
         service.AddHttpContextAccessor();
-        service.AddScoped<IAuthService,AuthService>();
+        // service.AddScoped<IAuthService,AuthService>();
 
 
-        
+
 
 
         service.AddValidatorsFromAssembly(typeof(IAuthModule).Assembly);

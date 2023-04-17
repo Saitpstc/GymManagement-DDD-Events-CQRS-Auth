@@ -27,7 +27,7 @@ public class AssignPermissionToRoleValidator:AbstractValidator<AssignPermissionT
     }
 }
 
-public class AssignPermissionToRoleCommandHandler:CommandHandlerBase<AssignPermissionToRoleCommand, Unit>
+internal class AssignPermissionToRoleCommandHandler:CommandHandlerBase<AssignPermissionToRoleCommand, Unit>
 {
     private readonly AuthDbContext _db;
 

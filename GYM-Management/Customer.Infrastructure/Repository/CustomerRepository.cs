@@ -4,7 +4,7 @@ using Core;
 using Database;
 using Microsoft.EntityFrameworkCore;
 
-public class CustomerRepository:ICustomerRepository
+internal class CustomerRepository:ICustomerRepository
 {
     private readonly CustomerDbContext _dbContext;
 

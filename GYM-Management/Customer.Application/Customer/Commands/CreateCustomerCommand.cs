@@ -35,7 +35,7 @@ public class CommandValidator:AbstractValidator<CreateCustomerCommand>
     }
 }
 
-public class CreateCustomerCommandHandler:CommandHandlerBase<CreateCustomerCommand, CustomerCreatedResponse>
+internal class CreateCustomerCommandHandler:CommandHandlerBase<CreateCustomerCommand, CustomerCreatedResponse>
 {
     private readonly ICustomerRepository _repository;
     private IMediator _mediator;

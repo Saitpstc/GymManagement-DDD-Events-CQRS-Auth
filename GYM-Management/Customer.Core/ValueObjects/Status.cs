@@ -3,4 +3,4 @@
 using Enums;
 using Shared.Core.Domain;
 
-public record Status(MembershipStatus CurrentStatus, string StatusReason):ValueObject;
+internal record Status(MembershipStatus CurrentStatus, string StatusReason):ValueObject;

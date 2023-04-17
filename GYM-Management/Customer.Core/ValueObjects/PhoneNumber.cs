@@ -5,7 +5,7 @@ using ServiceExtensions;
 using Shared.Core.Domain;
 using Shared.Core.Exceptions;
 
-public class PhoneNumber
+internal class PhoneNumber
 {
     public string Number { get; private set; }
     public string CountryCode { get; private set; }

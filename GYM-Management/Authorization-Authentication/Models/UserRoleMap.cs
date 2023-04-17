@@ -2,7 +2,7 @@
 
 using Microsoft.AspNetCore.Identity;
 
-public class UserRoleMap:IdentityUserRole<Guid>
+internal class UserRoleMap:IdentityUserRole<Guid>
 {
     public virtual Role Role { get; set; }
     public virtual User User { get; set; }

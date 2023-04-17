@@ -4,7 +4,7 @@ using Application.Contracts;
 using MediatR;
 using Shared.Application.Contracts;
 
-public class CustomerModule:ICustomerModule
+internal class CustomerModule:ICustomerModule
 {
     private readonly IMediator _mediator;
 
