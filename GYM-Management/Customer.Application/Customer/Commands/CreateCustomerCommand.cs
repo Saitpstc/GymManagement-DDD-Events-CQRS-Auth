@@ -35,7 +35,7 @@ public class CommandValidator:AbstractValidator<CreateCustomerCommand>
     }
 }
 
-internal class CreateCustomerCommandHandler:CommandHandlerBase<CreateCustomerCommand, CustomerCreatedResponse>
+class CreateCustomerCommandHandler:CommandHandlerBase<CreateCustomerCommand, CustomerCreatedResponse>
 {
     private readonly ICustomerRepository _repository;
     private IMediator _mediator;
@@ -50,12 +50,12 @@ internal class CreateCustomerCommandHandler:CommandHandlerBase<CreateCustomerCom
     {
         Customer customer = new Customer(new Name(request.Name, request.Surname), new PhoneNumber(request.Countrycode, request.Number),
             new Email(request.Mail), request.UserId);
-        var AddedCustomer = await _repository.AddAsync(customer);
+        Customer AddedCustomer = await _repository.AddAsync(customer);
         await _repository.CommitAsync();
 
 
 
-        var response = new CustomerCreatedResponse()
+        CustomerCreatedResponse response = new CustomerCreatedResponse
         {
             Id = AddedCustomer.Id,
             UserId = request.UserId,

@@ -13,7 +13,7 @@ public class ConfirmEmailCommand:ICommand<string>
     public string UserName { get; set; }
 }
 
-internal class ConfirmEmailCommandHandler:CommandHandlerBase<ConfirmEmailCommand, string>
+class ConfirmEmailCommandHandler:CommandHandlerBase<ConfirmEmailCommand, string>
 {
     private readonly AuthDbContext _context;
     private readonly UserManager<User> _userManager;
@@ -27,16 +27,6 @@ internal class ConfirmEmailCommandHandler:CommandHandlerBase<ConfirmEmailCommand
         _userManager = userManager;
     }
 
-    public class ConfirmEmailValidator:AbstractValidator<ConfirmEmailCommand>
-    {
-        public ConfirmEmailValidator()
-        {
-            RuleFor(x => x.Code).NotEmpty();
-            RuleFor(x => x.UserName).NotEmpty();
-            RuleFor(x => x.Code).Length(6);
-            RuleFor(x => x.Code).Must(x => x.All(char.IsDigit)).WithMessage("Code should contain only numeric values");
-        }
-    }
     public override async Task<string> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
     {
         User? user = await _userManager.FindByNameAsync(request.UserName);
@@ -69,5 +59,16 @@ internal class ConfirmEmailCommandHandler:CommandHandlerBase<ConfirmEmailCommand
 
         return "User confirmed";
 
+    }
+
+    public class ConfirmEmailValidator:AbstractValidator<ConfirmEmailCommand>
+    {
+        public ConfirmEmailValidator()
+        {
+            RuleFor(x => x.Code).NotEmpty();
+            RuleFor(x => x.UserName).NotEmpty();
+            RuleFor(x => x.Code).Length(6);
+            RuleFor(x => x.Code).Must(x => x.All(char.IsDigit)).WithMessage("Code should contain only numeric values");
+        }
     }
 }

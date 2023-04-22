@@ -6,7 +6,6 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Models;
-using Query;
 using Shared.Application.Contracts;
 using Shared.Core.Exceptions;
 
@@ -15,7 +14,6 @@ public class CreateUserCommand:ICommand<UserCreatedResponse>
     public string? UserName { get; set; }
     public string Password { get; set; }
     public string Email { get; set; }
-
 }
 
 public class CreateUserCommandValidator:AbstractValidator<CreateUserCommand>
@@ -28,7 +26,7 @@ public class CreateUserCommandValidator:AbstractValidator<CreateUserCommand>
     }
 }
 
-internal class CreateUserCommandHandler:CommandHandlerBase<CreateUserCommand, UserCreatedResponse>
+class CreateUserCommandHandler:CommandHandlerBase<CreateUserCommand, UserCreatedResponse>
 {
     private readonly IMediator _mediator;
     private readonly UserManager<User> _userManager;
@@ -43,9 +41,9 @@ internal class CreateUserCommandHandler:CommandHandlerBase<CreateUserCommand, Us
 
     public override async Task<UserCreatedResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        var user = new User()
+        User user = new User
         {
-            Email = request.Email,
+            Email = request.Email
 
         };
 
@@ -59,20 +57,20 @@ internal class CreateUserCommandHandler:CommandHandlerBase<CreateUserCommand, Us
         }
 
         user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, request.Password);
-        var result = await _userManager.CreateAsync(user);
+        IdentityResult? result = await _userManager.CreateAsync(user);
 
 
         if (!result.Succeeded)
         {
             throw new BusinessLogicException(result.Errors.Select(x => x.Description).ToList());
         }
-        await _mediator.Publish(new EmailConfirmationEvent()
+        await _mediator.Publish(new EmailConfirmationEvent
         {
             UserName = user.UserName
         }, cancellationToken);
 
 
-        return new UserCreatedResponse()
+        return new UserCreatedResponse
         {
             UserName = user.UserName,
             Email = user.Email,

@@ -2,8 +2,6 @@
 
 using Core.ValueObjects;
 using FluentAssertions;
-using Shared.Core;
-using Shared.Core.Domain;
 using Shared.Core.Exceptions;
 
 public class NameTest

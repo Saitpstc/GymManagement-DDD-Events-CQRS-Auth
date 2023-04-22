@@ -2,9 +2,10 @@
 
 using Shared.Core.Domain;
 
-internal record InvoiceId:ValueObject
+record InvoiceId:ValueObject
 {
-    public Guid Value { get; private set; }
 
     private InvoiceId() {}
+
+    public Guid Value { get; private set; }
 }

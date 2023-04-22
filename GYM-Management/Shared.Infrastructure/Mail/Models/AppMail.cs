@@ -1,7 +1,5 @@
 ﻿namespace Shared.Infrastructure.Mail.Models;
 
-using System.Collections.Generic;
-
 public class AppMail
 {
     public AppMailSender From { get; set; }

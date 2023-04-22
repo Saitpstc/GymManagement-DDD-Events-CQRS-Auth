@@ -1,7 +1,6 @@
 ﻿namespace Authorization_Authentication.Application.Superadmin.Commands;
 
 using Dto;
-using Infrastructure;
 using Infrastructure.Database;
 using Microsoft.AspNetCore.Identity;
 using Models;
@@ -11,10 +10,11 @@ public class CreateRoleCommand:ICommand<RoleResponseDto>
 {
     public string Name { get; set; }
 }
-internal class CreateRoleCommandHandler:CommandHandlerBase<CreateRoleCommand, RoleResponseDto>
+
+class CreateRoleCommandHandler:CommandHandlerBase<CreateRoleCommand, RoleResponseDto>
 {
-    private readonly RoleManager<Role> _roleManager;
     private readonly AuthDbContext _context;
+    private readonly RoleManager<Role> _roleManager;
 
 
     public CreateRoleCommandHandler(

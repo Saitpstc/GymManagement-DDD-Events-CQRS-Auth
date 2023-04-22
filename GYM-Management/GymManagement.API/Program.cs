@@ -1,12 +1,10 @@
 using System.Text.Json.Serialization;
 using Authorization_Authentication;
-using Customer.Application.Contracts;
 using Customer.Infrastructure;
 using Ledger.Infrastructure;
 using Serilog;
 using Shared.Application;
 using Shared.Core;
-
 using Shared.Presentation;
 using Shared.Presentation.Middlewares;
 
@@ -24,7 +22,7 @@ AppOptions myOptions = new AppOptions();
 builder.Services.AddPresentationDependency(builder.Configuration, myOptions);
 builder.Services.CustomerDependency(builder.Configuration, myOptions);
 builder.Services.AddSharedDependency();
-builder.Services.AddAuthDependency(myOptions,builder.Environment);
+builder.Services.AddAuthDependency(myOptions, builder.Environment);
 builder.Services.AddLedgerDependency(myOptions);
 
 builder.Services.AddControllers().AddJsonOptions(options =>
@@ -64,4 +62,6 @@ app.MapControllers();
 app.Run();
 
 
-public partial class Program { } // so you can reference it from tests
+public partial class Program
+{
+} // so you can reference it from tests

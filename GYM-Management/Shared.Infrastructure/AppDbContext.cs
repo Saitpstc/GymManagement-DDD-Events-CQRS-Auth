@@ -1,8 +1,6 @@
 ﻿namespace Shared.Infrastructure;
 
-using Core;
 using Core.Domain;
-using Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -52,7 +50,7 @@ public class AppDbContext:DbContext
     async private Task PublishEvents(CancellationToken cancellationToken, List<AggregateRoot> entries)
     {
 
-        foreach (var VARIABLE in entries)
+        foreach (AggregateRoot VARIABLE in entries)
         {
             foreach (IntegrationEvent domainEvent in VARIABLE.DomainEvents)
             {

@@ -7,8 +7,8 @@ using Exceptions;
 public abstract class AggregateRoot:BaseEntity
 {
     private readonly List<IntegrationEvent> _domainEvents = new List<IntegrationEvent>();
-    
-    
+
+
 
     [NotMapped]
     public IReadOnlyList<IntegrationEvent> DomainEvents => _domainEvents;

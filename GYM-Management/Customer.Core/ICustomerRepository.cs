@@ -2,6 +2,6 @@
 
 using Shared.Core.Contracts;
 
-internal interface ICustomerRepository:IRepository<Customer>
+interface ICustomerRepository:IRepository<Customer>
 {
 }

@@ -2,16 +2,31 @@
 
 using Core;
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc.Testing;
 
-public class InvoiceTest
+public class InvoiceTest:TestBase
+
 {
+    private readonly IPaymentService _paymentService;
+    private HttpClient _Client;
+
+    public InvoiceTest()
+    {
+
+        var app = new WebApplicationFactory<Program>();
+        _Client = app.CreateDefaultClient();
+
+
+        _paymentService = (IPaymentService?) app.Services.GetService(typeof(IPaymentService));
+    }
+
     [Fact]
     public void Throws_If_TotalAmount_Is_LowerThanZero()
     {
 
         Action action = () =>
         {
-            TotalAmount totalAmount = new TotalAmount(-6);
+            Amount amount = new Amount(-6);
         };
 
         action.Should().Throw<Exception>();
@@ -23,7 +38,7 @@ public class InvoiceTest
 
         Action action = () =>
         {
-            TotalAmount totalAmount = new TotalAmount(6);
+            Amount amount = new Amount(6);
         };
 
         action.Should().NotThrow<Exception>();
@@ -35,17 +50,17 @@ public class InvoiceTest
     [InlineData(34.5673)]
     public void ReturnTotalAmount_If_Creation_Is_Sucessfull(double testValue)
     {
-        TotalAmount totalAmount = new TotalAmount(testValue);
+        Amount amount = new Amount(testValue);
 
 
-        totalAmount.amount.Should().Be(testValue);
+        amount.amount.Should().Be(testValue);
     }
 
     [Fact]
     public void DueDate_Will_Be_Created_During_Object_Creation()
     {
 
-        Invoice invoice = new Invoice(new TotalAmount(12));
+        Invoice invoice = new Invoice(new Amount(12));
 
         invoice.DueDate.Should().NotBe(null);
     }
@@ -68,7 +83,7 @@ public class InvoiceTest
         // Act
         Action act = () =>
         {
-            var Description = new Description(new string('x', 254));
+            Description Description = new Description(new string('x', 254));
         };
 
         Description description = new Description(new string('x', 254));
@@ -82,7 +97,7 @@ public class InvoiceTest
     public void Set_Description_After_Invoice_Is_Created()
     {
         // Act
-        var invoice = new Invoice(new TotalAmount(12));
+        Invoice invoice = new Invoice(new Amount(12));
 
         Description description = new Description(new string('x', 254));
 
@@ -95,7 +110,7 @@ public class InvoiceTest
     public void Invoice_Status_Cannot_Be_Paid_If_PayerUserId_Is_Null()
     {
         // Act
-        var invoice = new Invoice(new TotalAmount(12));
+        Invoice invoice = new Invoice(new Amount(12));
 
         Action act = () => invoice.ChangeStatus(InvoiceStatus.Paid);
 
@@ -106,7 +121,7 @@ public class InvoiceTest
     public void Invoice_Status_Cannot_Be_Canceled_If_It_Is_Paid()
     {
         // Act
-        var invoice = new Invoice(new TotalAmount(12));
+        Invoice invoice = new Invoice(new Amount(12));
 
         Action act = () => invoice.ChangeStatus(InvoiceStatus.Canceled);
 
@@ -117,7 +132,7 @@ public class InvoiceTest
     public void Invoice_Status_Should_Be_Changed_To_Different_Value()
     {
         // Act
-        var invoice = new Invoice(new TotalAmount(12));
+        Invoice invoice = new Invoice(new Amount(12));
 
         Action act = () => invoice.ChangeStatus(InvoiceStatus.Canceled);
 
@@ -129,8 +144,8 @@ public class InvoiceTest
     public void PostponeDueDate_ShouldPostponeDueDateByOneWeek()
     {
         // Arrange
-        var invoice = new Invoice(new TotalAmount(12));
-        var dueDate = invoice.DueDate;
+        Invoice invoice = new Invoice(new Amount(12));
+        DateTime dueDate = invoice.DueDate;
 
         // Act
         invoice.PostponeDueDate();
@@ -153,4 +168,18 @@ public class InvoiceTest
         // Assert
         Assert.Throws<InvalidOperationException>(act);
     }*/
+
+    [Fact]
+    public void Payment_Test()
+    {
+        Invoice invoice = new Invoice(new Amount(12));
+        var result = _paymentService.PayTheInvoice(new PaymentModel
+        {
+            Invoice = invoice,
+            PayerUserId = Guid.NewGuid()
+        });
+
+
+
+    }
 }

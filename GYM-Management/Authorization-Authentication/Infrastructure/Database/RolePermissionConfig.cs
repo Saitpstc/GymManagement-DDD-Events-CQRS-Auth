@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Models;
 
-internal class RolePermissionConfig:IEntityTypeConfiguration<RolePermission>
+class RolePermissionConfig:IEntityTypeConfiguration<RolePermission>
 {
 
     public void Configure(EntityTypeBuilder<RolePermission> builder)

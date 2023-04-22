@@ -8,19 +8,19 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FluentValidation" Version="11.5.1" />
-        <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
-        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.14" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.14" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.14" />
+        <PackageReference Include="FluentValidation" Version="11.5.1"/>
+        <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2"/>
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.14"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.14"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.14"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.14">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.14" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.14" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.14"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.14"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.14">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -28,11 +28,12 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Modules\Modules.Shared\Modules.Shared.csproj" />
-        <ProjectReference Include="..\Shared.Application\Shared.Application.csproj" />
-        <ProjectReference Include="..\Shared.Core\Shared.Core.csproj" />
-        <ProjectReference Include="..\Shared.Infrastructure\Shared.Infrastructure.csproj" />
-        <ProjectReference Include="..\Shared.Presentation\Shared.Presentation.csproj" />
+        <ProjectReference Include="..\Modules\Auth.Entry\Auth.Entry.csproj"/>
+        <ProjectReference Include="..\Modules\Modules.Shared\Modules.Shared.csproj"/>
+        <ProjectReference Include="..\Shared.Application\Shared.Application.csproj"/>
+        <ProjectReference Include="..\Shared.Core\Shared.Core.csproj"/>
+        <ProjectReference Include="..\Shared.Infrastructure\Shared.Infrastructure.csproj"/>
+        <ProjectReference Include="..\Shared.Presentation\Shared.Presentation.csproj"/>
     </ItemGroup>
 
 </Project>

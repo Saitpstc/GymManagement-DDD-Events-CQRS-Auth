@@ -4,14 +4,8 @@ using Enums;
 using Shared.Core.Domain;
 using Shared.Core.Exceptions;
 
-internal record Membership:ValueObject
+record Membership:ValueObject
 {
-    public int AvailableFreezeDays { get; private set; }
-
-    public DateTime EndDate { get; private set; }
-    public DateTime StartDate { get; private set; }
-
-    public Status Status { get; private set; }
 
 
 
@@ -19,9 +13,16 @@ internal record Membership:ValueObject
     {
         StartDate = startDate;
         EndDate = endDate;
-        Status = new Status(MembershipStatus.Active,"New membership created at");
+        Status = new Status(MembershipStatus.Active, "New membership created at");
         AvailableFreezeDays = (EndDate - StartDate).Days / 4;
     }
+
+    public int AvailableFreezeDays { get; private set; }
+
+    public DateTime EndDate { get; }
+    public DateTime StartDate { get; }
+
+    public Status Status { get; private set; }
 
 
     public static Membership CreateNew(DateTime startDate, DateTime endDate)
@@ -67,7 +68,4 @@ internal record Membership:ValueObject
         Status = new Status(MembershipStatus.Frozen, $"Customer asked for freeze period on {DateTime.Now.Date}");
         AvailableFreezeDays -= freezePeriodAsked;
     }
-
-
-
 }

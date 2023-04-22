@@ -1,7 +1,5 @@
 ﻿namespace Customer.Application.DTO.Response;
 
-using Core.ValueObjects;
-
 public class CustomerCreatedResponse
 {
 

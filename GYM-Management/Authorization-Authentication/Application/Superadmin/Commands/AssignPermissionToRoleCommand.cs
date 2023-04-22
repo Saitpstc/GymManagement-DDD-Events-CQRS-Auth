@@ -1,6 +1,5 @@
 ﻿namespace Authorization_Authentication.Application.Superadmin.Commands;
 
-using System.ComponentModel.DataAnnotations;
 using FluentValidation;
 using Infrastructure.Database;
 using MediatR;
@@ -8,8 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Models;
 using Shared.Application.Contracts;
 using Shared.Application.CustomValidators;
-using Shared.Core.Domain;
-using Shared.Core.Exceptions;
 
 public class AssignPermissionToRoleCommand:ICommand<Unit>
 {
@@ -27,7 +24,7 @@ public class AssignPermissionToRoleValidator:AbstractValidator<AssignPermissionT
     }
 }
 
-internal class AssignPermissionToRoleCommandHandler:CommandHandlerBase<AssignPermissionToRoleCommand, Unit>
+class AssignPermissionToRoleCommandHandler:CommandHandlerBase<AssignPermissionToRoleCommand, Unit>
 {
     private readonly AuthDbContext _db;
 
@@ -48,7 +45,7 @@ internal class AssignPermissionToRoleCommandHandler:CommandHandlerBase<AssignPer
 
         if (role is null) throw new ArgumentNullException($"Role is not found for given  {request.RoleId}");
 
-      //  Permission? permission = await _db.Permissions.FirstOrDefaultAsync(x => x.Id == request.PermissionId);
+        //  Permission? permission = await _db.Permissions.FirstOrDefaultAsync(x => x.Id == request.PermissionId);
 
         //if (permission is null) throw new ArgumentNullException($"Permission is not found for given  {request.PermissionId}");
 
@@ -70,5 +67,4 @@ internal class AssignPermissionToRoleCommandHandler:CommandHandlerBase<AssignPer
 
         return Unit.Value;
     }
-
 }

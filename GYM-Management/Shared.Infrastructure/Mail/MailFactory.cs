@@ -24,11 +24,11 @@ public class MailFactory:IMailFactory
 
     private SendGridMessage CreateMail(AppMail mail)
     {
-        var message = new SendGridMessage();
+        SendGridMessage message = new SendGridMessage();
         message.AddTo(mail.To);
         message.From = new EmailAddress(mail.From.GetDescription());
 
-        if (mail.Template !=MailTemplates.None)
+        if (mail.Template != MailTemplates.None)
         {
             message.SetTemplateId(mail.Template.GetDescription());
             message.SetTemplateData(mail.TemplateData);
@@ -36,9 +36,8 @@ public class MailFactory:IMailFactory
         else
         {
             message.Subject = mail.Subject;
-            message.PlainTextContent = mail.PlainTextContent; 
+            message.PlainTextContent = mail.PlainTextContent;
         }
         return message;
     }
-
 }

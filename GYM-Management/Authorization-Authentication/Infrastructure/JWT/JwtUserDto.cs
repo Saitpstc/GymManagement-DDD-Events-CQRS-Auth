@@ -1,14 +1,8 @@
 ﻿namespace Authorization_Authentication.Infrastructure.JWT;
 
-using Authorization_Authentication.Models;
-
 public class JwtUserDto
 {
-    public JwtUserDto()
-    {
 
-    }
-    
 
     public Guid Id { get; set; }
     public string UserName { get; set; }

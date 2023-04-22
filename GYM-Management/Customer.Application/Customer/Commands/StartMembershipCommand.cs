@@ -1,9 +1,6 @@
 ﻿namespace Customer.Application.Customer.Commands;
 
-using System.ComponentModel;
 using Core;
-using Core.Enums;
-using Core.ValueObjects;
 using DTO.Response;
 using FluentValidation;
 using IntegrationEvents.CustomerModule;
@@ -29,10 +26,10 @@ public class StartMembershipCommandValidator:AbstractValidator<StartMembershipCo
     }
 }
 
-internal class StartMembershipCommandHandler:CommandHandlerBase<StartMembershipCommand, MembershipStartedResponse>
+class StartMembershipCommandHandler:CommandHandlerBase<StartMembershipCommand, MembershipStartedResponse>
 {
-    private readonly ICustomerRepository _repository;
     private readonly IMediator _mediator;
+    private readonly ICustomerRepository _repository;
 
     public StartMembershipCommandHandler(
         IErrorMessageCollector errorMessageCollector,
@@ -48,7 +45,7 @@ internal class StartMembershipCommandHandler:CommandHandlerBase<StartMembershipC
 
         Membership membership = Membership.CreateNew(DateTime.Now, request.EndDate);
 
-        var customer = await _repository.RetriveByAsync(request.CustomerId);
+        Customer? customer = await _repository.RetriveByAsync(request.CustomerId);
 
         if (customer is null)
         {
@@ -62,7 +59,7 @@ internal class StartMembershipCommandHandler:CommandHandlerBase<StartMembershipC
         await _repository.UpdateAsync(customer);
         await _repository.CommitAsync();
 
-        MembershipCreatedEvent @event = new MembershipCreatedEvent()
+        MembershipCreatedEvent @event = new MembershipCreatedEvent
         {
             CustomerId = customer.Id,
             MembershipEndDate = membership.EndDate,
@@ -71,7 +68,7 @@ internal class StartMembershipCommandHandler:CommandHandlerBase<StartMembershipC
         await _mediator.Publish(@event, cancellationToken);
 
         //todo: change username to the User's username
-        return new MembershipStartedResponse()
+        return new MembershipStartedResponse
         {
 
             EndDate = membership.EndDate,

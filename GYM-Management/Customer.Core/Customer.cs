@@ -1,19 +1,11 @@
 ﻿namespace Customer.Core;
 
-using IntegrationEvents.CustomerModule;
 using Shared.Core.Domain;
 using Shared.Core.Exceptions;
 using ValueObjects;
 
-internal class Customer:AggregateRoot
+class Customer:AggregateRoot
 {
-    public Email Email { get; private set; }
-    public Membership? Membership { get; private set; }
-    public int TotalMonthsOfMembership { get; private set; }
-    public ICollection<InvoiceId> Bills { get; private set; }
-    public Name Name { get; private set; }
-    public PhoneNumber PhoneNumber { get; private set; }
-    public Guid UserId { get; private set; }
 
     private Customer()
     {
@@ -28,6 +20,14 @@ internal class Customer:AggregateRoot
         UserId = userId;
         Membership = membership;
     }
+
+    public Email Email { get; }
+    public Membership? Membership { get; private set; }
+    public int TotalMonthsOfMembership { get; private set; }
+    public ICollection<InvoiceId> Bills { get; private set; }
+    public Name Name { get; }
+    public PhoneNumber PhoneNumber { get; }
+    public Guid UserId { get; }
 
 
 
@@ -63,6 +63,4 @@ internal class Customer:AggregateRoot
     {
         Membership = null;
     }
-
-
 }

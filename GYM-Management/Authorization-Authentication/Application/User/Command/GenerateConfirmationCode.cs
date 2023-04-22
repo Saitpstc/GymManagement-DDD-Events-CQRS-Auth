@@ -7,7 +7,6 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Models;
-using Query;
 using Shared.Application.Contracts;
 using Shared.Core.Exceptions;
 using Shared.Infrastructure.Mail.Interface;
@@ -17,7 +16,6 @@ using Shared.Infrastructure.Mail.Models;
 public class GenerateConfirmationCode:ICommand<string>
 {
     public string UserName { get; set; }
-
 }
 
 //Request validator
@@ -28,11 +26,12 @@ public class GenerateConfirmationCodeValidator:AbstractValidator<GenerateConfirm
         RuleFor(x => x.UserName).NotEmpty().WithMessage("Username cannot be empty");
     }
 }
+
 //Request Handler
-internal class GenerateConfirmationCodeHandler:CommandHandlerBase<GenerateConfirmationCode, string>, INotificationHandler<EmailConfirmationEvent>
+class GenerateConfirmationCodeHandler:CommandHandlerBase<GenerateConfirmationCode, string>, INotificationHandler<EmailConfirmationEvent>
 {
-    private readonly IEmailService _emailService;
     private readonly AuthDbContext _context;
+    private readonly IEmailService _emailService;
     private readonly UserManager<User> _userManager;
 
 
@@ -50,10 +49,18 @@ internal class GenerateConfirmationCodeHandler:CommandHandlerBase<GenerateConfir
 
     }
 
+    public async Task Handle(EmailConfirmationEvent notification, CancellationToken cancellationToken)
+    {
+        await Handle(new GenerateConfirmationCode
+        {
+            UserName = notification.UserName
+        }, cancellationToken);
+    }
+
     public override async Task<string> Handle(GenerateConfirmationCode request, CancellationToken cancellationToken)
     {
 
-        var user = await _userManager.FindByNameAsync(request.UserName);
+        User? user = await _userManager.FindByNameAsync(request.UserName);
 
         if (user is null)
         {
@@ -82,13 +89,13 @@ internal class GenerateConfirmationCodeHandler:CommandHandlerBase<GenerateConfir
     async private Task SendCodeWithEmail(User user, string code)
     {
 
-        var kapmail = new AppMail()
+        AppMail kapmail = new AppMail
         {
             From = AppMailSender.NoReply,
             Subject = "Account Confirmation Code",
             To = user.Email,
             Template = MailTemplates.EmailConfirmationTemplate,
-            TemplateData = new Dictionary<string, string>()
+            TemplateData = new Dictionary<string, string>
             {
                 { "VerificationCode", code },
                 { "ReceiverMail", user.Email }
@@ -100,10 +107,10 @@ internal class GenerateConfirmationCodeHandler:CommandHandlerBase<GenerateConfir
     static private string CreateConfirmationCode(User user, out ConfirmationCode confirmationCode)
     {
 
-        var generator = new Random();
+        Random generator = new Random();
         var code = generator.Next(0, 1000000).ToString("D6");
-        var dateNow = DateTime.Now;
-        confirmationCode = new ConfirmationCode()
+        DateTime dateNow = DateTime.Now;
+        confirmationCode = new ConfirmationCode
         {
             Code = code,
             Created = dateNow,
@@ -111,13 +118,5 @@ internal class GenerateConfirmationCodeHandler:CommandHandlerBase<GenerateConfir
             UserId = user.Id
         };
         return code;
-    }
-
-    public async Task Handle(EmailConfirmationEvent notification, CancellationToken cancellationToken)
-    {
-        await Handle(new GenerateConfirmationCode()
-        {
-            UserName = notification.UserName
-        }, cancellationToken);
     }
 }

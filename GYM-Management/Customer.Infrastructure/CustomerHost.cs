@@ -17,10 +17,20 @@ public static class CustomerHost
     {
 
         services.AddMediatR(typeof(ICustomerModule).Assembly);
-        services.AddDbContext<CustomerDbContext>(options =>
+        var hosten = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+        // Register DbContext
+        if (hosten.Equals("Testing"))
         {
-            options.UseSqlServer(appOptions.GetConnectionString(Modules.Customer));
-        });
+            services.AddDbContext<CustomerDbContext>(options =>
+                options.UseInMemoryDatabase("TestingAuth"));
+        }
+        else
+        {
+            services.AddDbContext<CustomerDbContext>(options =>
+                options.UseSqlServer(appOptions.GetConnectionString(Modules.Auth)));
+
+        }
 
         services.AddValidatorsFromAssembly(typeof(ICustomerModule).Assembly);
 

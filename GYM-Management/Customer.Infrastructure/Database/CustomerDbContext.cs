@@ -2,13 +2,11 @@
 
 using Configuration;
 using Core;
-
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure;
 
-
-internal class CustomerDbContext:AppDbContext
+class CustomerDbContext:AppDbContext
 {
 
 

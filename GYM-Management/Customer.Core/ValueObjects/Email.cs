@@ -5,21 +5,23 @@ using ServiceExtensions;
 using Shared.Core.Domain;
 using Shared.Core.Exceptions;
 
-internal record Email:ValueObject
+record Email:ValueObject
 {
+
+    static private readonly Regex EmailPattern = new Regex(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$");
+
     protected Email()
     {
 
     }
-
-    static private readonly Regex EmailPattern = new Regex(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$");
-    public string MailAddress { get; private set; }
 
     public Email(string email)
     {
         ValidateEmail(email);
         MailAddress = email;
     }
+
+    public string MailAddress { get; }
 
     private void ValidateEmail(string email)
     {

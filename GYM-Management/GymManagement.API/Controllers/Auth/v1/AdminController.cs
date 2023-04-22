@@ -7,7 +7,6 @@ using Authorization_Authentication.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Modules.Shared;
-using Shared.Application;
 using Shared.Application.Contracts;
 using Shared.Core;
 using Shared.Infrastructure;
@@ -26,11 +25,11 @@ public class AdminController:BaseController
     public async Task<ApiResponse<RoleResponseDto>> CreateRole(CreateRoleCommand createRoleCommand)
     {
         RoleResponseDto result = await _module.ExecuteCommandAsync(createRoleCommand);
-        
+
         var results = CreateResponse(result);
         return results;
     }
-    
+
 
     [HttpPost("AssignPermissionToRole")]
     public async Task<ApiResponse<Unit>> AssignPermissionToRole(AssignPermissionToRoleCommand assignPermission)

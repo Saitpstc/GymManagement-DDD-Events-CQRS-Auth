@@ -1,14 +1,15 @@
-﻿/*namespace Authorization_Authentication;
+﻿namespace Authorization_Authentication;
 
 using System.Security.Claims;
 using Auth.Entry;
 using Infrastructure.Database;
 using Microsoft.AspNetCore.Http;
+using Models;
 
-internal class AuthService:IAuthService
+class AuthService:IAuthService
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly AuthDbContext _dbContext;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     public AuthService(IHttpContextAccessor httpContextAccessor, AuthDbContext dbContext)
     {
@@ -16,14 +17,14 @@ internal class AuthService:IAuthService
         _dbContext = dbContext;
     }
 
-    public SharedUserModel GetCurrentUser()
+    public UserModel GetCurrentUser()
     {
         var userId = _httpContextAccessor.HttpContext.User.FindFirstValue("Id");
 
-        var user = _dbContext.Users.Find(userId);
+        User? user = _dbContext.Users.Find(userId);
         if (user is null) throw new ArgumentException("User is not found");
 
-        return new SharedUserModel()
+        return new UserModel
         {
             Email = user.Email,
             UserId = userId,
@@ -31,4 +32,4 @@ internal class AuthService:IAuthService
         };
 
     }
-}*/
+}

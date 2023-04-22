@@ -1,14 +1,13 @@
 ﻿namespace Shared.Infrastructure.Mail;
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Interface;
 using Models;
 using SendGrid;
 using SendGrid.Helpers.Errors.Model;
+using SendGrid.Helpers.Mail;
 
 //todo:modify to implement bulk mail actions
-public class EmailService : IEmailService
+public class EmailService:IEmailService
 {
     private readonly IMailFactory _mailFactory;
     private readonly ISendGridClient _sendGridClient;
@@ -21,7 +20,8 @@ public class EmailService : IEmailService
 
     public async Task SendEmailAsync(AppMail model)
     {
-        var message = _mailFactory.Create(model);
+        SendGridMessage message = _mailFactory.Create(model);
+
         try
         {
             await _sendGridClient.SendEmailAsync(message);
@@ -35,9 +35,10 @@ public class EmailService : IEmailService
 
     public async Task SendBulkMail(List<AppMail> mails)
     {
-        foreach (var mail in mails)
+        foreach (AppMail mail in mails)
         {
-            var message = _mailFactory.Create(mail);
+            SendGridMessage message = _mailFactory.Create(mail);
+
             try
             {
                 await _sendGridClient.SendEmailAsync(message);

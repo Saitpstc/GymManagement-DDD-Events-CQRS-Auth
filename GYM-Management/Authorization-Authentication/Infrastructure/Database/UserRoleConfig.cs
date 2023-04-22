@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Models;
 
-internal class UserRoleConfig:IEntityTypeConfiguration<UserRoleMap>
+class UserRoleConfig:IEntityTypeConfiguration<UserRoleMap>
 {
 
     public void Configure(EntityTypeBuilder<UserRoleMap> builder)
@@ -24,9 +24,9 @@ internal class UserRoleConfig:IEntityTypeConfiguration<UserRoleMap>
             .HasForeignKey(ur => ur.UserId)
             .IsRequired();
 
-        builder.HasData(new List<UserRoleMap>()
+        builder.HasData(new List<UserRoleMap>
         {
-            new UserRoleMap()
+            new UserRoleMap
             {
                 RoleId = new Guid("C28EFD96-582E-4855-9822-5CFE4D988543"),
                 UserId = new Guid("F482BCCA-98DB-438B-906B-4860E14ADCCE")

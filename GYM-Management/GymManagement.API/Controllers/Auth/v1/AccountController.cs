@@ -5,10 +5,6 @@ using Authorization_Authentication.Application.User.Command;
 using Authorization_Authentication.Application.User.Query;
 using Authorization_Authentication.Dto.User;
 using Authorization_Authentication.Infrastructure.JWT;
-using Authorization_Authentication.Models;
-using Ledger.Core;
-using Ledger.Test;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Application.Contracts;
 using Shared.Presentation.Models;
@@ -17,7 +13,7 @@ using Shared.Presentation.Models;
 public class AccountController:BaseController
 {
 
-  
+
     private readonly IAuthModule _module;
 
     public AccountController(
@@ -32,7 +28,7 @@ public class AccountController:BaseController
     [HttpPost("CreateUser")]
     public async Task<ApiResponse<UserCreatedResponse>> CreateUser(CreateUserCommand createUserCommand)
     {
-        var result = await _module.ExecuteCommandAsync(createUserCommand);
+        UserCreatedResponse result = await _module.ExecuteCommandAsync(createUserCommand);
         return CreateResponse(result);
 
     }
@@ -41,7 +37,7 @@ public class AccountController:BaseController
     [HttpPost("Login")]
     public async Task<ApiResponse<JwtUserDto>> Login(LoginQuery loginQuery)
     {
-        var result = await _module.ExecuteQueryAsync(loginQuery);
+        JwtUserDto result = await _module.ExecuteQueryAsync(loginQuery);
 
         return CreateResponse(result);
     }
@@ -68,5 +64,4 @@ public class AccountController:BaseController
     {
         throw new NotImplementedException();
     }*/
-
 }

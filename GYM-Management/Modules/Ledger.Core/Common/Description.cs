@@ -1,4 +1,4 @@
-﻿namespace Ledger.Test;
+﻿namespace Ledger.Core;
 
 using Shared.Core.Domain;
 using Shared.Core.Exceptions;

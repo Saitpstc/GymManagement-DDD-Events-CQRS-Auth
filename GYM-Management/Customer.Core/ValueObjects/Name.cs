@@ -4,15 +4,14 @@ using System.Text.RegularExpressions;
 using Shared.Core.Domain;
 using Shared.Core.Exceptions;
 
-internal record Name:ValueObject
+record Name:ValueObject
 {
-    public string FirstName {get; private set;}
-    public string Surname {get; private set;}
 
     protected Name()
     {
-        
+
     }
+
     public Name(string name, string surname)
     {
         InputContainsOnlyLetters(name, surname);
@@ -20,6 +19,9 @@ internal record Name:ValueObject
         Surname = surname[..1].ToUpper() + surname[1..];
 
     }
+
+    public string FirstName { get; }
+    public string Surname { get; }
 
     private void InputContainsOnlyLetters(string name, string surname)
     {

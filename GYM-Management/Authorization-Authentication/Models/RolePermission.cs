@@ -2,7 +2,7 @@
 
 using Modules.Shared;
 
-internal class RolePermission
+class RolePermission
 {
     public Guid RoleId { get; set; }
 

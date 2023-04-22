@@ -2,7 +2,6 @@
 
 using Core;
 using FluentValidation.AspNetCore;
-using Infrastructure;
 using Infrastructure.Mail;
 using Infrastructure.Mail.Interface;
 using Microsoft.Extensions.Configuration;

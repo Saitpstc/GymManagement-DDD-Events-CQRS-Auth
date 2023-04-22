@@ -2,19 +2,17 @@
 
 using Shared.Core.Exceptions;
 
-public record TotalAmount
+public record Amount
 {
-    public TotalAmount(double amount)
+    public Amount(double amount)
     {
         if (amount < 0)
         {
-            throw new DomainValidationException("An exception has been thrown");
+            throw new DomainValidationException("Amount cannot be lower than 0");
         }
         this.amount = amount;
 
     }
 
     public double amount { get; }
-
-
 }

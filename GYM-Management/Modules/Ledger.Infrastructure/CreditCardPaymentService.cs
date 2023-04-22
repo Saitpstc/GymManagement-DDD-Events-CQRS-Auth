@@ -1,7 +1,6 @@
 ﻿namespace Ledger.Infrastructure;
 
 using Core;
-using Shared.Core;
 using Test;
 
 public class CreditCardPaymentService:IPaymentService
@@ -18,17 +17,17 @@ public class CreditCardPaymentService:IPaymentService
     public async Task<PaymentResult> PayTheInvoice(PaymentModel model)
     {
 
-        var stripeUserId = await _stripeService.GetCurrentUserStripeId();
+        (string, string) stripeUserId = await _stripeService.GetCurrentUserStripeId();
 
         model.StripeId = stripeUserId.Item1;
         model.PayerUserId = new Guid(stripeUserId.Item2);
-        
+
         await _stripeService.CreatePaymentAsync(model);
 
         model.Invoice.PayTheInvoice(model);
 
 
-        return new PaymentResult()
+        return new PaymentResult
         {
             IsSuccess = true
         };

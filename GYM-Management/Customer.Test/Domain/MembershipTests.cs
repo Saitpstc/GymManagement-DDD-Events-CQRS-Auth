@@ -2,10 +2,7 @@ namespace Customer.Test.Domain;
 
 using Core;
 using Core.Enums;
-using Core.ValueObjects;
 using FluentAssertions;
-using Shared.Core;
-using Shared.Core.Domain;
 using Shared.Core.Exceptions;
 
 public class MembershipTests
@@ -31,8 +28,8 @@ public class MembershipTests
     }
 
 
-   
-    
+
+
     [Fact]
     public void Customer_Can_Freeze_Account_Only_For_4in1_Days_In_Total()
     {
@@ -65,6 +62,4 @@ public class MembershipTests
 
         act.Should().Throw<DomainValidationException>();
     }
-
-
 }

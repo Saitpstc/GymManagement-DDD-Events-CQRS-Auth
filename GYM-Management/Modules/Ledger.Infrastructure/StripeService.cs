@@ -1,4 +1,4 @@
-﻿/*namespace Ledger.Infrastructure;
+﻿namespace Ledger.Infrastructure;
 
 using Auth.Entry;
 using Core;
@@ -7,8 +7,6 @@ using MediatR;
 using Shared.Core;
 using Shared.Core.Exceptions;
 using Stripe;
-using Test;
-using Invoice = Ledger.Core.Invoice;
 
 public class StripeService:IStripeService
 {
@@ -28,13 +26,13 @@ public class StripeService:IStripeService
     {
         StripeConfiguration.ApiKey = _appOptions.StripeApi;
 
-        var customerOptions = new CustomerCreateOptions
+        CustomerCreateOptions customerOptions = new CustomerCreateOptions
         {
-            Email = userEmail,
+            Email = userEmail
         };
 
-        var customerService = new CustomerService();
-        var customer = await customerService.CreateAsync(customerOptions);
+        CustomerService customerService = new CustomerService();
+        Customer? customer = await customerService.CreateAsync(customerOptions);
 
         return customer.Id;
     }
@@ -45,14 +43,14 @@ public class StripeService:IStripeService
         StripeConfiguration.ApiKey = _appOptions.StripeApi;
 
 
-        var options = new PaymentIntentCreateOptions
+        PaymentIntentCreateOptions options = new PaymentIntentCreateOptions
         {
-            Amount = (long) model.Invoice.TotalAmount.amount,
+            Amount = (long) model.Invoice.Amount.amount,
             Currency = "gbp",
-            PaymentMethod = "pm_card_visa",
+            PaymentMethod = "pm_card_visa"
         };
 
-        var service = new PaymentIntentService();
+        PaymentIntentService service = new PaymentIntentService();
 
         PaymentIntent charge;
 
@@ -76,12 +74,12 @@ public class StripeService:IStripeService
 
     public async Task<(string, string)> GetCurrentUserStripeId()
     {
-        var user = _authService.GetCurrentUser();
+        UserModel user = _authService.GetCurrentUser();
 
         if (string.IsNullOrWhiteSpace(user.StripeId))
         {
             var stripeId = await CreateCustomerAsync(user.Email);
-            var userModifiedEvent = new UserModifiedEvent(user.UserId, stripeId);
+            UserModifiedEvent userModifiedEvent = new UserModifiedEvent(user.UserId, stripeId);
 
             await _mediator.Publish(userModifiedEvent);
             user.StripeId = stripeId;
@@ -89,4 +87,4 @@ public class StripeService:IStripeService
 
         return (user.StripeId, user.UserId);
     }
-}*/
+}

@@ -1,9 +1,5 @@
 ﻿namespace Shared.Presentation.Middlewares;
 
-using System.Net;
-using Core;
-using Core.Exceptions;
-using Exceptions;
 using Microsoft.AspNetCore.Http;
 using Models;
 
@@ -28,7 +24,7 @@ public class CustomExceptionHandler
         {
 
             ApiResponse apiResponse = ApiResponseFactory.CreateExceptionResponse(e);
-            
+
             await context.Response.WriteAsJsonAsync(apiResponse);
 
             throw;

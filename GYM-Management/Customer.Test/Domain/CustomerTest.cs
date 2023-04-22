@@ -51,5 +51,4 @@ public class CustomerTest
 
         cus.Membership.Should().BeNull();
     }
-
 }

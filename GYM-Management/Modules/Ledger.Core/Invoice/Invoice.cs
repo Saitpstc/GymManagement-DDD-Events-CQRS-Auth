@@ -5,19 +5,20 @@ using Test;
 
 public class Invoice
 {
-    public TotalAmount TotalAmount { get; }
+
+    public Invoice(Amount amount, Description? description = null)
+    {
+        DueDate = DateTime.Now.AddDays(7);
+        Description = description;
+        Amount = amount;
+        Status = InvoiceStatus.Waiting;
+    }
+
+    public Amount Amount { get; }
     public DateTime DueDate { get; private set; }
     public Description? Description { get; private set; }
     public InvoiceStatus Status { get; private set; }
     public Guid? PayerUserId { get; private set; }
-
-    public Invoice(TotalAmount totalAmount, Description? description = null)
-    {
-        DueDate = DateTime.Now.AddDays(7);
-        Description = description;
-        TotalAmount = totalAmount;
-        Status = InvoiceStatus.Waiting;
-    }
 
     public void SetDescription(Description description)
     {

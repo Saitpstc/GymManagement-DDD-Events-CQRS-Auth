@@ -1,8 +1,8 @@
 ﻿namespace Authorization_Authentication;
 
-using System.Reflection;
 using System.Text;
 using Application.Contracts;
+using Auth.Entry;
 using FluentValidation;
 using Infrastructure;
 using Infrastructure.Database;
@@ -12,11 +12,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Models;
 using Shared.Core;
-using Shared.Infrastructure;
 
 public static class AuthHost
 {
@@ -24,7 +22,7 @@ public static class AuthHost
     public static void AddAuthDependency(this IServiceCollection service, AppOptions appOptions, IWebHostEnvironment webHostEnvironment)
     {
 
-        var hosten = webHostEnvironment.EnvironmentName;
+        var hosten = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
         // Register DbContext
         if (hosten.Equals("Testing"))
@@ -50,7 +48,7 @@ public static class AuthHost
         });
 
         service.AddHttpContextAccessor();
-        // service.AddScoped<IAuthService,AuthService>();
+        service.AddScoped<IAuthService, AuthService>();
 
 
 

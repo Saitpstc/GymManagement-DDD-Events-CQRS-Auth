@@ -1,16 +1,12 @@
 ﻿namespace Shared.Presentation.Middlewares;
 
 using System.Diagnostics;
-using System.Net;
 using System.Text;
-using Infrastructure;
 using Infrastructure.Logger;
 using Microsoft.AspNetCore.Http;
-using Models;
 using Newtonsoft.Json;
 using Serilog;
 using Serilog.Context;
-using Serilog.Core;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 public class LoggingMiddleware
@@ -51,11 +47,11 @@ public class LoggingMiddleware
         Exception logException = null;
 
 
-        var responseBodyStream = context.Response.Body;
+        Stream responseBodyStream = context.Response.Body;
 
-        string responseBody = "";
+        var responseBody = "";
 
-        using (var memoryStream = new MemoryStream())
+        using (MemoryStream memoryStream = new MemoryStream())
         {
             context.Response.Body = memoryStream;
 
@@ -94,7 +90,7 @@ public class LoggingMiddleware
 
         LogContext.PushProperty("Response", responseBody);
 
-        if ((logException != null))
+        if (logException != null)
         {
             Log.Error(logException, $"{logException.Message}");
         }

@@ -3,10 +3,10 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Authorization_Authentication.Models;
 using Microsoft.IdentityModel.Tokens;
+using Models;
 
-internal class JwtUtils
+class JwtUtils
 {
 
     /// <param name="user">Application's user object</param>
@@ -44,7 +44,7 @@ internal class JwtUtils
     }
 
     /// <summary>
-    /// returns false if token 
+    ///     returns false if token
     /// </summary>
     /// <param name="jwtToken"></param>
     /// <returns></returns>
@@ -54,7 +54,7 @@ internal class JwtUtils
         {
             return true;
         }
-        
+
         jwtToken = jwtToken["Bearer ".Length..];
         JwtSecurityToken token = new JwtSecurityToken(jwtEncodedString: jwtToken);
 
@@ -76,7 +76,7 @@ internal class JwtUtils
 
         if (roles.Any())
         {
-            foreach (var role in roles.Where(x => x.IsActive))
+            foreach (Role role in roles.Where(x => x.IsActive))
             {
 
                 claims.Add("Role", role.Name);
@@ -89,7 +89,7 @@ internal class JwtUtils
 
         if (permissions.Any())
         {
-            foreach (var permission in permissions)
+            foreach (RolePermission permission in permissions)
             {
                 var normalizedPermission = $"{permission.PermissionContext.ToString()}.{permission.PermissionType.ToString()}";
                 claims.Add("Permission", normalizedPermission);

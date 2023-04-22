@@ -1,8 +1,6 @@
 ﻿namespace Shared.Application;
 
 using Contracts;
-using Infrastructure;
-
 using Microsoft.Extensions.DependencyInjection;
 
 public static class SharedDependency

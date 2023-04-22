@@ -17,18 +17,17 @@ public static class EnumExtensions
 
     public static List<EnumResponse> CreateEnumResponseList<T>() where T: Enum
     {
-        List<EnumResponse> list = new List<EnumResponse>();
-        string[] enumNames = Enum.GetNames(typeof(T));
+        var list = new List<EnumResponse>();
+        var enumNames = Enum.GetNames(typeof(T));
 
-        foreach (string name in enumNames)
+        foreach (var name in enumNames)
         {
             T value = (T) Enum.Parse(typeof(T), name);
-            int intValue = (int) Convert.ChangeType(value, typeof(int));
+            var intValue = (int) Convert.ChangeType(value, typeof(int));
             EnumResponse item = new EnumResponse { StringValue = name, IntegerValue = intValue };
             list.Add(item);
         }
 
         return list;
     }
-    
 }

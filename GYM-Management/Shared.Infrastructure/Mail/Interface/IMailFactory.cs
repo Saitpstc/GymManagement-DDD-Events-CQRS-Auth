@@ -1,7 +1,7 @@
 ﻿namespace Shared.Infrastructure.Mail.Interface;
 
+using Models;
 using SendGrid.Helpers.Mail;
-using Shared.Infrastructure.Mail.Models;
 
 public interface IMailFactory
 {

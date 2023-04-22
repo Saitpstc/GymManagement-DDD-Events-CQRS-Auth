@@ -1,7 +1,5 @@
 ﻿namespace Shared.Core.Exceptions;
 
-using System.Net;
-
 public class BusinessLogicException:BaseException
 {
 
@@ -13,6 +11,6 @@ public class BusinessLogicException:BaseException
 
     public BusinessLogicException(List<string> errorMessages):base(errorMessages)
     {
-     
+
     }
 }

@@ -2,13 +2,10 @@
 
 using System.Text.RegularExpressions;
 using ServiceExtensions;
-using Shared.Core.Domain;
 using Shared.Core.Exceptions;
 
-internal class PhoneNumber
+class PhoneNumber
 {
-    public string Number { get; private set; }
-    public string CountryCode { get; private set; }
 
     protected PhoneNumber()
     {
@@ -32,6 +29,9 @@ internal class PhoneNumber
         CountryCode = countryCountryCode;
 
     }
+
+    public string Number { get; }
+    public string CountryCode { get; }
 
     private bool ValidateNumber(string number)
     {

@@ -4,7 +4,7 @@ using Core;
 using Database;
 using Microsoft.EntityFrameworkCore;
 
-internal class CustomerRepository:ICustomerRepository
+class CustomerRepository:ICustomerRepository
 {
     private readonly CustomerDbContext _dbContext;
 
@@ -18,7 +18,7 @@ internal class CustomerRepository:ICustomerRepository
 
     public async Task<Customer?> RetriveByAsync(Guid Id)
     {
-        var databaseRecord = await _dbContext.Customers.FirstOrDefaultAsync(x => x.Id == Id);
+        Customer? databaseRecord = await _dbContext.Customers.FirstOrDefaultAsync(x => x.Id == Id);
 
 
         if (databaseRecord is null)
@@ -89,7 +89,7 @@ internal class CustomerRepository:ICustomerRepository
 
     public async Task<int> CommitAsync()
     {
-        int result = 0;
+        var result = 0;
 
         try
         {
