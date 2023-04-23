@@ -7,9 +7,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Customer.Core\Customer.Core.csproj"/>
-        <ProjectReference Include="..\Shared.Application\Shared.Application.csproj"/>
-        <ProjectReference Include="..\Shared.Infrastructure\Shared.Infrastructure.csproj"/>
+        <ProjectReference Include="..\Customer.Core\Customer.Core.csproj" />
+        <ProjectReference Include="..\Modules\Modules.Shared\Modules.Shared.csproj" />
+        <ProjectReference Include="..\Shared.Application\Shared.Application.csproj" />
+        <ProjectReference Include="..\Shared.Infrastructure\Shared.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -19,11 +20,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Serilog" Version="3.0.0-dev-01910"/>
+        <PackageReference Include="Serilog" Version="3.0.0-dev-01910" />
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="DTO\Request"/>
+        <Folder Include="DTO\Request" />
     </ItemGroup>
 
 </Project>

@@ -9,7 +9,6 @@ public record MembershipCreatedEvent:IntegrationEvent
 {
 
     public Guid CustomerId { get; set; }
-
-    public DateTime MembershipStartDate { get; set; }
-    public DateTime MembershipEndDate { get; set; }
+    
+    public int TotalTimeInMonths { get; set; }
 }

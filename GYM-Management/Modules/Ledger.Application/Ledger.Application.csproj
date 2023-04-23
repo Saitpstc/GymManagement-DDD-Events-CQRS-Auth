@@ -6,4 +6,17 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="Invoice\Command" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MediatR" Version="11.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Ledger.Core\Ledger.Core.csproj" />
+      <ProjectReference Include="..\Modules.Shared\Modules.Shared.csproj" />
+    </ItemGroup>
+
 </Project>

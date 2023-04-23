@@ -3,7 +3,7 @@
 using Core;
 using Test;
 
-public class CreditCardPaymentService:IPaymentService
+internal class CreditCardPaymentService:IPaymentService
 {
     private readonly IStripeService _stripeService;
 

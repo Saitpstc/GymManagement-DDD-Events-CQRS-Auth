@@ -50,4 +50,11 @@ public class Invoice
         PayerUserId = paymentModel.PayerUserId;
         Status = InvoiceStatus.Paid;
     }
+
+    public  static Invoice CreateForGymMembership(IMembershipPriceProvider priceProvider,int totalMembershipPeriodInMonths)
+    {
+        var amount = priceProvider.GetMembershipPrice(totalMembershipPeriodInMonths);
+
+        return new Invoice(new Amount(amount));
+    }
 }

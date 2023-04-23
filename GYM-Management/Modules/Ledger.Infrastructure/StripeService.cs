@@ -8,7 +8,7 @@ using Shared.Core;
 using Shared.Core.Exceptions;
 using Stripe;
 
-public class StripeService:IStripeService
+internal class StripeService:IStripeService
 {
     private readonly AppOptions _appOptions;
     private readonly IAuthService _authService;

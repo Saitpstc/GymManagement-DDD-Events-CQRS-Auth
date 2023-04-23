@@ -7,6 +7,7 @@ using IntegrationEvents.CustomerModule;
 using MediatR;
 using Shared.Application.Contracts;
 using Shared.Core.Exceptions;
+using Shared.Infrastructure;
 
 public class StartMembershipCommand:ICommand<MembershipStartedResponse>
 {
@@ -59,11 +60,12 @@ class StartMembershipCommandHandler:CommandHandlerBase<StartMembershipCommand, M
         await _repository.UpdateAsync(customer);
         await _repository.CommitAsync();
 
+
+
         MembershipCreatedEvent @event = new MembershipCreatedEvent
         {
             CustomerId = customer.Id,
-            MembershipEndDate = membership.EndDate,
-            MembershipStartDate = membership.StartDate
+            TotalTimeInMonths = membership.TimePeriodInMonths()
         };
         await _mediator.Publish(@event, cancellationToken);
 
